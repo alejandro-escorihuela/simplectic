@@ -31,4 +31,4 @@ The methods used in these programs are:
 ## Autors
 * **Cosmo Cat**  [cosmogat](https://github.com/cosmogat)
 ## License
-See the [LICENSE.md](LICENSE.md)
+See the [LICENSE](LICENSE)
