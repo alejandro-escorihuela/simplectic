@@ -1,7 +1,7 @@
 # 13-04-2018
 # cosmogat
 
-EXE = tjc4 rkg4 rkn4 rk-4 llib stor simp expl
+EXE = ss69 tjc4 rkg4 rkn4 rk-4 llib stor simp expl
 COM = gcc # Compilador
 LIB = -lm -lquadmath # Llibreries (-l*, -L*, -I*)
 MAC = -D_GNU_SOURCE # Macros (-D*)
@@ -12,6 +12,12 @@ OPC = $(DEP) $(AVS) $(MAC) -std=c11 # Opcions
 DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
+
+ss69: src/ss69.c solar.o
+	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
+	@echo -n "  \033[0;37m"
+	$(COM) $(OPC) $(LIB) $^ -o $@
+	@echo -n "\033[0m"
 
 tjc4: src/tjc4.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
