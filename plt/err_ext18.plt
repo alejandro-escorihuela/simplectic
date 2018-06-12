@@ -30,4 +30,7 @@ plot "../dat/expl_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2))
      "../dat/rk-4_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "rk4" w l ls 5, \
      "../dat/rkn4_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "rkn4" w l ls 6, \
      "../dat/rkg4_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "rkgl4" w l ls 7, \
-     "../dat/tjc4_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "tjc4" w l ls 8
+     "../dat/tjc4_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "tjc4" w l ls 8, \
+     "../dat/ss45_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "ss45" w l ls 9, \
+     "../dat/ss69_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "ss69" w l, \
+     "../dat/ss817_ext18/err.dat" u (log10($1 / 365.25)):(log10(abs($3-$2) / $2)) t "ss817" w l
