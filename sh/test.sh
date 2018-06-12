@@ -16,7 +16,9 @@ EXEC[4]="rk-4"
 EXEC[5]="rkn4"
 EXEC[6]="rkg4"
 EXEC[7]="tjc4"
-EXEC[8]="ss69"
+EXEC[8]="ss45"
+EXEC[9]="ss69"
+EXEC[10]="ss817"
 PAS=$1
 cd ..
 make

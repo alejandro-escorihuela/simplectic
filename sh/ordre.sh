@@ -20,6 +20,9 @@ EXE[4]="rk-4"
 EXE[5]="rkn4"
 EXE[6]="rkg4"
 EXE[7]="tjc4"
+EXE[8]="ss45"
+EXE[9]="ss69"
+EXE[10]="ss817"
 
 cd ..
 mkdir .tmp_dat

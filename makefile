@@ -1,7 +1,7 @@
 # 13-04-2018
 # cosmogat
 
-EXE = ss69 tjc4 rkg4 rkn4 rk-4 llib stor simp expl
+EXE = ss817 ss69 ss45 tjc4 rkg4 rkn4 rk-4 llib stor simp expl
 COM = gcc # Compilador
 LIB = -lm -lquadmath # Llibreries (-l*, -L*, -I*)
 MAC = -D_GNU_SOURCE # Macros (-D*)
@@ -13,7 +13,19 @@ DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
 
+ss817: src/ss817.c solar.o
+	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
+	@echo -n "  \033[0;37m"
+	$(COM) $(OPC) $(LIB) $^ -o $@
+	@echo -n "\033[0m"
+
 ss69: src/ss69.c solar.o
+	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
+	@echo -n "  \033[0;37m"
+	$(COM) $(OPC) $(LIB) $^ -o $@
+	@echo -n "\033[0m"
+
+ss45: src/ss45.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@

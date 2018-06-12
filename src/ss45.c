@@ -1,6 +1,6 @@
 /* 12-06-2018 */
 /* alex */
-/* ss69.c */
+/* ss45.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -12,7 +12,7 @@ int main (int num_arg, char * vec_arg[]){
   real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP];
   real H0, H, DH, Hemax = 0.0, gT, gV;
   real h;
-  int s = 9;
+  int s = 5;
   real a[s], ah[s], ah2[s];
   double t0, t = 0.0;
   FILE * fit_pl[MAX_PLA + 1];
@@ -21,11 +21,8 @@ int main (int num_arg, char * vec_arg[]){
   planetes = carregar_planetes(f_ini, masses, noms, q, p);
   H0 = energia(masses, q, p, planetes);
   obrir_fitxers(fit_pl, noms, f_ini, vec_arg[0], planetes);
-  a[0] = a[8] = 0.1867;
-  a[1] = a[7] = 0.5554970237124784L;
-  a[2] = a[6] = 0.1294669489134754L;
-  a[3] = a[5] = -0.843265623387734L;
-  a[4] = 1.0 - (2.0 * (a[0] + a[1] + a[2]+ a[3]));
+  a[0] = a[1] = a[3] = a[4] = 1.0 / (4.0 - POTENCIA(4.0, 1.0 / 3.0));
+  a[2] = 1.0 - (4.0 * a[1]);
   for (i = 0; i < s; i++) {
     ah[i] = a[i] * h;
     ah2[i] = ah[i] * 0.5;
