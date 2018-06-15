@@ -7,24 +7,29 @@ if [ $# -ne 1 ] ; then
     echo "S'ha de passar un valor per a l'increment de temps."
     exit 1
 fi
-EXEC=()
-EXEC[0]="expl"
-EXEC[1]="simp"
-EXEC[2]="stor"
-EXEC[3]="llib"
-EXEC[4]="rk-4"
-EXEC[5]="rkn4"
-EXEC[6]="rkg4"
-EXEC[7]="tjc4"
-EXEC[8]="ss45"
-EXEC[9]="ss69"
-EXEC[10]="ss817"
+
+DIR_ANT=$PWD
+FITX=()
+METO=()
+cd ../src
+for i in $(ls *.c) ; do
+    if [ "$i" != "solar.c" ] ; then
+	NOM_FIT=$(basename $i .c)
+	NOM_MET=$(echo $NOM_FIT | cut -d'_' -f2)
+	FITX+=($NOM_FIT)
+	METO+=($NOM_MET)
+    fi
+done
+cd $DIR_ANT
+
 PAS=$1
 cd ..
 make
-for i in ${EXEC[@]} ; do
-    echo "$i"
+IT=0
+for i in ${FITX[@]} ; do
+    echo "${METO[$IT]}"
     ./$i $PAS
+    let "IT++"
 done
 cd -
 

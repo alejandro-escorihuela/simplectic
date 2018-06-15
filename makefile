@@ -1,7 +1,7 @@
 # 13-04-2018
 # cosmogat
 
-EXE = ss817 ss69 ss45 tjc4 rkg4 rkn4 rk-4 llib stor simp expl
+EXE = 11_ss817 10_ss69 09_ss45 08_tjc4 07_rkg4 06_rkn4 05_rk-4 04_llib 03_stor 02_simp 01_expl
 COM = gcc # Compilador
 LIB = -lm -lquadmath # Llibreries (-l*, -L*, -I*)
 MAC = -D_GNU_SOURCE # Macros (-D*)
@@ -13,67 +13,67 @@ DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
 
-ss817: src/ss817.c solar.o
+11_ss817: src/11_ss817.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-ss69: src/ss69.c solar.o
+10_ss69: src/10_ss69.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-ss45: src/ss45.c solar.o
+09_ss45: src/09_ss45.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-tjc4: src/tjc4.c solar.o
+08_tjc4: src/08_tjc4.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-rkg4: src/rkg4.c solar.o
+07_rkg4: src/07_rkg4.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-rkn4: src/rkn4.c solar.o
+06_rkn4: src/06_rkn4.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-rk-4: src/rk-4.c solar.o
+05_rk-4: src/05_rk-4.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-llib: src/llib.c solar.o
+04_llib: src/04_llib.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-stor: src/stor.c solar.o
+03_stor: src/03_stor.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-simp: src/simp.c solar.o
+02_simp: src/02_simp.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
-expl: src/expl.c solar.o
+01_expl: src/01_expl.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
