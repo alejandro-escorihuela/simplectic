@@ -80,5 +80,5 @@ for i in ${FITX[@]} ; do
     echo "" >> _plot.plt
     let "ITi++"
 done
-#gnuplot _plot.plt
-#rm _plot.plt
+gnuplot _plot.plt
+rm _plot.plt
