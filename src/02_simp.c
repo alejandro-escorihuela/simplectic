@@ -1,6 +1,6 @@
 /* 17-04-2018 */
 /* alex */
-/* simp.c */
+/* 02_simp.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

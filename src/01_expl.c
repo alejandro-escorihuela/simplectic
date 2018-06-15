@@ -1,6 +1,6 @@
 /* 12-04-2018 */
 /* alex */
-/* expl.c */
+/* 01_expl.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

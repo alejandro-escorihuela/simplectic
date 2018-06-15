@@ -1,6 +1,6 @@
 /* 25-04-2018 */
 /* alex */
-/* rkn4.c */
+/* 06_rkn4.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

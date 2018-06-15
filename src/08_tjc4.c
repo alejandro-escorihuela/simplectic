@@ -1,6 +1,6 @@
 /* 07-05-2018 */
 /* alex */
-/* tjc4.c */
+/* 08_tjc4.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

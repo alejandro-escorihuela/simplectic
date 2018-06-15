@@ -1,6 +1,6 @@
 /* 17-04-2018 */
 /* alex */
-/* stor.c */
+/* 04_stor.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

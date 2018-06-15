@@ -1,6 +1,6 @@
 /* 12-06-2018 */
 /* alex */
-/* ss69.c */
+/* 10_ss69.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
