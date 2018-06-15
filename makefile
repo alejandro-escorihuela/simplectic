@@ -100,7 +100,7 @@ clean_exe:
 clean_data:
 	@echo "\033[0;31m"Netejant dades"\033[0m"
 	@echo -n "  \033[0;37m"
-	rm -rf ./dat
+	rm -rf ./dat/*
 	@echo -n "\033[0m"
 
 clean_all: clean clean_exe clean_data
