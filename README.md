@@ -15,19 +15,19 @@ In the cnf directory there are configuration files for Sun, planets and Pluto. T
 ## Running
 You can run any program with:
 ```
-./simp 10
+./02_simp 10
 ```
 this execute the "simp" program with h=10 and the results will be written in dat folder. You can use the scripts in "plt" folder for graphing these results.
 ## Methods
 The methods used in these programs are:
-* expl -> Explicit Euler method.
-* simp -> Simplectic Euler VT method.
-* stor -> Störmer-Verlet method.
-* llib -> Störmer-Verlet method with modified potential.
-* rk-4 -> *The* Runge-Kutta-4 method.
-* rkn4 -> Runge-Kutta-Nyström-4 method.
-* rkg4 -> Runge-Kutta-Gauss-Legendre-4 method.
-* tjc4 -> Triple jump composition 4th order method.
+* 01_expl -> Explicit Euler method.
+* 02_simp -> Simplectic Euler VT method.
+* 03_stor -> Störmer-Verlet method.
+* 04_llib -> Störmer-Verlet method with modified potential.
+* 05_rk-4 -> *The* Runge-Kutta-4 method.
+* 06_rkn4 -> Runge-Kutta-Nyström-4 method.
+* 07_rkg4 -> Runge-Kutta-Gauss-Legendre-4 method.
+* 08_tjc4 -> Triple jump composition 4th order method.
 ## Autors
 * **Cosmo Cat**  [cosmogat](https://github.com/cosmogat)
 ## License
