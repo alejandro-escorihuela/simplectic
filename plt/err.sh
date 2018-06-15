@@ -29,8 +29,11 @@ echo "set title \"Error en l'energia ($CONF)\"" >> _err.plt
 echo "set ylabel \"log((H-H_0)/H_0)\"" >> _err.plt
 echo "set xlabel \"log(t) (anys)\"" >> _err.plt
 echo -n "plot " >> _err.plt
-for i in ${METO[@]} ; do
-    echo -n "'../dat/${i}_$CONF/err.dat' u (log10(\$1 / 365.25)):(log10(abs(\$3-\$2) / \$2)) t '$i' w l, " >> _err.plt
+IT=0
+for i in ${FITX[@]} ; do
+    METODE=${METO[$IT]}
+    echo -n "'../dat/${i}_$CONF/err.dat' u (log10(\$1 / 365.25)):(log10(abs(\$3-\$2) / \$2)) t '$METODE' w l, " >> _err.plt
+    let "IT++"
 done
 gnuplot _err.plt
 rm _err.plt
