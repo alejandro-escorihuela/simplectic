@@ -56,7 +56,7 @@ int main (int num_arg, char * vec_arg[]){
       }
     }
 
-    Neval += (3 * (planetes - 1));
+    Neval += (s * (planetes - 1));
     t += temps() - t0;
     H = energia(masses, q, p, planetes);
     DH = fabs(H - H0);
