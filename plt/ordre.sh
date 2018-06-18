@@ -4,11 +4,11 @@
 # ordre.sh
 
 PAS=()
-PAS[0]=100
-PAS[1]=50
-PAS[2]=10
-PAS[3]=5
-PAS[4]=1
+PAS[0]=300
+PAS[1]=200
+PAS[2]=100
+PAS[3]=50
+PAS[4]=10
 # PAS[5]=0.5
 # PAS[6]=0.1
 FITX=()
