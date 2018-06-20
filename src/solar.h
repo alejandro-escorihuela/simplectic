@@ -44,6 +44,14 @@
 #define ARREL_Q(A) sqrtq(A)
 #endif
 
+#if TIPUS == 3
+#define COSINUS(A) cosq(A)
+#define SINUS(A) sinq(A)
+#else
+#define COSINUS(A) cos(A)
+#define SINUS(A) sin(A)
+#endif
+
 #if TIPUS == 0
 typedef float real;
 #elif TIPUS == 1
@@ -61,7 +69,10 @@ real deriv2q(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes)
 real deriv(int k, real m[MAX_PLA], real x[COORD][MAX_PLA][COMP], int i, int j, int planetes);
 void llibre(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes, real * gV, real * gV2);
 real energia(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int planetes);
+void phiKepler(real q[COMP], real p[COMP], real h, real m);
 real dif_v(real v1[COMP], real v2[COMP]);
+real dot(real v1[COMP], real v2[COMP]);
+real norm(real v[COMP]);
 void obrir_fitxers(FILE * fitxers[MAX_PLA + 1], char noms[MAX_PLA][MAX_CAD], char * f_ini, char * metode, int planetes);
 void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], real H0, real H, int planetes);
 void tancar_fitxers(FILE * fitxers[MAX_PLA + 1], int planetes);

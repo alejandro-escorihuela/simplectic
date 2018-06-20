@@ -145,6 +145,48 @@ real energia(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int 
   return (cin + pot);
 }
 
+void phiKepler(real q[COMP], real p[COMP], real h, real m) {
+  /* Sergio Blanes and Fernando Casas: A Concise Introduction to Geometric Numerical Integrator p[28,29]*/
+  real q_ant[COMP], p_ant[COMP];
+  real mu, r0, v02, u, a;
+  real c, s, sig, psi, w, x, x_ant;
+  real ff, gg, fp, gp, aux;
+  real tol = 1e10;
+  int i;
+  
+  for (i = 0; i < COMP; i++) {
+    q_ant[i] = q[i];
+    p_ant[i] = p[i];
+  }
+  
+  mu = GRAV_CNT * m;
+  r0 = norm(q);
+  v02 = dot(p, p);
+  u = dot(q, p);
+  a = -mu / (v02 - ((2.0 * mu) / r0));
+  w = sqrt (mu / (a * a * a));
+  sig = 1 - r0 / a;
+  psi = u / (w * a * a);
+  
+  x = x_ant = w * h * (a / r0);
+  do {
+    x_ant = x;
+    c = COSINUS(x);
+    s = SINUS(x);
+    x = x - (x - (sig * s) + (psi * (1.0 - c)) - (w * h)) / (1.0 - (sig * c) + (psi * s));
+  } while (fabs(x - x_ant) > tol);
+  
+  aux = 1.0 - (sig * c) + (psi * s);
+  ff = 1.0 + ((c - 1.0) * a / r0);
+  gg = h + ((s - x) / w);
+  fp = (-a * w * s) / (aux * r0);
+  gp = 1.0 + ((c - 1) / aux);
+  for (i = 0; i < COMP; i++) {
+    q[i] = (ff * q_ant[i]) + (gg * p_ant[i]);
+    p[i] = (fp * q_ant[i]) + (gp * p_ant[i]);
+  }
+}
+
 real dif_v(real v1[COMP], real v2[COMP]) {
   int j;
   real dif = 0.0, aux;
@@ -152,8 +194,23 @@ real dif_v(real v1[COMP], real v2[COMP]) {
     aux = v1[j] - v2[j];
     dif += (aux * aux);
   }
-  dif = ARREL_Q(dif);
-  return dif > 0 ? dif : -dif;
+  return ARREL_Q(dif);
+}
+
+real dot(real v1[COMP], real v2[COMP]) {
+  int i;
+  real ret = 0.0;
+  for (i = 0; i < COMP; i++)
+    ret += (v1[i] * v2[i]);
+  return ret;
+}
+
+real norm(real v[COMP]) {
+  int i;
+  real ret = 0.0;
+  for (i = 0; i < COMP; i++)
+    ret += (v[i] * v[i]);
+  return ARREL_Q(ret);
 }
 
 void obrir_fitxers(FILE * fitxers[MAX_PLA + 1], char noms[MAX_PLA][MAX_CAD], char * f_ini, char * metode, int planetes) {
