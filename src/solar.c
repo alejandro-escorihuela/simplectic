@@ -90,6 +90,20 @@ real gradV(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planet
   return gV;
 }
 
+real egradV(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes) {
+  int k, m;
+  real gV = 0.0, resta[COMP], den;
+  for (k = 1; k < planetes; k++)
+    if (i != k) {
+      for (m = 0; m < COMP; m++)
+	resta[m] = q[i][m] - q[k][m];
+      den = POTENCIA((resta[0] * resta[0]) + (resta[1] * resta[1]) + (resta[2] * resta[2]), 1.5);
+      gV += (masses[k] * (q[i][j] - q[k][j])) / den;
+    }
+  gV *= GRAV_CNT * masses[i];
+  return gV;
+}
+
 real deriv2q(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes) {
   int k, m;
   real gV = 0.0, resta[COMP], den;

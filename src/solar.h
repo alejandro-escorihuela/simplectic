@@ -65,6 +65,7 @@ typedef __float128 real;
 void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini);
 int carregar_planetes(char * f_ini, real masses[MAX_PLA], char noms[MAX_PLA][MAX_CAD], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP]);
 real gradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes);
+real egradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes);
 real deriv2q(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes);
 real deriv(int k, real m[MAX_PLA], real x[COORD][MAX_PLA][COMP], int i, int j, int planetes);
 void llibre(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int planetes, real * gV, real * gV2);
