@@ -162,18 +162,19 @@ real energia(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int 
 void phiKepler(real q[COMP], real p[COMP], real h, real m) {
   /* Sergio Blanes and Fernando Casas: A Concise Introduction to Geometric Numerical Integrator p[28,29]*/
   real q_ant[COMP], p_ant[COMP];
-  real mu, r0, v02, u, a;
+  real t, mu, r0, v02, u, a;
   real c, s, sig, psi, w, x, x_ant;
   real ff, gg, fp, gp, aux;
-  real tol = 1e10;
+  real tol = 1e-16;
   int i;
-  
+
   for (i = 0; i < COMP; i++) {
     q_ant[i] = q[i];
     p_ant[i] = p[i];
   }
-  
-  mu = GRAV_CNT * m;
+
+  t = h / m;
+  mu = GRAV_CNT * SOL_MASSA * m * m;
   r0 = norm(q);
   v02 = dot(p, p);
   u = dot(q, p);
@@ -182,17 +183,17 @@ void phiKepler(real q[COMP], real p[COMP], real h, real m) {
   sig = 1 - r0 / a;
   psi = u / (w * a * a);
   
-  x = x_ant = w * h * (a / r0);
+  x = x_ant = w * t * (a / r0);
   do {
     x_ant = x;
     c = COSINUS(x);
     s = SINUS(x);
-    x = x - (x - (sig * s) + (psi * (1.0 - c)) - (w * h)) / (1.0 - (sig * c) + (psi * s));
+    x = x - ((x - (sig * s) + (psi * (1.0 - c)) - (w * t)) / (1.0 - (sig * c) + (psi * s)));
   } while (fabs(x - x_ant) > tol);
   
   aux = 1.0 - (sig * c) + (psi * s);
   ff = 1.0 + ((c - 1.0) * a / r0);
-  gg = h + ((s - x) / w);
+  gg = t + ((s - x) / w);
   fp = (-a * w * s) / (aux * r0);
   gp = 1.0 + ((c - 1) / aux);
   for (i = 0; i < COMP; i++) {

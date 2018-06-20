@@ -1,7 +1,7 @@
 # 13-04-2018
 # cosmogat
 
-EXE = 14_nb46 13_s46s 12_s46 11_ss817 10_ss69 09_ss45 08_tjc4 07_rkg4 06_rkn4 05_rk-4 04_llib 03_stor 02_simp 01_expl
+EXE = 15_nia5 14_nb46 13_s46s 12_s46 11_ss817 10_ss69 09_ss45 08_tjc4 07_rkg4 06_rkn4 05_rk-4 04_llib 03_stor 02_simp 01_expl
 COM = gcc # Compilador
 LIB = -lm -lquadmath # Llibreries (-l*, -L*, -I*)
 MAC = -D_GNU_SOURCE # Macros (-D*)
@@ -12,6 +12,12 @@ OPC = $(DEP) $(AVS) $(MAC) -std=c11 # Opcions
 DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
+
+15_nia5: src/15_nia5.c solar.o
+	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
+	@echo -n "  \033[0;37m"
+	$(COM) $(OPC) $(LIB) $^ -o $@
+	@echo -n "\033[0m"
 
 14_nb46: src/14_nb46.c solar.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
