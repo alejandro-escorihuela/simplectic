@@ -50,7 +50,7 @@ int main (int num_arg, char * vec_arg[]){
       }
     }
     for (i = 1; i < planetes; i++)
-      phiKepler(q[i], p[i], ah[5], masses[i]);
+      phiKepler(q[i], p[i], ah[s], masses[i]);
     
     Neval += (s * (planetes - 1));
     t += temps() - t0;
