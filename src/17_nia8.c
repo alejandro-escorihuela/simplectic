@@ -1,6 +1,6 @@
-/* 20-06-2018 */
+/* 21-06-2018 */
 /* alex */
-/* 16_nia5.c */
+/* 17_nia8.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -12,7 +12,7 @@ int main (int num_arg, char * vec_arg[]){
   real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP];
   real H0, H, DH, Hemax = 0.0, gV;
   real h;
-  int s = 5;
+  int s = 8;
   real a[s + 1], ah[s + 1];
   real b[s], bh[s];
   double t0, t = 0.0;
@@ -22,12 +22,15 @@ int main (int num_arg, char * vec_arg[]){
   planetes = carregar_planetes(f_ini, masses, noms, q, p);
   H0 = energia(masses, q, p, planetes);
   obrir_fitxers(fit_pl, noms, f_ini, vec_arg[0], planetes);
-  a[0] = a[5] = 0.0753469602698929L;
-  a[1] = a[4] = 0.5179168546882568L;
-  a[2] = a[3] = 0.5 - (a[0] + a[1]);
-  b[0] = b[4] = 0.1902259393736766L;
-  b[1] = b[3] = 0.8465240704435263L;
-  b[2] = 1.0 - (2.0 * (b[0] + b[1]));
+  a[0] = a[8] = 0.0380944974224122L;
+  a[1] = a[7] = 0.1452987161169130L;
+  a[2] = a[6] = 0.2076276957255412L;
+  a[3] = a[5] = 0.4359097036515262L;
+  a[4] = 1.0 - (2.0 * (a[0] + a[1] + a[2] + a[3]));
+  b[0] = b[7] = 0.0958588808370752L;
+  b[1] = b[6] = 0.2044461531429988L;
+  b[2] = b[5] = 0.2170703479789911L;
+  b[3] = b[4] = 0.5 - (b[0] + b[1] + b[2]);
   for (i = 0; i < s; i++) {
     ah[i] = a[i] * h;
     bh[i] = b[i] * h;
