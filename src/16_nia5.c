@@ -1,6 +1,6 @@
 /* 20-06-2018 */
 /* alex */
-/* 15_nia5.c */
+/* 16_nia5.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -40,8 +40,7 @@ int main (int num_arg, char * vec_arg[]){
     /* Bucle per a k */
     for (k = 0; k < s; k++) {
       for (i = 1; i < planetes; i++)
-	for (j = 0; j < COMP; j++)
-	  phiKepler(q[i], p[i], ah[k], masses[i]);
+	phiKepler(q[i], p[i], ah[k], masses[i]);
       
       for (i = 1; i < planetes; i++) {
 	for (j = 0; j < COMP; j++) {
@@ -51,8 +50,7 @@ int main (int num_arg, char * vec_arg[]){
       }
     }
     for (i = 1; i < planetes; i++)
-      for (j = 0; j < COMP; j++)
-	phiKepler(q[i], p[i], ah[5], masses[i]);
+      phiKepler(q[i], p[i], ah[5], masses[i]);
     
     Neval += (s * (planetes - 1));
     t += temps() - t0;
