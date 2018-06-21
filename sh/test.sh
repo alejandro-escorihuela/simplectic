@@ -28,9 +28,9 @@ make
 IT=0
 for i in ${FITX[@]} ; do
     echo "${METO[$IT]}"
-    if [ "${METO[$IT]}" != "rkg4" ] ; then
+#    if [ "${METO[$IT]}" != "rkg4" ] ; then
 	./$i $PAS
-    fi
+#    fi
     let "IT++"
 done
 cd -
