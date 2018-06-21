@@ -49,7 +49,7 @@ int main (int num_arg, char * vec_arg[]){
     }   
     t += temps() - t0;
     H = energia(masses, q, p, planetes);
-    DH = fabs(H - H0);
+    DH = ABSOLUT(H - H0);
     if (DH > Hemax)
       Hemax = DH;
     if ((it % pit) == 0)

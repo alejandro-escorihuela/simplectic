@@ -189,7 +189,7 @@ void phiKepler(real q[COMP], real p[COMP], real h, real m) {
     c = COSINUS(x);
     s = SINUS(x);
     x = x - ((x - (sig * s) + (psi * (1.0 - c)) - (w * t)) / (1.0 - (sig * c) + (psi * s)));
-  } while (fabs(x - x_ant) > tol);
+  } while (ABSOLUT(x - x_ant) > tol);
   aux = 1.0 - (sig * c) + (psi * s);
   ff = 1.0 + (((c - 1.0) * a) / r0);
   gg = t + ((s - x) / w);

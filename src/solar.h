@@ -47,9 +47,11 @@
 #if TIPUS == 3
 #define COSINUS(A) cosq(A)
 #define SINUS(A) sinq(A)
+#define ABSOLUT(A) fabsq(A)
 #else
 #define COSINUS(A) cos(A)
 #define SINUS(A) sin(A)
+#define ABSOLUT(A) fabs(A)
 #endif
 
 #if TIPUS == 0
