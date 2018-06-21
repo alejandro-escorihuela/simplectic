@@ -179,7 +179,7 @@ void phiKepler(real q[COMP], real p[COMP], real h, real m) {
   v02 = dot(p, p);
   u = dot(q, p);
   a = -mu / (v02 - ((2.0 * mu) / r0));
-  w = sqrt (mu / (a * a * a));
+  w = ARREL_Q(mu / (a * a * a));
   sig = 1 - r0 / a;
   psi = u / (w * a * a);
   
@@ -190,9 +190,8 @@ void phiKepler(real q[COMP], real p[COMP], real h, real m) {
     s = SINUS(x);
     x = x - ((x - (sig * s) + (psi * (1.0 - c)) - (w * t)) / (1.0 - (sig * c) + (psi * s)));
   } while (fabs(x - x_ant) > tol);
-  
   aux = 1.0 - (sig * c) + (psi * s);
-  ff = 1.0 + ((c - 1.0) * a / r0);
+  ff = 1.0 + (((c - 1.0) * a) / r0);
   gg = t + ((s - x) / w);
   fp = (-a * w * s) / (aux * r0);
   gp = 1.0 + ((c - 1) / aux);
