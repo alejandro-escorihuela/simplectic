@@ -1,0 +1,234 @@
+% 08-05-2018
+% billy
+% resum.tex
+\documentclass[10pt,a4paper,catalan,twoside]{article}
+\usepackage[catalan]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ifpdf}
+\usepackage{anysize}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=black]{hyperref}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage{sectsty}
+%\marginsize{2cm}{2cm}{2cm}{2cm}
+%% \sectionfont{\fontsize{14}{15}\selectfont}
+%% \subsectionfont{\fontsize{12}{15}\selectfont}
+\ifpdf
+  \usepackage[pdftex]{graphicx}
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\else
+  \usepackage[dvips]{graphicx}
+  \DeclareGraphicsExtensions{.eps}
+\fi
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\lstset{
+  framerule=0pt,
+  aboveskip=0.5cm,
+  framextopmargin=3pt,
+  framexbottommargin=3pt,
+  framexleftmargin=0.2cm,
+  framesep=0pt,
+  rulesep=.4pt,
+  backgroundcolor=\color{gray97},
+  rulesepcolor=\color{black},
+  stringstyle=\ttfamily,
+  showstringspaces = false,
+  basicstyle=\scriptsize,
+  commentstyle=\color{gray45},
+  keywordstyle=\bfseries,
+  numbers=left,
+  numbersep=15pt,
+  numberstyle=\tiny,
+  numberfirstline = false,
+  breaklines=true,
+}
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+
+\begin{document}
+\title{\textbf{Numerical Integration of the Outer Solar System and Pluto}}
+\date{Maig 2018}
+\maketitle
+El hamiltonia del problema a tractar és el següent:
+\begin{equation}
+  H(\bar{q}_i, \bar{p}_i) = \frac{1}{2}\sum_{i=0}^5\frac{1}{m_i}\bar{p}_i^\top\bar{p}_i -G \sum_{i = 1}^5\sum_{j=0}^{i-1}\frac{m_i m_j}{|\bar{q}_i -\bar{q}_j|}\text{ .}
+\end{equation}
+Les seues equacions del moviment seran:
+\begin{equation}
+  \dot{\bar{q}}_i=\nabla_{\bar{p}} H(\bar{q}_i, \bar{p}_i)  = \nabla_{\bar{p}}T(\bar{q}_i)\text{;}\quad\quad\dot{\bar{p}}_i=-\nabla_{\bar{q}}H(\bar{q}_i, \bar{p}_i) =-\nabla_{\bar{q}}V(\bar{p}_i)\text{,} 
+\end{equation}
+i els gradients corresponents:
+\begin{flalign}
+  \left[\nabla_{\bar{p}}T(\bar{p}) \right]_i&=\frac{\bar{p}_i}{m_i}\\
+  \left[\nabla_{\bar{q}}V(\bar{q}) \right]_i&=Gm_i\sum_{\substack{j=0\\ j \ne i}}^5 m_j\frac{\bar{q}_i-\bar{q}_j}{|\bar{q}_i-\bar{q}_j|^3}\nonumber\text{ ,}
+\end{flalign}
+que expressats amb components queden\footnote{El primer índex fa referència a la partícula (planeta) i el segon fa refèrencia a la component.}:
+\begin{flalign}
+  \left[\nabla_{\bar{p}}T(\bar{p}) \right]_{ij}&=\frac{\bar{p}_{ij}}{m_i}\\
+  \left[\nabla_{\bar{q}}V(\bar{q}) \right]_{ij}&=Gm_i\sum_{\substack{k=0\\ k \ne i}}^5 m_k\frac{q_{ij}-q_{kj}}{r_{ik}^3}, \quad  r_{ik}=|q_{i}-q_{k}| = \sqrt{\sum_{l=0}^3 (q_{il}-q_{kl})^2}\nonumber\text{ .}
+\end{flalign}
+Les dades inicials de les simulacions estan tretes del web \url{https://ssd.jpl.nasa.gov/horizons.cgi} sent el valor de $t_0$ les dotze de la nit del dia 1 de gener de 2018.
+\section{Primers exemples}
+\subsection{Mètode explícit d'Euler}
+\begin{flalign}
+  \bar{q}_{(n+1)} &= \bar{q}_{(n)} + h\left[\nabla_{\bar{p}} T(\bar{p})\right]_{\bar{p}=\bar{p}_{(n)}}\\
+  \bar{p}_{(n+1)} &= \bar{p}_{(n)} - h\left[\nabla_{\bar{q}} V(\bar{q})\right]_{\bar{q}=\bar{q}_{(n)}}\nonumber
+\end{flalign}
+\subsection{Mètode simplèctic d'Euler TV}
+\begin{flalign}
+  \bar{q}_{(n+1)} &= \bar{q}_{(n)} + h\left[\nabla_{\bar{p}} T(\bar{p})\right]_{\bar{p}=\bar{p}_{(n)}}\\
+  \bar{p}_{(n+1)} &= \bar{p}_{(n)} - h\left[\nabla_{\bar{q}} V(\bar{q})\right]_{\bar{q}=\bar{q}_{(n+1)}}\nonumber
+\end{flalign}
+\subsection{Mètode de Störmer-Verlet}
+\begin{equation}
+   \mathcal{\tilde{S}}_h^{\left[2\right]} = \varphi_{\frac{h}{2}}^{\left[\text{T}\right]}\circ \varphi_{h}^{\left[\text{V}\right]}\circ\varphi_{\frac{h}{2}}^{\left[\text{T}\right]}
+\end{equation}
+\begin{flalign}
+  \bar{q}_{\left(n+\frac{1}{2}\right)} &= \bar{q}_{(n)} + \frac{h}{2}\left[\nabla_{\bar{p}} T(\bar{p})\right]_{\bar{p}=\bar{p}_{(n)}}\\
+  \bar{p}_{(n+1)} &= \bar{p}_{(n)} - h\left[\nabla_{\bar{q}} V(\bar{q})\right]_{\bar{q}=\bar{q}_{\left(n+\frac{1}{2}\right)}}\nonumber\\
+  \bar{q}_{\left(n+1\right)} &= \bar{q}_{\left(n+\frac{1}{2}\right)} + \frac{h}{2}\left[\nabla_{\bar{p}} T(\bar{p})\right]_{\bar{p}=\bar{p}_{(n+1)}}\nonumber
+\end{flalign}
+\subsection{Mètode de Störmer-Verlet amb el potencial modificat}
+\begin{flalign}
+  \bar{q}_{\left(n+\frac{1}{2}\right)} &= \bar{q}_{(n)} + \frac{h}{2}\left[\nabla_{\bar{p}} T(\bar{p})\right]_{\bar{p}=\bar{p}_{(n)}}\\
+  \bar{p}_{(n+1)} &= \bar{p}_{(n)} - h\left[\nabla_{\bar{q}} V(\bar{q})\right]_{\bar{q}=\bar{q}_{\left(n+\frac{1}{2}\right)}}+ \frac{h^3}{24}\left[\nabla_{\bar{q}}\left(\left(\nabla_{\bar{q}} V(\bar{q})\right)^\top M^{-1}\left(\nabla_{\bar{q}} V(\bar{q})\right)\right)\right]_{\bar{q}=\bar{q}_{\left(n+\frac{1}{2}\right)}}\nonumber\\
+  \bar{q}_{\left(n+1\right)} &= \bar{q}_{\left(n+\frac{1}{2}\right)} + \frac{h}{2}\left[\nabla_{\bar{p}} T(\bar{p})\right]_{\bar{p}=\bar{p}_{(n+1)}}\nonumber
+\end{flalign}
+\begin{equation}
+  \left[\nabla_{\bar{q}}\left(\left(\nabla_{\bar{q}} V(\bar{q})\right)^\top M^{-1}\left(\nabla_{\bar{q}} V(\bar{q})\right)\right)\right]_i= -4G^2m_i\sum_{\substack{j=0\\ j \ne i}}^5 m_j^2\frac{\bar{q}_i-\bar{q}_j}{|\bar{q}_i-\bar{q}_j|^6}
+\end{equation}
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=15cm]{img/mem1_1.pdf}
+    \caption{Errors de l'energia per a diferents simulacions amb $h=10$ i $N = 20000$.}
+    \label{fig:err1}
+  \end{center}
+\end{figure}
+\begin{figure}[!ht]
+  \centering
+    \textbf{Simulacions del Sistema Solar exterior i Plutó}\par\medskip
+  \begin{center}
+    \subfloat[]{
+      \label{fig:expl}
+      \includegraphics[width=15cm]{./img/mem1_2.pdf}}
+    \\
+    \subfloat[]{
+      \label{fig:simp}
+      \includegraphics[width=15cm]{./img/mem1_3.pdf}}
+    \caption{Dalt amb el mètode explícit d'Euler i baix amb el mètode simplèctic d'Euler respectivament, ambdues amb $h=10$ i $N = 20000$.}
+    \label{fig:solar}
+  \end{center}
+\end{figure}
+\clearpage
+\section{Mètodes Runge-Kutta}
+\begin{flalign}
+  Y_i &= x_n + h\sum_{j=1}^s a_{ij} k_i\\
+  k_i &= f(t_n + c_ih, Y_i)\nonumber\\
+  x_{n+1}&= x_n + h\sum_{i=1}^s b_ik_i\nonumber
+\end{flalign}
+\begin{equation}
+  \renewcommand\arraystretch{1.2}
+    \begin{array}{c|ccc}
+    c_1&a_1 &\cdots&a_s\\
+    \vdots&\vdots& &\vdots\\
+    c_s&a_{s1}&\cdots&a_{ss}\\
+    \hline
+    &b_1 &\cdots &b_s
+  \end{array}
+\end{equation}
+\subsection{``El'' mètode Runge-Kutta de 4t ordre}
+\begin{equation}
+  \renewcommand\arraystretch{1.2}
+  \begin{array}{c|cccc}
+    0\\
+    \frac{1}{2} & \frac{1}{2}\\
+    \frac{1}{2} &0 &\frac{1}{2} \\
+    1& 0& 0& 1\\
+    \hline
+    & \frac{1}{6} &\frac{1}{3} &\frac{1}{3} &\frac{1}{6} 
+  \end{array}
+\end{equation}
+\subsection{Mètode Runge-Kutta-Nyström de 4t ordre}
+Si
+\begin{equation}
+  \ddot{q}=\dot{v}=g(t,q)\text{,}
+\end{equation}
+aleshores:
+\begin{flalign}
+  l_i &=g(t_n+c_ih, q_n+hc_iv_n+h^2\sum_{j=1}^s\tilde{a}_{ij}l_j)\\
+  v_{n+1} &=v_n +h\sum_{i=1}^s\hat{b}_il_i\nonumber\\
+  q_{n+1}&=q_n+hv_n+h^2\sum_{i=1}^s\tilde{b}_il_i\nonumber
+\end{flalign}
+\begin{equation}
+  \renewcommand\arraystretch{1.2}
+  \begin{array}{c|c}
+    c&\tilde{A}\\
+    \hline
+    &\tilde{b}\\
+    \hline
+    &\hat{b}
+  \end{array} 
+  \quad\equiv\quad
+  \begin{array}{c|ccc}
+    0\\
+    \frac{1}{2} &\frac{1}{8}\\
+    1 &0 &\frac{1}{2} \\
+    \hline
+    & \frac{1}{6} &\frac{1}{3} &0\\
+    \hline
+    & \frac{1}{6} &\frac{4}{6} &\frac{1}{6}
+  \end{array}
+\end{equation}
+En aquest cas:
+\begin{equation}
+  \ddot{q}_i = \frac{1}{m_i}\dot{p}_i = -\frac{1}{m_i}\left[\nabla_{\bar{q}}V(\bar{q}) \right]_i = -G\sum_{\substack{j=0\\ j \ne i}}^5 m_j\frac{\bar{q}_i-\bar{q}_j}{|\bar{q}_i-\bar{q}_j|^3}
+\end{equation}
+\subsection{Mètode Runge-Kutta-Gauss-Legendre de 4t ordre (s=2)}
+\begin{equation}
+  \renewcommand\arraystretch{1.2}
+    \begin{array}{c|cc}
+    \frac{1}{2}-\frac{\sqrt{3}}{6}&\frac{1}{4} &\frac{1}{4}-\frac{\sqrt{3}}{6}\\
+    \frac{1}{2}+\frac{\sqrt{3}}{6}&\frac{1}{4}+\frac{\sqrt{3}}{6} &\frac{1}{4}\\
+    \hline
+    &\frac{1}{2} &\frac{1}{2}
+  \end{array}
+\end{equation}
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=15cm]{img/mem2_1.pdf}
+    \caption{Errors de l'energia per a diferents simulacions amb $h=10$ i $N = 20000$.}
+    \label{fig:err2}
+  \end{center}
+\end{figure}
+\clearpage
+\section{Mètodes d'escissió i composició}
+\subsection{Composició de triple salt}
+\begin{equation}
+  \mathcal{\tilde{S}}_h^{\left[4\right]} = \mathcal{\tilde{S}}_{\alpha h}^{\left[2\right]}\circ\mathcal{\tilde{S}}_{\beta h}^{\left[2\right]}\circ \mathcal{\tilde{S}}_{\alpha h}^{\left[2\right]}=\varphi_{\frac{\alpha h}{2}}^{\left[\text{T}\right]}\circ \varphi_{\alpha h}^{\left[\text{V}\right]}\circ\varphi_{\frac{\alpha h}{2}}^{\left[\text{T}\right]}\circ \varphi_{\frac{\beta h}{2}}^{\left[\text{T}\right]}\circ \varphi_{\beta h}^{\left[\text{V}\right]}\circ\varphi_{\frac{\beta h}{2}}^{\left[\text{T}\right]} \circ \varphi_{\frac{\alpha h}{2}}^{\left[\text{T}\right]}\circ \varphi_{\alpha h}^{\left[\text{V}\right]}\circ\varphi_{\frac{\alpha h}{2}}^{\left[\text{T}\right]}\text{,}\quad \alpha=\frac{1}{2-2^{\frac{1}{3}}}\text{, }\beta=1-2\alpha
+\end{equation}
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=15cm]{img/mem3_1.pdf}
+    \caption{Errors de l'energia per a diferents simulacions amb $h=10$ i $N = 20000$.}
+    \label{fig:err3}
+  \end{center}
+\end{figure}
+
+\clearpage
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=15cm]{img/ordre.pdf}
+    \caption{Eficiència.}
+    \label{fig:efi}
+  \end{center}
+\end{figure}
+\end{document}
