@@ -35,11 +35,13 @@ for i in ${FITX[@]} ; do
 done
 cd .tmp_dat
 echo "reset" >> plot.plt
-echo "set term pdf" >> plot.plt
+echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
+echo "set key font ',8'" >> plot.plt
+echo "set xtics font 'Verdana,8'" >> plot.plt
 echo "set output \"../graf/ordre.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
-echo "set title \"Eficiència\"" >> plot.plt
+echo "set title \"Efficiency\"" >> plot.plt
 echo "set ylabel \"log(max(H-H_0)/H_0)\"" >> plot.plt
 echo "set xlabel \"log(N_{eval})\"" >> plot.plt
 echo -n "plot " >> plot.plt
