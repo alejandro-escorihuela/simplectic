@@ -18,8 +18,6 @@ PAS[1]=200
 PAS[2]=100
 PAS[3]=50
 PAS[4]=10
-# PAS[5]=0.5
-# PAS[6]=0.1
 FITX=()
 METO=()
 
@@ -37,9 +35,7 @@ case $OPC in
 	for i in $(ls *.c) ; do
 	    if [ "$i" != "solar.c" ] ; then
 		NOM_FIT=$(basename $i .c)
-		NOM_MET=$(echo $NOM_FIT | cut -d'_' -f2)
 		FITX+=($NOM_FIT)
-		METO+=($NOM_MET)
 	    fi
 	done
 	cd $DIR_ANT
@@ -49,19 +45,12 @@ case $OPC in
 	FITX[1]="02_simp"
 	FITX[2]="03_stor"
 	FITX[3]="04_llib"
-	METO[0]="expl"
-	METO[1]="simp"
-	METO[2]="stor"
-	METO[3]="llib"
 	PAS[5]=0.5	
 	;;
     2)
 	FITX[0]="05_rk-4"
 	FITX[1]="06_rkn4"
 	FITX[2]="07_rkg4"
-	METO[0]="rk-4"
-	METO[1]="rkn4"
-	METO[2]="rkg4"
 	PAS[5]=0.5
 	;;
     3)
@@ -75,22 +64,18 @@ case $OPC in
 	FITX[7]="15_nia2"
 	FITX[8]="16_nia5"
 	FITX[9]="17_nia8"	
-	METO[0]="tjc4"
-	METO[1]="ss45"
-	METO[2]="ss69"
-	METO[3]="ss817"
-	METO[4]="s46"
-	METO[5]="s46s"
-	METO[6]="nb46"
-	METO[7]="nia2"
-	METO[8]="nia5"
-	METO[9]="nia8"
 	;;
     *)
 	info
 	exit 2
 	;;
 esac
+
+for i in ${FITX[@]} ; do
+    NOM_MET=$(echo $i | cut -d'_' -f2)
+    METO+=($NOM_MET)
+done
+
 
 cd ..
 mkdir .tmp_dat
