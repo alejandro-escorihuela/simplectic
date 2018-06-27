@@ -3,35 +3,14 @@
 # alex
 # err.sh
 
-CONF="ext18"
-DIR_ANT=$PWD
-FITX=()
-METO=()
-cd ../src
-for i in $(ls *.c) ; do
-    if [ "$i" != "solar.c" ] ; then
-	NOM_FIT=$(basename $i .c)
-	NOM_MET=$(echo $NOM_FIT | cut -d'_' -f2)
-	FITX+=($NOM_FIT)
-	METO+=($NOM_MET)
-    fi
-done
-cd $DIR_ANT
-
-
-# FITX[0]="15_nia2"
-# FITX[1]="16_nia5"
-# FITX[2]="17_nia8"
-# METO[0]="nia2"
-# METO[1]="nia5"
-# METO[2]="nia8"
+. .comu.sh
 
 touch _err.plt
 echo "reset" >> _err.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> _err.plt
 echo "set key font ',8'" >> _err.plt
 echo "set xtics font 'Verdana,8'" >> _err.plt
-echo "set output \"../graf/err_ext18.pdf\"" >> _err.plt
+echo "set output \"../graf/err${OPC}.pdf\"" >> _err.plt
 echo "set key out vert" >> _err.plt
 echo "set key right" >> _err.plt
 echo "set xrange[-0.25:2.75]" >> _err.plt
