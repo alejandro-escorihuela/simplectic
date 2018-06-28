@@ -13,6 +13,7 @@ function info {
     echo -e "\t 2 -> Mètodes 5-7"
     echo -e "\t 3 -> Mètodes 8-14"
     echo -e "\t 4 -> Mètodes 15-17"
+    echo -e "\t 5 -> Mètodes 18-23"
 }
 
 OPC=0
@@ -63,6 +64,10 @@ case $OPC in
 	FITX[0]="15_nia2"
 	FITX[1]="16_nia5"
 	FITX[2]="17_nia8"	
+	;;
+    5)
+	FITX[0]="18_pss613"
+	FITX[1]="19_ps44"
 	;;
     *)
 	info
