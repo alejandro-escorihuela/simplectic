@@ -68,6 +68,7 @@ case $OPC in
     5)
 	FITX[0]="18_pss613"
 	FITX[1]="19_ps44"
+	FITX[2]="20_ps44s"
 	;;
     *)
 	info

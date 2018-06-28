@@ -35,30 +35,29 @@ int main (int num_arg, char * vec_arg[]){
   for (it = 0; it < N; it++) {
     t0 = temps();
     /* Bucle per a k */
-    for (k = 0; k < (2 * s); k += 2) {
+    for (k = 0; k < s; k++) {
       for (i = 1; i < planetes; i++) {
 	for (j = 0; j < COMP; j++) {
 	  gV = gradV(masses, q, i, j, planetes);
-	  p[i][j] -= ah[k] * gV;
+	  p[i][j] -= ah[2 * k] * gV;
 	}
       } 
       for (i = 1; i < planetes; i++) {
 	for (j = 0; j < COMP; j++) {
 	  gT = (p[i][j] / masses[i]);
-	  q[i][j] += ah[k] * gT;
+	  q[i][j] += ah[2 * k] * gT;
 	}
       }   
-      
       for (i = 1; i < planetes; i++) {
 	for (j = 0; j < COMP; j++) {
 	  gT = (p[i][j] / masses[i]);
-	  q[i][j] += ah[k + 1] * gT;
+	  q[i][j] += ah[(2 * k) + 1] * gT;
 	}
       }
       for (i = 1; i < planetes; i++) {
 	for (j = 0; j < COMP; j++) {
 	  gV = gradV(masses, q, i, j, planetes);
-	  p[i][j] -= ah[k + 1] * gV;
+	  p[i][j] -= ah[(2 * k) + 1] * gV;
 	}
       }  
     }
