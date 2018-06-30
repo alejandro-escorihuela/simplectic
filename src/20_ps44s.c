@@ -34,9 +34,10 @@ int main (int num_arg, char * vec_arg[]){
   g[4] = 0.4530449481299280L;
   g[5] = 0.0571927978097620L;
   g[6] = -(g[0] + g[1] + g[2] + g[3] + g[4] + g[5]);
-  for (i = 0; i < (2 * s); i++) {
+  for (i = 0; i < (2 * s); i++)
     ah[i] = a[i] * h;
-  }
+  for (i = 0; i < (2 * m) + 1; i++)
+    gh[i] = g[i] * h;
   
   /* Mètode d'escissió */  
   for (it = 0; it < N; it++) {
@@ -156,12 +157,13 @@ int main (int num_arg, char * vec_arg[]){
     }
 
     t += temps() - t0;
-    H = energia(masses, q, p, planetes);
-    DH = ABSOLUT(H - H0);
-    if (DH > Hemax)
-      Hemax = DH;
-    if ((it % pit) == 0)
+    if ((it % pit) == 0) {
+      H = energia(masses, q, p, planetes);
+      DH = ABSOLUT(H - H0);
+      if (DH > Hemax)
+	Hemax = DH;      
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, planetes);
+    }
   }
   tancar_fitxers(fit_pl, planetes);
   print_info(h, t, Neval, Hemax / H0);

@@ -104,12 +104,13 @@ int main (int num_arg, char * vec_arg[]){
     }
     
     t += temps() - t0;
-    H = energia(masses, q, p, planetes);
-    DH = ABSOLUT(H - H0);
-    if (DH > Hemax)
-      Hemax = DH;
-    if ((it % pit) == 0)
+    if ((it % pit) == 0) {
+      H = energia(masses, q, p, planetes);
+      DH = ABSOLUT(H - H0);
+      if (DH > Hemax)
+	Hemax = DH;      
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, planetes);
+    }
   }
   tancar_fitxers(fit_pl, planetes);
   print_info(h, t, Neval, Hemax / H0);
