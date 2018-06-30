@@ -165,7 +165,7 @@ void phiKepler(real q[COMP], real p[COMP], real h, real m) {
   real t, mu, r0, v02, u, a;
   real c, s, sig, psi, w, x, x_ant;
   real ff, gg, fp, gp, aux;
-  real tol = 1e-16;
+  real tol = 1e-12;
   int i;
 
   for (i = 0; i < COMP; i++) {
