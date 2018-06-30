@@ -22,6 +22,8 @@ int main (int num_arg, char * vec_arg[]){
   planetes = carregar_planetes(f_ini, masses, noms, q, p);
   H0 = energia(masses, q, p, planetes);
   obrir_fitxers(fit_pl, noms, f_ini, vec_arg[0], planetes);
+
+  /* coeficicients */
   a[0] = a[1] = a[2] = a[3] = a[9] = a[10] = a[11] = a[12] = 0.1256962887201060L;
   a[4] = a[8] = 0.1480706601149650L;
   a[5] = a[7] = -0.3508563708238280L;
@@ -41,34 +43,36 @@ int main (int num_arg, char * vec_arg[]){
   for (i = 0; i < m; i++) {
     gh[i] = g[i] * h;
     gh2[i] = gh[i] * 0.5;
-  } 
-  /* Mètode de composició de tres salts (Suzuki-Yoshida) */  
+  }
+
+  /* preprocessat */
+  t0 = temps();
+  for (k = 0; k < m; k++) {
+    for (i = 1; i < planetes; i++) {
+      for (j = 0; j < COMP; j++) {
+	gT = (p[i][j] / masses[i]);
+	q[i][j] += gh2[k] * gT;
+      }
+    }
+    for (i = 1; i < planetes; i++) {
+      for (j = 0; j < COMP; j++) {
+	gV = gradV(masses, q, i, j, planetes);
+	p[i][j] -= gh[k] * gV;
+      }
+    }
+    for (i = 1; i < planetes; i++) {
+      for (j = 0; j < COMP; j++) {
+	gT = (p[i][j] / masses[i]);
+	q[i][j] += gh2[k] * gT;
+      }
+    }
+  }
+  Neval += (m * (planetes - 1));
+  t += temps() - t0;
+
+  /* bucle principal */
   for (it = 0; it < N; it++) {
     t0 = temps();
-    /* preprocessat */
-    if ((it % pit) == 0) {
-      for (k = 0; k < m; k++) {
-	for (i = 1; i < planetes; i++) {
-	  for (j = 0; j < COMP; j++) {
-	    gT = (p[i][j] / masses[i]);
-	    q[i][j] += gh2[k] * gT;
-	  }
-	}
-	for (i = 1; i < planetes; i++) {
-	  for (j = 0; j < COMP; j++) {
-	    gV = gradV(masses, q, i, j, planetes);
-	    p[i][j] -= gh[k] * gV;
-	  }
-	}
-	for (i = 1; i < planetes; i++) {
-	  for (j = 0; j < COMP; j++) {
-	    gT = (p[i][j] / masses[i]);
-	    q[i][j] += gh2[k] * gT;
-	  }
-	}
-      }
-      Neval += (m * (planetes - 1));
-    }
     /* Bucle Störmer-Verlet */
     for (k = 0; k < s; k++) {
       for (i = 1; i < planetes; i++) {
@@ -91,8 +95,12 @@ int main (int num_arg, char * vec_arg[]){
       }
     }
     Neval += (s * (planetes - 1));
-    /* postprocessat */
+    t += temps() - t0;
+
+    /* imprimir */
     if ((it % pit) == 0) {
+      /* postprocessat */
+      t0 = temps();
       for (k = m - 1; k >= 0; k--) {
 	for (i = 1; i < planetes; i++) {
 	  for (j = 0; j < COMP; j++) {
@@ -114,15 +122,37 @@ int main (int num_arg, char * vec_arg[]){
 	}
       }
       Neval += (m * (planetes - 1));
-    }
-   
-    t += temps() - t0;
-    if ((it % pit) == 0) {
+      t += temps() - t0;
+      /* escriptura */
       H = energia(masses, q, p, planetes);
       DH = ABSOLUT(H - H0);
       if (DH > Hemax)
 	Hemax = DH;           
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, planetes);
+      /* preprocessat */
+      t0 = temps();
+      for (k = m - 1; k >= 0; k--) {
+	for (i = 1; i < planetes; i++) {
+	  for (j = 0; j < COMP; j++) {
+	    gT = (p[i][j] / masses[i]);
+	    q[i][j] += -gh2[k] * gT;
+	  }
+	}
+	for (i = 1; i < planetes; i++) {
+	  for (j = 0; j < COMP; j++) {
+	    gV = gradV(masses, q, i, j, planetes);
+	    p[i][j] -= -gh[k] * gV;
+	  }
+	}
+	for (i = 1; i < planetes; i++) {
+	  for (j = 0; j < COMP; j++) {
+	    gT = (p[i][j] / masses[i]);
+	    q[i][j] += -gh2[k] * gT;
+	  }
+	}
+      }
+      Neval += (m * (planetes - 1));
+      t += temps() - t0;
     }
   }
   tancar_fitxers(fit_pl, planetes);

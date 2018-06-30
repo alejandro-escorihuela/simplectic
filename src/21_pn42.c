@@ -26,6 +26,7 @@ int main (int num_arg, char * vec_arg[]){
   H0 = energia(masses, q, p, planetes);
   obrir_fitxers(fit_pl, noms, f_ini, vec_arg[0], planetes);
 
+  /* coeficients */
   a[0] = -0.1L;
   a[1] = 1.0 - a[0];
   b[0] = 0.5 - ARREL_Q(133.0 / 132.0);
@@ -44,29 +45,30 @@ int main (int num_arg, char * vec_arg[]){
     yh[i] = y[i] * h;
     zh[i] = z[i] * h;
   }  
-  
+  /* p -> v */
   for (i = 1; i < planetes; i++)
     for (j = 0; j < COMP; j++)
       v[i][j] = p[i][j] / masses[i];
-    
-  /* Mètode d'escissió rkn */  
+  
+  /* preprocessat */
+  t0 = temps();
+  for (k = 0; k < m; k++) {
+    for (i = 1; i < planetes; i++) {
+      for (j = 0; j < COMP; j++) {
+	d2q = deriv2q(masses, q, i, j, planetes);
+	v[i][j] += yh[k] * d2q;
+      }
+    }
+    for (i = 1; i < planetes; i++)
+      for (j = 0; j < COMP; j++)
+	q[i][j] += zh[k] * v[i][j];
+  }
+  Neval += (m * (planetes - 1));
+  t += temps() - t0;
+  
+  /* Bucle principal */
   for (it = 0; it < N; it++) {
     t0 = temps();
-    /* preprocessat */
-    if ((it % pit) == 0) {
-      for (k = 0; k < m; k++) {
-    	for (i = 1; i < planetes; i++) {
-    	  for (j = 0; j < COMP; j++) {
-    	    d2q = deriv2q(masses, q, i, j, planetes);
-    	    v[i][j] += yh[k] * d2q;
-    	  }
-    	}
-    	for (i = 1; i < planetes; i++)
-    	  for (j = 0; j < COMP; j++)
-    	    q[i][j] += zh[k] * v[i][j];
-      }
-      Neval += (m * (planetes - 1));
-    }
     /* Mètode */
     for (k = 0; k < s; k++) {
       for (i = 1; i < planetes; i++) {
@@ -80,26 +82,26 @@ int main (int num_arg, char * vec_arg[]){
 	  q[i][j] += ah[k] * v[i][j];
     }
     Neval += (s * (planetes - 1));
-    
-    /* postprocessat */
+    t += temps() - t0;
+    /* imprimir */
     if ((it % pit) == 0) {
+      /* postprocessat */
+      t0 = temps();
       for (k = m - 1; k >= 0; k--) {
-    	for (i = 1; i < planetes; i++)
-    	  for (j = 0; j < COMP; j++)
-    	    q[i][j] += -zh[k] * v[i][j];
-    	for (i = 1; i < planetes; i++) {
-    	  for (j = 0; j < COMP; j++) {
-    	    d2q = deriv2q(masses, q, i, j, planetes);
-    	    v[i][j] += -yh[k] * d2q;
-    	  }
-    	}
+	for (i = 1; i < planetes; i++) 
+	  for (j = 0; j < COMP; j++)
+	    q[i][j] += -zh[k] * v[i][j];
+	for (i = 1; i < planetes; i++) {
+	  for (j = 0; j < COMP; j++) {
+	    d2q = deriv2q(masses, q, i, j, planetes);
+	    v[i][j] += -yh[k] * d2q;
+	  }
+	}
       }
       Neval += (m * (planetes - 1));
-    }
-    
-    t += temps() - t0;
-
-    if ((it % pit) == 0) {
+      t += temps() - t0;     
+      /* escriptura */
+      /* v -> p */
       for (i = 1; i < planetes; i++)
 	for (j = 0; j < COMP; j++)
 	  p[i][j] = v[i][j] * masses[i];
@@ -108,6 +110,21 @@ int main (int num_arg, char * vec_arg[]){
       if (DH > Hemax)
 	Hemax = DH;      
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, planetes);
+      /* preprocessat */
+      t0 = temps();
+      for (k = 0; k < m; k++) {
+	for (i = 1; i < planetes; i++) {
+	  for (j = 0; j < COMP; j++) {
+	    d2q = deriv2q(masses, q, i, j, planetes);
+	    v[i][j] += yh[k] * d2q;
+	  }
+	}
+	for (i = 1; i < planetes; i++)
+	  for (j = 0; j < COMP; j++)
+	    q[i][j] += zh[k] * v[i][j];
+      }
+      Neval += (m * (planetes - 1));
+      t += temps() - t0;              
     }
   }
   tancar_fitxers(fit_pl, planetes);
