@@ -7,11 +7,11 @@
 #include "solar.h"
 
 int main (int num_arg, char * vec_arg[]){
-  int i, j, it, planetes, N, pop, pit, Neval = 0;
+  int it, planetes, N, pop, pit, Neval = 0;
   char noms[MAX_PLA][MAX_CAD], f_ini[20];
   real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP];
-  real H0, H, DH, Hemax = 0.0, gT, gV;
-  real h, a, b, ah, ah2, bh, bh2;
+  real H0, H, DH, Hemax = 0.0;
+  real h, a, b, ah, bh;
   double t0, t = 0.0;
   FILE * fit_pl[MAX_PLA + 1];
 
@@ -23,68 +23,15 @@ int main (int num_arg, char * vec_arg[]){
   b = 1 - (2 * a);
   ah = a * h;
   bh = b * h;
-  ah2 = a * h * 0.5;
-  bh2 = b * h * 0.5;
+  
   /* Mètode de composició de tres salts (Suzuki-Yoshida) */  
   for (it = 0; it < N; it++) {
     t0 = temps();
-    /* Primer Störmer-Verlet */
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gT = (p[i][j] / masses[i]);
-	q[i][j] += ah2 * gT;
-      }
-    }
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gV = gradV(masses, q, i, j, planetes);
-  	p[i][j] -= ah * gV;
-      }
-    }
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gT = (p[i][j] / masses[i]);
-	q[i][j] += ah2 * gT;
-      }
-    }
-   /* Segon Störmer-Verlet */
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gT = (p[i][j] / masses[i]);
-	q[i][j] += bh2 * gT;
-      }
-    }
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gV = gradV(masses, q, i, j, planetes);
-  	p[i][j] -= bh * gV;
-      }
-    }
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gT = (p[i][j] / masses[i]);
-	q[i][j] += bh2 * gT;
-      }
-    }
-    /* Tercer Störmer-Verlet */
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gT = (p[i][j] / masses[i]);
-	q[i][j] += ah2 * gT;
-      }
-    }
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gV = gradV(masses, q, i, j, planetes);
-  	p[i][j] -= ah * gV;
-      }
-    }
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gT = (p[i][j] / masses[i]);
-	q[i][j] += ah2 * gT;
-      }
-    }
+    
+    phi_storAdj(masses, q, p, planetes, ah);
+    phi_storAdj(masses, q, p, planetes, bh);
+    phi_storAdj(masses, q, p, planetes, ah);
+    
     Neval += (3 * (planetes - 1));
     t += temps() - t0;
     H = energia(masses, q, p, planetes);
