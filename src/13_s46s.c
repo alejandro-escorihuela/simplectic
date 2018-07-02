@@ -29,14 +29,14 @@ int main (int num_arg, char * vec_arg[]){
   a[3] = a[8] = -0.3667132690474261L;
   a[4] = a[7] = 0.3246481886897060L;
   a[5] = a[6] = 0.5 - (a[0] + a[1] + a[2] + a[3] + a[4]);
-  for (i = 0; i < (2 * s); i++) {
+  for (i = 0; i < s; i++)
     ah[i] = a[i] * h;
-  }
   
-  /* Mètode d'escissió */  
+  /* Bucle principal */  
   for (it = 0; it < N; it++) {
     t0 = temps();
 
+    /* Composició del mètode */
     for (i = 0; i < s; i += 2) {
       phi_simpVT(masses, q, p, planetes, ah[i]);
       phi_simpTV(masses, q, p, planetes, ah[i + 1]);

@@ -159,6 +159,20 @@ real energia(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int 
   return (cin + pot);
 }
 
+void p2v(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl) {
+  int i, j;
+  for (i = 1; i < npl; i++)
+    for (j = 0; j < COMP; j++)
+      v[i][j] = p[i][j] / m[i];
+}
+
+void v2p(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl) {
+  int i, j;
+  for (i = 1; i < npl; i++)
+    for (j = 0; j < COMP; j++)
+      p[i][j] = v[i][j] * m[i];
+}
+
 void phi_T(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
   int i, j;
   for (i = 1; i < npl; i++)
@@ -171,6 +185,21 @@ void phi_V(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int np
   for (i = 1; i < npl; i++)
     for (j = 0; j < COMP; j++)
       p[i][j] -= t * gradV(m, q, i, j, npl);
+}
+
+void phi_Tv(real m[MAX_PLA], real q[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl, real t) {
+  int i, j;
+  (void) m;
+  for (i = 1; i < npl; i++)
+    for (j = 0; j < COMP; j++)
+      q[i][j] += t * v[i][j];
+}
+
+void phi_Vv(real m[MAX_PLA], real q[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl, real t) {
+  int i, j;
+  for (i = 1; i < npl; i++)
+    for (j = 0; j < COMP; j++)
+      v[i][j] += t * deriv2q(m, q, i, j, npl);
 }
 
 void phi_simpTV(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
