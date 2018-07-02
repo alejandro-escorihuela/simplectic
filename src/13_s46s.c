@@ -7,13 +7,13 @@
 #include "solar.h"
 
 int main (int num_arg, char * vec_arg[]){
-  int i, j, k, it, planetes, N, pop, pit, Neval = 0;
+  int i, it, planetes, N, pop, pit, Neval = 0;
   char noms[MAX_PLA][MAX_CAD], f_ini[20];
   real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP];
-  real H0, H, DH, Hemax = 0.0, gT, gV;
+  real H0, H, DH, Hemax = 0.0;
   real h;
-  int s = 6;
-  real a[2 * s], ah[2 * s];
+  int s = 12;
+  real a[s], ah[s];
   double t0, t = 0.0;
   FILE * fit_pl[MAX_PLA + 1];
 
@@ -21,6 +21,8 @@ int main (int num_arg, char * vec_arg[]){
   planetes = carregar_planetes(f_ini, masses, noms, q, p);
   H0 = energia(masses, q, p, planetes);
   obrir_fitxers(fit_pl, noms, f_ini, vec_arg[0], planetes);
+
+  /* coeficients */
   a[0] = a[11] = 0.0792036964311960L;
   a[1] = a[10] = 0.1303114101821661L;
   a[2] = a[9] = 0.2228614958676080L;
@@ -34,35 +36,13 @@ int main (int num_arg, char * vec_arg[]){
   /* Mètode d'escissió */  
   for (it = 0; it < N; it++) {
     t0 = temps();
-    /* Bucle per a k */
-    for (k = 0; k < s; k++) {
-      for (i = 1; i < planetes; i++) {
-	for (j = 0; j < COMP; j++) {
-	  gV = gradV(masses, q, i, j, planetes);
-	  p[i][j] -= ah[2 * k] * gV;
-	}
-      } 
-      for (i = 1; i < planetes; i++) {
-	for (j = 0; j < COMP; j++) {
-	  gT = (p[i][j] / masses[i]);
-	  q[i][j] += ah[2 * k] * gT;
-	}
-      }   
-      for (i = 1; i < planetes; i++) {
-	for (j = 0; j < COMP; j++) {
-	  gT = (p[i][j] / masses[i]);
-	  q[i][j] += ah[(2 * k) + 1] * gT;
-	}
-      }
-      for (i = 1; i < planetes; i++) {
-	for (j = 0; j < COMP; j++) {
-	  gV = gradV(masses, q, i, j, planetes);
-	  p[i][j] -= ah[(2 * k) + 1] * gV;
-	}
-      }  
+
+    for (i = 0; i < s; i += 2) {
+      phi_simpVT(masses, q, p, planetes, ah[i]);
+      phi_simpTV(masses, q, p, planetes, ah[i + 1]);
     }
 
-    Neval += ((2 * s) * (planetes - 1));
+    Neval += (s * (planetes - 1));
     t += temps() - t0;
     H = energia(masses, q, p, planetes);
     DH = ABSOLUT(H - H0);
