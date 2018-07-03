@@ -39,7 +39,7 @@ int main (int num_arg, char * vec_arg[]){
   
   p2v(masses, p, v, planetes);
   
-  /* Mètode d'escissió rkn */  
+  /* Bucle principal */  
   for (it = 0; it < N; it++) {
     t0 = temps();
 
