@@ -159,6 +159,13 @@ real energia(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int 
   return (cin + pot);
 }
 
+void copiar(real orig[MAX_PLA][COMP], real copi[MAX_PLA][COMP], int npl) {
+  int i, j;
+  for (i = 0; i < npl; i++)
+    for (j = 0; j < COMP; j++)
+      copi[i][j] = orig[i][j];
+}
+
 void p2v(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl) {
   int i, j;
   for (i = 1; i < npl; i++)

@@ -49,17 +49,9 @@ int main (int num_arg, char * vec_arg[]){
   
   /* preprocessat */
   t0 = temps();
-  for (k = 0; k < s; k++) {
-    for (i = 1; i < planetes; i++) 
-      for (j = 0; j < COMP; j++) {
-	gT = (p[i][j] / masses[i]);
-	q[i][j] += zh[k] * gT;
-      }
-    for (i = 1; i < planetes; i++) 
-      for (j = 0; j < COMP; j++) {
-	gV = gradV(masses, q, i, j, planetes);
-	p[i][j] -= yh[k] * gV;
-      }
+  for (i = 0; i < s; i++) {
+    phi_T(masses, q, p, planetes, zh[i]);
+    phi_V(masses, q, p, planetes, yh[i]);
   }
   Neval += (s * (planetes - 1));
   t += temps() - t0;
@@ -69,22 +61,10 @@ int main (int num_arg, char * vec_arg[]){
     t0 = temps();
     /* Mètode */
     for (k = 0; k < s; k++) {
-      for (i = 1; i < planetes; i++)
-	for (j = 0; j < COMP; j++) {
-	  gV = gradV(masses, q, i, j, planetes);
-	  p[i][j] -= bh[k] * gV;
-	}
-      for (i = 1; i < planetes; i++)
-	for (j = 0; j < COMP; j++) {
-	  gT = (p[i][j] / masses[i]);
-	  q[i][j] += ah[k] * gT;
-	}
+      phi_V(masses, q, p, planetes, bh[i]);
+      phi_T(masses, q, p, planetes, ah[i]);
     }
-    for (i = 1; i < planetes; i++)
-      for (j = 0; j < COMP; j++) {
-	gV = gradV(masses, q, i, j, planetes);
-	p[i][j] -= bh[s] * gV;
-      }
+    phi_V(masses, q, p, planetes, bh[s]);
     Neval += ((s + 1) * (planetes - 1));
     t += temps() - t0;
 
