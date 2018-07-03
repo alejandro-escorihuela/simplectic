@@ -76,8 +76,8 @@ int main (int num_arg, char * vec_arg[]){
       /* postprocessat */
       t0 = temps();
       for (i = s - 1; i >= 0; i--) {
-	phi_V(masses, q, p, planetes, -yh[i]);
-	phi_T(masses, q, p, planetes, -zh[i]);	
+      	phi_V(masses, q, p, planetes, -yh[i]);
+      	phi_T(masses, q, p, planetes, -zh[i]);
       }
       Neval += (s * (planetes - 1));
       t += temps() - t0;
