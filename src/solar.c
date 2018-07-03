@@ -224,6 +224,19 @@ void phi_storAdj(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], 
   phi_T(m, q, p, npl, 0.5 * t);
 }
 
+void phi_H0(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
+  int i;
+  for (i = 1; i < npl; i++)
+    phiKepler(q[i], p[i], t, m[i]);
+}
+
+void phi_eV1(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
+  int i, j;
+  for (i = 1; i < npl; i++) 
+    for (j = 0; j < COMP; j++)
+      p[i][j] -= t * egradV(m, q, i, j, npl);
+}
+
 void phiKepler(real q[COMP], real p[COMP], real h, real m) {
   /* Sergio Blanes and Fernando Casas: A Concise Introduction to Geometric Numerical Integrator p[28,29]*/
   real q_ant[COMP], p_ant[COMP];
