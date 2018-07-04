@@ -7,10 +7,10 @@
 #include "solar.h"
 
 int main (int num_arg, char * vec_arg[]){
-  int i, j, k, it, planetes, N, pop, pit, Neval = 0;
+  int i, it, planetes, N, pop, pit, Neval = 0;
   char noms[MAX_PLA][MAX_CAD], f_ini[20];
-  real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP];
-  real H0, H, DH, Hemax = 0.0, gV;
+  real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP], q_cop[MAX_PLA][COMP], p_cop[MAX_PLA][COMP];
+  real H0, H, DH, Hemax = 0.0;
   real h;
   int s = 3;
   int m = 6;
@@ -55,15 +55,9 @@ int main (int num_arg, char * vec_arg[]){
   
   /* preprocessat */
   t0 = temps();
-  for (k = 0; k < m; k++) {
-    for (i = 1; i < planetes; i++)
-      phiKepler(q[i], p[i], zh[k], masses[i]);      
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	gV = egradV(masses, q, i, j, planetes);
-	p[i][j] -= yh[k] * gV;
-      }
-    }
+  for (i = 0; i < m; i++) {
+    phi_H0(masses, q, p, planetes, zh[i]);
+    phi_eV1(masses, q, p, planetes, yh[i]);
   }
   Neval += (m * (planetes - 1));
   t += temps() - t0;
@@ -71,35 +65,25 @@ int main (int num_arg, char * vec_arg[]){
   /* Mètode d'escissió */  
   for (it = 0; it < N; it++) {
     t0 = temps();
-    /* Bucle per a k */
-    for (k = 0; k < s; k++) {
-      for (i = 1; i < planetes; i++)
-	phiKepler(q[i], p[i], ah[k], masses[i]);      
-      for (i = 1; i < planetes; i++) {
-	for (j = 0; j < COMP; j++) {
-	  gV = egradV(masses, q, i, j, planetes);
-	  p[i][j] -= bh[k] * gV;
-	}
-      }
+    /* Nucli */
+    for (i = 0; i < s; i++) {
+      phi_H0(masses, q, p, planetes, ah[i]);
+      phi_eV1(masses, q, p, planetes, bh[i]);
     }
-    for (i = 1; i < planetes; i++)
-      phiKepler(q[i], p[i], ah[s], masses[i]);
+    phi_H0(masses, q, p, planetes, ah[s]);
     
     Neval += (s * (planetes - 1));
     t += temps() - t0;
     /* imprimir */
     if ((it % pit) == 0) {
+      /* copia per evitar el preprocessat */
+      copiar(q, q_cop, planetes);
+      copiar(p, p_cop, planetes);    
       /* postprocessat */
       t0 = temps();
-      for (k = m - 1; k >= 0; k--) {     
-	for (i = 1; i < planetes; i++) {
-	  for (j = 0; j < COMP; j++) {
-	    gV = egradV(masses, q, i, j, planetes);
-	    p[i][j] -= -yh[k] * gV;
-	  }
-	}
-	for (i = 1; i < planetes; i++)
-	  phiKepler(q[i], p[i], -zh[k], masses[i]); 
+      for (i = m - 1; i >= 0; i--) {
+	phi_eV1(masses, q, p, planetes, -yh[i]);
+	phi_H0(masses, q, p, planetes, -zh[i]);
       }
       Neval += (m * (planetes - 1));
       t += temps() - t0;
@@ -109,20 +93,9 @@ int main (int num_arg, char * vec_arg[]){
       if (DH > Hemax)
 	Hemax = DH;      
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, planetes);
-      /* preprocessat */
-      t0 = temps();
-      for (k = 0; k < m; k++) {
-	for (i = 1; i < planetes; i++)
-	  phiKepler(q[i], p[i], zh[k], masses[i]);
-	for (i = 1; i < planetes; i++) {
-	  for (j = 0; j < COMP; j++) {
-	    gV = egradV(masses, q, i, j, planetes);
-	    p[i][j] -= yh[k] * gV;
-	  }
-	}
-      }
-      Neval += (m * (planetes - 1));
-      t += temps() - t0;
+      /* copia per evitar el preprocessat */
+      copiar(q_cop, q, planetes);
+      copiar(p_cop, p, planetes); 
     }
   }
   tancar_fitxers(fit_pl, planetes);
