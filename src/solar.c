@@ -194,6 +194,16 @@ void phi_V(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int np
       p[i][j] -= t * gradV(m, q, i, j, npl);
 }
 
+void phi_Vm(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t1, real t2) {
+  real gV, gV2;
+  int i, j;
+  for (i = 1; i < npl; i++)
+    for (j = 0; j < COMP; j++) {
+      llibre(m, q, i, j, npl, &gV, &gV2);
+      p[i][j] = p[i][j] - (t1 * gV) + (t2 * gV2);
+    }
+}
+
 void phi_Tv(real m[MAX_PLA], real q[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl, real t) {
   int i, j;
   (void) m;
@@ -228,6 +238,12 @@ void phi_stor(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int
 void phi_storAdj(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
   phi_T(m, q, p, npl, 0.5 * t);
   phi_V(m, q, p, npl, t);
+  phi_T(m, q, p, npl, 0.5 * t);
+}
+
+void phi_storMod(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
+  phi_T(m, q, p, npl, 0.5 * t);
+  phi_Vm(m, q, p, npl, t, (t * t * t) / 24.0);
   phi_T(m, q, p, npl, 0.5 * t);
 }
 
