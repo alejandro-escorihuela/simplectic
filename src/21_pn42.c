@@ -7,10 +7,10 @@
 #include "solar.h"
 
 int main (int num_arg, char * vec_arg[]){
-  int i, j, k, it, planetes, N, pop, pit, Neval = 0;
+  int i, it, planetes, N, pop, pit, Neval = 0;
   char noms[MAX_PLA][MAX_CAD], f_ini[20];
-  real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP], v[MAX_PLA][COMP];
-  real H0, H, DH, Hemax = 0.0, d2q;
+  real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP], v[MAX_PLA][COMP], q_cop[MAX_PLA][COMP], v_cop[MAX_PLA][COMP];
+  real H0, H, DH, Hemax = 0.0;
   real h;
   int s = 2;
   int m = 3;
@@ -46,22 +46,13 @@ int main (int num_arg, char * vec_arg[]){
     zh[i] = z[i] * h;
   }  
   /* p -> v */
-  for (i = 1; i < planetes; i++)
-    for (j = 0; j < COMP; j++)
-      v[i][j] = p[i][j] / masses[i];
+  p2v(masses, p, v, planetes);
   
   /* preprocessat */
   t0 = temps();
-  for (k = 0; k < m; k++) {
-    for (i = 1; i < planetes; i++) {
-      for (j = 0; j < COMP; j++) {
-	d2q = deriv2q(masses, q, i, j, planetes);
-	v[i][j] += yh[k] * d2q;
-      }
-    }
-    for (i = 1; i < planetes; i++)
-      for (j = 0; j < COMP; j++)
-	q[i][j] += zh[k] * v[i][j];
+  for (i = 0; i < m; i++) {
+    phi_Vv(masses, q, v, planetes, yh[i]);
+    phi_Tv(masses, q, v, planetes, zh[i]);
   }
   Neval += (m * (planetes - 1));
   t += temps() - t0;
@@ -70,61 +61,36 @@ int main (int num_arg, char * vec_arg[]){
   for (it = 0; it < N; it++) {
     t0 = temps();
     /* Mètode */
-    for (k = 0; k < s; k++) {
-      for (i = 1; i < planetes; i++) {
-	for (j = 0; j < COMP; j++) {
-	  d2q = deriv2q(masses, q, i, j, planetes);
-	  v[i][j] += bh[k] * d2q;
-	}
-      }
-      for (i = 1; i < planetes; i++)
-	for (j = 0; j < COMP; j++)
-	  q[i][j] += ah[k] * v[i][j];
+    for (i = 0; i < s; i++) {
+      phi_Vv(masses, q, v, planetes, bh[i]);
+      phi_Tv(masses, q, v, planetes, ah[i]);
     }
     Neval += (s * (planetes - 1));
     t += temps() - t0;
     /* imprimir */
     if ((it % pit) == 0) {
+      /* copia per evitar el preprocessat */
+      copiar(q, q_cop, planetes);
+      copiar(v, v_cop, planetes);  
       /* postprocessat */
       t0 = temps();
-      for (k = m - 1; k >= 0; k--) {
-	for (i = 1; i < planetes; i++) 
-	  for (j = 0; j < COMP; j++)
-	    q[i][j] += -zh[k] * v[i][j];
-	for (i = 1; i < planetes; i++) {
-	  for (j = 0; j < COMP; j++) {
-	    d2q = deriv2q(masses, q, i, j, planetes);
-	    v[i][j] += -yh[k] * d2q;
-	  }
-	}
-      }
+      for (i = m - 1; i >= 0; i--) {
+	phi_Tv(masses, q, v, planetes, -zh[i]);
+	phi_Vv(masses, q, v, planetes, -yh[i]);
+      }      
       Neval += (m * (planetes - 1));
       t += temps() - t0;     
       /* escriptura */
       /* v -> p */
-      for (i = 1; i < planetes; i++)
-	for (j = 0; j < COMP; j++)
-	  p[i][j] = v[i][j] * masses[i];
+      v2p(masses, p, v, planetes);
       H = energia(masses, q, p, planetes);
       DH = ABSOLUT(H - H0);
       if (DH > Hemax)
 	Hemax = DH;      
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, planetes);
-      /* preprocessat */
-      t0 = temps();
-      for (k = 0; k < m; k++) {
-	for (i = 1; i < planetes; i++) {
-	  for (j = 0; j < COMP; j++) {
-	    d2q = deriv2q(masses, q, i, j, planetes);
-	    v[i][j] += yh[k] * d2q;
-	  }
-	}
-	for (i = 1; i < planetes; i++)
-	  for (j = 0; j < COMP; j++)
-	    q[i][j] += zh[k] * v[i][j];
-      }
-      Neval += (m * (planetes - 1));
-      t += temps() - t0;              
+      /* copia per evitar el preprocessat */
+      copiar(q_cop, q, planetes);
+      copiar(v_cop, v, planetes);    
     }
   }
   tancar_fitxers(fit_pl, planetes);
