@@ -21,7 +21,7 @@ echo -n "plot " >> _err.plt
 IT=0
 for i in ${FITX[@]} ; do
     METODE=${METO[$IT]}
-    echo -n "'../dat/${i}_$CONF/err.dat' u (log10(\$1 / 365.25)):(log10(abs(\$3-\$2) / \$2)) t '$METODE' w l, " >> _err.plt
+    echo -n "'../dat/${i}_$CONF/err.dat' u (log10(\$1 / 365.25)):(log10(abs(\$3-\$2) / \$2)) t '$METODE' w l lw 2, " >> _err.plt
     let "IT++"
 done
 gnuplot _err.plt

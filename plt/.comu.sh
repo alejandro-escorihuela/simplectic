@@ -20,6 +20,7 @@ OPC=0
 CONF="ext18"
 FITX=()
 METO=()
+PAS=()
 
 if [ $# -gt 1 ] ; then
     info
@@ -44,12 +45,22 @@ case $OPC in
 	FITX[0]="01_expl"
 	FITX[1]="02_simp"
 	FITX[2]="03_stor"
-	FITX[3]="04_llib"	
+	FITX[3]="04_llib"
+	PAS[0]=300
+	PAS[1]=200
+	PAS[2]=100
+	PAS[3]=50
+	PAS[4]=10
 	;;
     2)
 	FITX[0]="05_rk-4"
 	FITX[1]="06_rkn4"
 	FITX[2]="07_rkg4"
+	PAS[0]=500
+	PAS[1]=200
+	PAS[2]=100
+	PAS[3]=50
+	PAS[4]=10
 	;;
     3)
 	FITX[0]="08_tjc4"
@@ -58,12 +69,27 @@ case $OPC in
 	FITX[3]="11_ss817"
 	FITX[4]="12_s46"
 	FITX[5]="13_s46s"
-	FITX[6]="14_nb46"	
+	FITX[6]="14_nb46"
+	PAS[0]=2000
+	PAS[1]=500
+	PAS[2]=200
+	PAS[3]=100
+	PAS[4]=50
+	PAS[5]=10
 	;;
     4)
 	FITX[0]="15_nia2"
 	FITX[1]="16_nia5"
-	FITX[2]="17_nia8"	
+	FITX[2]="17_nia8"
+	PAS[0]=5000
+	PAS[1]=2000
+	PAS[2]=1000
+	PAS[3]=500
+	PAS[4]=300
+	PAS[5]=200
+	PAS[6]=100
+	PAS[7]=50
+	PAS[8]=10
 	;;
     5)
 	FITX[0]="18_pss613"
@@ -72,6 +98,12 @@ case $OPC in
 	FITX[3]="21_pn42"
 	FITX[4]="22_pm411"
 	FITX[5]="23_pni3"
+	PAS[1]=300
+	PAS[2]=200
+	PAS[3]=100
+	PAS[4]=50
+	PAS[5]=10
+	PAS[6]=1
 	;;
     *)
 	info

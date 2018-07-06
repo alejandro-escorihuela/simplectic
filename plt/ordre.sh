@@ -3,13 +3,6 @@
 # alex
 # ordre.sh
 
-PAS=()
-PAS[0]=300
-PAS[1]=200
-PAS[2]=100
-PAS[3]=50
-PAS[4]=10
-
 . .comu.sh
 
 cd ..
@@ -34,7 +27,7 @@ echo "set xlabel \"log(N_{eval})\"" >> plot.plt
 echo -n "plot " >> plot.plt
 IT=0
 for i in ${FITX[@]} ; do
-    echo -n "\"$i.dat\" u (log10(\$3)):(log10(\$4)) t \"${METO[$IT]}\" w lp, " >> plot.plt
+    echo -n "\"$i.dat\" u (log10(\$3)):(log10(\$4)) t \"${METO[$IT]}\" w lp lw 2 ps 0.5 pt 2, " >> plot.plt
     let "IT++"
 done
 gnuplot plot.plt
