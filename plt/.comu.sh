@@ -11,7 +11,7 @@ function info {
     echo -e "\t 0 -> Tots els mètodes."
     echo -e "\t 1 -> Mètodes 1-4"
     echo -e "\t 2 -> Mètodes 5-7"
-    echo -e "\t 3 -> Mètodes 8-14"
+    echo -e "\t 3 -> Mètodes 8-14 i 24, 25"
     echo -e "\t 4 -> Mètodes 15-17"
     echo -e "\t 5 -> Mètodes 18-23"
 }
@@ -70,6 +70,8 @@ case $OPC in
 	FITX[4]="12_s46"
 	FITX[5]="13_s46s"
 	FITX[6]="14_nb46"
+	FITX[7]="24_s53"
+	FITX[8]="25_s22"
 	PAS[0]=2000
 	PAS[1]=500
 	PAS[2]=200
