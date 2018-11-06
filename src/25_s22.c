@@ -1,6 +1,6 @@
 /* 30-10-2018 */
 /* alex */
-/* 24_s53.c */
+/* 25_s22.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -13,7 +13,7 @@ int main (int num_arg, char * vec_arg[]){
   real H0, H, DH, Hemax = 0.0;
   real h;
   int s = 2;
-  real a[s + 1], ah[s + 1];
+  real a[s + 1], ah[s + 1], u;
   real b[s], bh[s];
   double t0, t = 0.0;
   FILE * fit_pl[MAX_PLA + 1];
@@ -24,7 +24,10 @@ int main (int num_arg, char * vec_arg[]){
   obrir_fitxers(fit_pl, noms, f_ini, vec_arg[0], planetes);
 
   /* coeficients */
-  a[0] = a[2] = 0.6756035959798288L;
+  u = 1.0 / 6.0;
+  u = 0.211324865405187L;
+  /* u = 0.788675134594813L; */
+  a[0] = a[2] = u;
   a[1] = 1.0L - (2.0 * a[0]);
   b[0] = b[1] = 0.5L;
   for (i = 0; i < s; i++) {
@@ -44,7 +47,7 @@ int main (int num_arg, char * vec_arg[]){
     }
     phi_T(masses, q, p, planetes, ah[s]);
 
-    Neval += ((s + 1) * (planetes - 1));
+    Neval += (s * (planetes - 1));
     t += temps() - t0;
     H = energia(masses, q, p, planetes);
     DH = ABSOLUT(H - H0);

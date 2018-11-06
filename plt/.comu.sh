@@ -14,6 +14,7 @@ function info {
     echo -e "\t 3 -> Mètodes 8-14 i 24, 25"
     echo -e "\t 4 -> Mètodes 15-17"
     echo -e "\t 5 -> Mètodes 18-23"
+    echo -e "\t 6 -> Mètodes prova"
 }
 
 OPC=0
@@ -70,8 +71,6 @@ case $OPC in
 	FITX[4]="12_s46"
 	FITX[5]="13_s46s"
 	FITX[6]="14_nb46"
-	FITX[7]="24_s53"
-	FITX[8]="25_s22"
 	PAS[0]=2000
 	PAS[1]=500
 	PAS[2]=200
@@ -107,6 +106,19 @@ case $OPC in
 	PAS[5]=10
 	PAS[6]=1
 	;;
+    6)
+	FITX[0]="08_tjc4"
+	FITX[1]="03_stor"
+	FITX[2]="24_s53"
+	FITX[3]="25_s22"
+	FITX[4]="26_s44"
+	PAS[0]=2000
+	PAS[1]=500
+	PAS[2]=200
+	PAS[3]=100
+	PAS[4]=50
+	PAS[5]=10
+	;;    
     *)
 	info
 	exit 2
