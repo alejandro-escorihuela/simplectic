@@ -1,6 +1,6 @@
 /* 30-10-2018 */
 /* alex */
-/* 24_s53.c */
+/* 24_s43.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

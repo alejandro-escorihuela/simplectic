@@ -109,9 +109,10 @@ case $OPC in
     6)
 	FITX[0]="08_tjc4"
 	FITX[1]="03_stor"
-	FITX[2]="24_s53"
-	FITX[3]="25_s22"
-	FITX[4]="26_s44"
+	FITX[2]="12_s46"
+	FITX[3]="24_s43"
+	FITX[4]="25_s22"
+	FITX[5]="26_s45"
 	PAS[0]=2000
 	PAS[1]=500
 	PAS[2]=200
