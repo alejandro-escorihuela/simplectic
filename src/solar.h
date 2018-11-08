@@ -28,7 +28,7 @@
 #define GRAV_CNT2 8.756403501269705e-08
 #define _DERIV2Q_(M, Q, I, J, P) ((-1.0 / M[I]) * gradV(M, Q, I, J, P))
 
-void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini);
+void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef);
 int carregar_planetes(char * f_ini, real masses[MAX_PLA], char noms[MAX_PLA][MAX_CAD], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP]);
 real gradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 real egradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);

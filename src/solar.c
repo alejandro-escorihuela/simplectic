@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include "solar.h"
 
-void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini) {
+void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef) {
   FILE * fp = fopen("./cnf/param.cnf", "r");
   int i, param[3];
   char nom[20], arxiu[25];
 
-  if (num != 2) {
-    fprintf(stderr, "Executeu %s [valor de h]\n", vec[0]);
+  if (num != 4) {
+    fprintf(stderr, "Executeu %s [tipus de mètode] [fitxer de coeficients] [valor de h]\n", vec[0]);
     exit(1);
   }
   if (fp == NULL) {
@@ -26,10 +26,13 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   f_ini[i] = '\0';
   for (i = 0; i < 3; i++)
     fscanf(fp, "%s %d", nom, &param[i]);
-  *h = atof(vec[1]);
+  
+  *h = atof(vec[3]);
   *N = ceil(((real) param[0]) / *h);
   *pop = param[1];
   *pit = param[2];
+  strcpy(t_metode, vec[1]);
+  strcpy(f_coef, vec[2]);
   fclose(fp);
 }
 

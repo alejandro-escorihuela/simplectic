@@ -6,11 +6,11 @@
 #include <string.h>
 #include "metodes.h"
 
-void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], unsigned int coef) {
+void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef) {
 #if TIPUS == 3
   char buf[128];
 #endif
-  unsigned int i;
+  int i;
   for (i = 0; i < coef; i++) {
 #if TIPUS == 3
     sprintf(buf, "%lf", vec_orig[i]);
@@ -21,14 +21,16 @@ void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], 
   }
 }
 
-void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], unsigned int * tam_a, unsigned int * tam_b, unsigned int * tam_y, unsigned int * tam_z) {
-  FILE * fp = fopen(f_coef, "r");
-  char linia[LINIA_MAX], * valor, * tipus;
+void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], int * tam_a, int * tam_b, int * tam_y, int * tam_z) {
+  FILE * fp;
+  char linia[LINIA_MAX], * valor, * tipus, nom_fit[30];
   double vec_aux[NUM_MAX_COEF];
-  unsigned int i, tam_aux = 0;
+  int i, tam_aux = 0;
   const char delim[2] = " ";
   
   *tam_a = *tam_b = *tam_y = *tam_z = 0;
+  sprintf(nom_fit, "./coef/%s.cnf", f_coef);
+  fp = fopen(nom_fit, "r" );
   if (fp == NULL) {
     fputs("El fitxer amb els coeficients no existeix\n", stderr);
     exit(1);
