@@ -11,9 +11,7 @@
 #include <quadmath.h>
 #include <sys/stat.h>
 #include <sys/times.h>
-#ifndef TIPUS
-#define TIPUS 1
-#endif
+#include "tipus.h"
 #undef MAX_PLA
 #define MAX_PLA 20
 #undef MAX_CAD
@@ -29,40 +27,6 @@
 #define GRAV_CNT 0.000295912208286
 #define GRAV_CNT2 8.756403501269705e-08
 #define _DERIV2Q_(M, Q, I, J, P) ((-1.0 / M[I]) * gradV(M, Q, I, J, P))
-
-#if TIPUS == 0
-#define POTENCIA(A, B) powf(A, B)
-#define ARREL_Q(A) sqrtf(A)
-#elif TIPUS == 1
-#define POTENCIA(A, B) pow(A, B)
-#define ARREL_Q(A) sqrt(A)
-#elif TIPUS == 2
-#define POTENCIA(A, B) powl(A, B)
-#define ARREL_Q(A) sqrtl(A)
-#elif TIPUS == 3
-#define POTENCIA(A, B) powq(A, B)
-#define ARREL_Q(A) sqrtq(A)
-#endif
-
-#if TIPUS == 3
-#define COSINUS(A) cosq(A)
-#define SINUS(A) sinq(A)
-#define ABSOLUT(A) fabsq(A)
-#else
-#define COSINUS(A) cos(A)
-#define SINUS(A) sin(A)
-#define ABSOLUT(A) fabs(A)
-#endif
-
-#if TIPUS == 0
-typedef float real;
-#elif TIPUS == 1
-typedef double real;
-#elif TIPUS == 2
-typedef long double real;
-#elif TIPUS == 3
-typedef __float128 real;
-#endif
 
 void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini);
 int carregar_planetes(char * f_ini, real masses[MAX_PLA], char noms[MAX_PLA][MAX_CAD], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP]);
