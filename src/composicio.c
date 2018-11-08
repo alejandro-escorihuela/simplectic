@@ -9,7 +9,7 @@
 int main (int num_arg, char * vec_arg[]) {
   int i, it, planetes, N, pop, pit, Neval = 0;
   char noms[MAX_PLA][MAX_CAD], f_ini[20], f_coef[20], t_metode[20];
-  real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP];
+  real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP], v[MAX_PLA][COMP];
   real a[NUM_MAX_COEF], b[NUM_MAX_COEF], y[NUM_MAX_COEF], z[NUM_MAX_COEF];
   real ah[NUM_MAX_COEF], bh[NUM_MAX_COEF], yh[NUM_MAX_COEF], zh[NUM_MAX_COEF];
   int tam_a = 0, tam_b = 0, tam_y = 0, tam_z = 0;
@@ -27,12 +27,35 @@ int main (int num_arg, char * vec_arg[]) {
 
   /* coeficients */
   lectura_coef(f_coef, a, b, y, z, &tam_a, &tam_b, &tam_y, &tam_z);
-  s = tam_a;
   for (i = 0; i < NUM_MAX_COEF; i++) {
     ah[i] = a[i] * h;
     bh[i] = b[i] * h;
     yh[i] = y[i] * h;
     zh[i] = z[i] * h;
+  }
+
+  /* preconfiguració per a cada mètode */
+  if (strcmp(t_metode, "ss") == 0) {
+
+  }
+  else if (strcmp(t_metode, "sb") == 0) {
+    s = tam_a;
+  }
+  else if (strcmp(t_metode, "sa") == 0) {
+
+  }
+  else if (strcmp(t_metode, "nb") == 0) {
+    p2v(masses, p, v, planetes);
+  }
+  else if (strcmp(t_metode, "na") == 0) {
+    p2v(masses, p, v, planetes);
+  }
+  else if (strcmp(t_metode, "nia") == 0) {
+    s = tam_b;
+  }
+  else {
+    fputs("El mètode especificat no existeix\n", stderr);
+    exit(1);
   }
   
   /* bucle principal */  
@@ -61,14 +84,34 @@ int main (int num_arg, char * vec_arg[]) {
       phi_T(masses, q, p, planetes, ah[s]);
       Neval += (s * (planetes - 1));
     }
-    else if (strcmp(t_metode, "nb") == 0) {}
-    else if (strcmp(t_metode, "na") == 0) {}
-    else if (strcmp(t_metode, "nia") == 0) {}
-    else {
-      fputs("El mètode especificat no existeix\n", stderr);
-      exit(1);
+    else if (strcmp(t_metode, "nb") == 0) {
+      for (i = 0; i < s; i++) {
+	phi_Vv(masses, q, v, planetes, bh[i]);
+	phi_Tv(masses, q, v, planetes, ah[i]);
+      }
+      phi_Vv(masses, q, v, planetes, bh[s]);
+      v2p(masses, p, v, planetes);
+      Neval += ((s + 1) * (planetes - 1));
     }
-      
+    else if (strcmp(t_metode, "na") == 0) {
+      for (i = 0; i < s; i++) {
+	phi_Tv(masses, q, v, planetes, ah[i]);
+	phi_Vv(masses, q, v, planetes, bh[i]);
+      }
+      phi_Tv(masses, q, v, planetes, ah[s]);
+      v2p(masses, p, v, planetes);
+      Neval += ((s + 1) * (planetes - 1));
+    }
+    else if (strcmp(t_metode, "nia") == 0) {
+      for (i = 0; i < s; i++) {
+	phi_H0(masses, q, p, planetes, ah[i]);
+	phi_eV1(masses, q, p, planetes, bh[i]);
+      }
+      phi_H0(masses, q, p, planetes, ah[s]);
+    
+      Neval += (s * (planetes - 1));
+    }
+
     t += temps() - t0;
     H = energia(masses, q, p, planetes);
     DH = ABSOLUT(H - H0);
