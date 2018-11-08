@@ -113,6 +113,7 @@ case $OPC in
 	FITX[3]="24_s43"
 	FITX[4]="25_s22"
 	FITX[5]="26_s45"
+	FITX[6]="09_ss45"
 	PAS[0]=2000
 	PAS[1]=500
 	PAS[2]=200
