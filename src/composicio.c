@@ -36,13 +36,16 @@ int main (int num_arg, char * vec_arg[]) {
 
   /* preconfiguració per a cada mètode */
   if (strcmp(t_metode, "ss") == 0) {
-
+    s = tam_a;
   }
   else if (strcmp(t_metode, "sb") == 0) {
     s = tam_a;
   }
   else if (strcmp(t_metode, "sa") == 0) {
-
+    s = tam_b;
+  }
+  else if (strcmp(t_metode, "sx") == 0) {
+    s = tam_a;
   }
   else if (strcmp(t_metode, "nb") == 0) {
     p2v(masses, p, v, planetes);
@@ -84,6 +87,13 @@ int main (int num_arg, char * vec_arg[]) {
       phi_T(masses, q, p, planetes, ah[s]);
       Neval += (s * (planetes - 1));
     }
+    else if (strcmp(t_metode, "sx") == 0) {
+      for (i = 0; i < s; i += 2) {
+	phi_simpVT(masses, q, p, planetes, ah[i]);
+	phi_simpTV(masses, q, p, planetes, ah[i + 1]);
+      }
+      Neval += (s * (planetes - 1));
+    }    
     else if (strcmp(t_metode, "nb") == 0) {
       for (i = 0; i < s; i++) {
 	phi_Vv(masses, q, v, planetes, bh[i]);
