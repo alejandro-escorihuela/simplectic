@@ -49,9 +49,11 @@ int main (int num_arg, char * vec_arg[]) {
   }
   else if (strcmp(t_metode, "nb") == 0) {
     p2v(masses, p, v, planetes);
+    s = tam_a;
   }
   else if (strcmp(t_metode, "na") == 0) {
     p2v(masses, p, v, planetes);
+    s = tam_b;
   }
   else if (strcmp(t_metode, "nia") == 0) {
     s = tam_b;
