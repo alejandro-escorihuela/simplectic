@@ -23,7 +23,7 @@ int main (int num_arg, char * vec_arg[]) {
   carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_metode, f_coef);
   planetes = carregar_planetes(f_ini, masses, noms, q, p);
   H0 = energia(masses, q, p, planetes);
-  obrir_fitxers(fit_pl, noms, f_ini, vec_arg[0], planetes);
+  obrir_fitxers(fit_pl, noms, f_ini, f_coef, planetes);
 
   /* coeficients */
   lectura_coef(f_coef, a, b, y, z, &tam_a, &tam_b, &tam_y, &tam_z);
@@ -33,7 +33,8 @@ int main (int num_arg, char * vec_arg[]) {
     yh[i] = y[i] * h;
     zh[i] = z[i] * h;
   }
-
+  (void) yh;
+  (void) zh;
   /* preconfiguració per a cada mètode */
   if (strcmp(t_metode, "ss") == 0) {
     s = tam_a;

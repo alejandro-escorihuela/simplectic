@@ -18,8 +18,6 @@
 #define MAX_CAD 40
 #undef COMP
 #define COMP 3
-#undef COORD
-#define COORD 2
 #undef SOL_MASSA
 #define SOL_MASSA 1.00000597682
 #undef GRAV_CNT
@@ -33,25 +31,11 @@ int carregar_planetes(char * f_ini, real masses[MAX_PLA], char noms[MAX_PLA][MAX
 real gradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 real egradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 real deriv2q(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
-real deriv(int k, real m[MAX_PLA], real x[COORD][MAX_PLA][COMP], int i, int j, int npl);
-void llibre(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
+void gradVmod(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
 real energia(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl);
 void copiar(real orig[MAX_PLA][COMP], real copi[MAX_PLA][COMP], int npl);
 void p2v(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl);
 void v2p(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl);
-void phi_T(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_V(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_Vm(real m[MAX_PLA], real q[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl, real t1, real t2);
-void phi_Tv(real m[MAX_PLA], real q[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl, real t);
-void phi_Vv(real m[MAX_PLA], real q[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl, real t);
-void phi_simpTV(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_simpVT(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_stor(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_storAdj(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_storMod(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_H0(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phi_eV1(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phiKepler(real q[COMP], real p[COMP], real h, real m);
 real dif_v(real v1[COMP], real v2[COMP]);
 real dot(real v1[COMP], real v2[COMP]);
 real norm(real v[COMP]);
