@@ -32,7 +32,7 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   *pop = param[1];
   *pit = param[2];
   strcpy(t_metode, vec[1]);
-  strcpy(f_coef, vec[2]);
+  sprintf(f_coef, "%s_%s", vec[1], vec[2]);
   fclose(fp);
 }
 
