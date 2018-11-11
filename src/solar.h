@@ -28,11 +28,11 @@
 
 void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef);
 int carregar_planetes(char * f_ini, real masses[MAX_PLA], char noms[MAX_PLA][MAX_CAD], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP]);
-real gradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
-real egradV(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
-real deriv2q(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
-void gradVmod(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
-real energia(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl);
+real gradVSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
+real egradVSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
+real deriv2qSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
+void gradVmodSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
+real energiaSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl);
 void copiar(real orig[MAX_PLA][COMP], real copi[MAX_PLA][COMP], int npl);
 void p2v(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl);
 void v2p(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl);

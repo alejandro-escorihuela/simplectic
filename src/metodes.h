@@ -10,6 +10,13 @@
 #define NUM_MAX_COEF 100
 #define LINIA_MAX 2000
 
+/* variables globals per a potencials genèrics */
+real (*gradV)(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
+real (*egradV)(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
+real (*deriv2q)(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
+void (*gradVmod)(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
+real (*energia)(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl);
+
 void vec_coef_copia(real vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef);
 void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], int * tam_a, int * tam_b, int * tam_y, int * tam_z);
 void phi_T(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);

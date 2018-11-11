@@ -19,6 +19,13 @@ int main (int num_arg, char * vec_arg[]) {
   double t0, t = 0.0;
   FILE * fit_pl[MAX_PLA + 1];
 
+  /*tipus de potencial */
+  gradV = gradVSolar;
+  egradV = egradVSolar;
+  deriv2q = deriv2qSolar;
+  gradVmod = gradVmodSolar;
+  energia = energiaSolar;
+  
   /* carregar_configuracio */
   carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_metode, f_coef);
   planetes = carregar_planetes(f_ini, masses, noms, q, p);
@@ -35,6 +42,7 @@ int main (int num_arg, char * vec_arg[]) {
   }
   (void) yh;
   (void) zh;
+  
   /* preconfiguració per a cada mètode */
   if (strcmp(t_metode, "ss") == 0) {
     s = tam_a;

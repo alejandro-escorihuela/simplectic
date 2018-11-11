@@ -79,7 +79,7 @@ int carregar_planetes(char * f_ini, real m[MAX_PLA], char noms[MAX_PLA][MAX_CAD]
   return i;
 }
 
-real gradV(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
+real gradVSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
   int k, m;
   real gV = 0.0, resta[COMP], den;
   for (k = 0; k < npl; k++)
@@ -93,7 +93,7 @@ real gradV(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
   return gV;
 }
 
-real egradV(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
+real egradVSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
   int k, m;
   real gV = 0.0, resta[COMP], den;
   for (k = 1; k < npl; k++)
@@ -107,7 +107,7 @@ real egradV(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) 
   return gV;
 }
 
-real deriv2q(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
+real deriv2qSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
   int k, m;
   real gV = 0.0, resta[COMP], den;
   for (k = 0; k < npl; k++)
@@ -121,7 +121,7 @@ real deriv2q(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl)
   return -gV;
 }
 
-void gradVmod(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2) {
+void gradVmodSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2) {
   int k, m;
   real resta[COMP], g1, g2, den, num;
   g1 = g2 = 0.0;
@@ -141,7 +141,7 @@ void gradVmod(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl
   *gV2 = g2;
 }
 
-real energia(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl) {
+real energiaSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl) {
   int i, j, k;
   real cin = 0.0, pot = 0.0;
   real resta[COMP];
