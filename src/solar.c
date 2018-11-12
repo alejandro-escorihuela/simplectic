@@ -158,53 +158,6 @@ real energiaSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP],
   return (cin + pot);
 }
 
-void copiar(real orig[MAX_PLA][COMP], real copi[MAX_PLA][COMP], int npl) {
-  int i, j;
-  for (i = 0; i < npl; i++)
-    for (j = 0; j < COMP; j++)
-      copi[i][j] = orig[i][j];
-}
-
-void p2v(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl) {
-  int i, j;
-  for (i = 1; i < npl; i++)
-    for (j = 0; j < COMP; j++)
-      v[i][j] = p[i][j] / m[i];
-}
-
-void v2p(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl) {
-  int i, j;
-  for (i = 1; i < npl; i++)
-    for (j = 0; j < COMP; j++)
-      p[i][j] = v[i][j] * m[i];
-}
-
-real dif_v(real v1[COMP], real v2[COMP]) {
-  int j;
-  real dif = 0.0, aux;
-  for (j = 0; j < COMP; j++) {
-    aux = v1[j] - v2[j];
-    dif += (aux * aux);
-  }
-  return ARREL_Q(dif);
-}
-
-real dot(real v1[COMP], real v2[COMP]) {
-  int i;
-  real ret = 0.0;
-  for (i = 0; i < COMP; i++)
-    ret += (v1[i] * v2[i]);
-  return ret;
-}
-
-real norm(real v[COMP]) {
-  int i;
-  real ret = 0.0;
-  for (i = 0; i < COMP; i++)
-    ret += (v[i] * v[i]);
-  return ARREL_Q(ret);
-}
-
 void obrir_fitxers(FILE * fitxers[MAX_PLA + 1], char noms[MAX_PLA][MAX_CAD], char * f_ini, char * metode, int npl) {
   int i;
   char cad1[MAX_CAD], cad2[MAX_CAD];
@@ -295,12 +248,3 @@ void print_info(real h, double t, int eval, real error) {
 #endif
 }
 
-double temps() {
-  clock_t ct;
-  struct tms t;
-  ct = times(&t);
-  if (ct == (clock_t) - 1)
-    return 0.0;
-  else
-    return (((double) t.tms_utime) / ((double) sysconf(_SC_CLK_TCK)));
-}

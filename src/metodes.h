@@ -19,6 +19,16 @@ real (*energia)(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COM
 
 void vec_coef_copia(real vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef);
 void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], int * tam_a, int * tam_b, int * tam_y, int * tam_z);
+
+void copiar(real orig[MAX_PLA][COMP], real copi[MAX_PLA][COMP], int npl);
+void p2v(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl);
+void v2p(real m[MAX_PLA], real p[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl);
+real dif_v(real v1[COMP], real v2[COMP]);
+real dot(real v1[COMP], real v2[COMP]);
+real norm(real v[COMP]);
+double temps();
+
+
 void phi_T(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
 void phi_V(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
 void phi_Vm(real m[MAX_PLA], real q[MAX_PLA][COMP], real v[MAX_PLA][COMP], int npl, real t1, real t2);
