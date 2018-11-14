@@ -5,16 +5,15 @@
 
 PAS=()
 MET=()
-PAS[0]=2000
-PAS[1]=500
-PAS[2]=200
-PAS[3]=100
-PAS[4]=50
+PAS[0]=500
+PAS[1]=200
+PAS[2]=100
+PAS[3]=50
+PAS[4]=25
 PAS[5]=10
 MET[0]="sb_6_4"
 MET[1]="ss_5_4"
 MET[2]="sa_5_4"
-
 
 
 cd ..
@@ -44,9 +43,10 @@ IT=0
 for i in ${MET[@]} ; do
     k=$(echo $i | cut -d'_' -f 1 | tr [[:lower:]] [[:upper:]])
     l=$(echo $i | cut -d'_' -f 2)
-    m=$(echo $i | cut -d'_' -f 3-)
+    m=$(echo $i | cut -d'_' -f 3)
+    n=$(echo $i | cut -d'_' -f 4)
     l="_$l^{[$m]}"
-    echo -n "\"$i.dat\" u (log10(\$3)):(log10(\$4)) t \"$k$l\" w lp lw 2 ps 0.5 pt 2, " >> plot.plt
+    echo -n "\"$i.dat\" u (log10(\$3)):(log10(\$4)) t \"$k$l $n\" w lp lw 2 ps 0.5 pt 2, " >> plot.plt
     let "IT++"
 done
 gnuplot plot.plt
