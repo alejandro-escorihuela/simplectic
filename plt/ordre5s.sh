@@ -1,7 +1,7 @@
 #!/bin/bash
-# 26-04-2018
+# 14-11-2018
 # alex
-# ordre.sh
+# ordre5s.sh
 
 PAS=()
 MET=()
@@ -11,10 +11,11 @@ PAS[2]=100
 PAS[3]=50
 PAS[4]=25
 PAS[5]=10
-MET[0]="sb_6_4"
-MET[1]="ss_5_4"
-MET[2]="sa_5_4_3"
-
+MET[0]="sa_5_4_0"
+MET[1]="sa_5_4_1"
+MET[2]="sa_5_4_2"
+MET[3]="sa_5_4_3"
+MET[4]="sa_5_4_4"
 
 cd ..
 mkdir .tmp_dat
@@ -32,7 +33,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/ordre.pdf\"" >> plot.plt
+echo "set output \"../graf/ordre5s.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt
