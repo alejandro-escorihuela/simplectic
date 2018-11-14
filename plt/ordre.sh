@@ -44,7 +44,7 @@ for i in ${MET[@]} ; do
     k=$(echo $i | cut -d'_' -f 1 | tr [[:lower:]] [[:upper:]])
     l=$(echo $i | cut -d'_' -f 2)
     m=$(echo $i | cut -d'_' -f 3)
-    n=$(echo $i | cut -d'_' -f 4)
+    #n=$(echo $i | cut -d'_' -f 4)
     l="_$l^{[$m]}"
     echo -n "\"$i.dat\" u (log10(\$3)):(log10(\$4)) t \"$k$l $n\" w lp lw 2 ps 0.5 pt 2, " >> plot.plt
     let "IT++"
