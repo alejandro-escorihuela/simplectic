@@ -29,9 +29,11 @@ void (*gradVmod)(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int 
 void (*phi0)(real q[COMP], real p[COMP], real h, real m);
 real (*energia)(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl);
 
+/* lectura de coeficients */
 void vec_coef_copia(real vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef);
 void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], int * tam_a, int * tam_b, int * tam_y, int * tam_z);
 
+/* funcions auxiliars dels mètodes */
 void copiar(real orig[MAX_PAR][COMP], real copi[MAX_PAR][COMP], int npl);
 void p2v(real m[MAX_PAR], real p[MAX_PAR][COMP], real v[MAX_PAR][COMP], int npl);
 void v2p(real m[MAX_PAR], real p[MAX_PAR][COMP], real v[MAX_PAR][COMP], int npl);
@@ -40,7 +42,7 @@ real dot(real v1[COMP], real v2[COMP]);
 real norm(real v[COMP]);
 double temps();
 
-
+/* mètodes */
 void phi_T(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl, real t);
 void phi_V(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl, real t);
 void phi_Vm(real m[MAX_PAR], real q[MAX_PAR][COMP], real v[MAX_PAR][COMP], int npl, real t1, real t2);
@@ -53,4 +55,5 @@ void phi_storAdj(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], 
 void phi_storMod(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl, real t);
 void phi_H0(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl, real t);
 void phi_eV1(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl, real t);
+
 #endif
