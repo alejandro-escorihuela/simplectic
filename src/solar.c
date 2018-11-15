@@ -10,8 +10,8 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   int i, param[3];
   char nom[20], arxiu[25];
 
-  if (num != 4) {
-    fprintf(stderr, "Executeu %s [tipus de mètode] [fitxer de coeficients] [valor de h]\n", vec[0]);
+  if (num != 5) {
+    fprintf(stderr, "Executeu %s [tipus de mètode] [fitxer de coeficients] [valor de h] [temps final]\n", vec[0]);
     exit(1);
   }
   if (fp == NULL) {
@@ -24,13 +24,13 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
     i++;
   strncpy(f_ini, arxiu, i);
   f_ini[i] = '\0';
-  for (i = 0; i < 3; i++)
+  for (i = 0; i < 2; i++)
     fscanf(fp, "%s %d", nom, &param[i]);
   
   *h = atof(vec[3]);
-  *N = ceil(((real) param[0]) / *h);
-  *pop = param[1];
-  *pit = param[2];
+  *N = ceil(((real) atof(vec[4])) / *h);
+  *pop = param[0];
+  *pit = param[1];
   strcpy(t_metode, vec[1]);
   sprintf(f_coef, "%s_%s", vec[1], vec[2]);
   fclose(fp);
