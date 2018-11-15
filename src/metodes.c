@@ -6,6 +6,47 @@
 #include <string.h>
 #include "metodes.h"
 
+void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef) {
+  FILE * fp = fopen("./cnf/param.cnf", "r");
+  int i, param[3];
+  char nom[20], arxiu[25];
+
+  if (num != 5) {
+    fprintf(stderr, "Executeu %s [tipus de mètode] [fitxer de coeficients] [valor de h] [temps final]\n", vec[0]);
+    exit(1);
+  }
+  if (fp == NULL) {
+    fputs("El fitxer de parametres no existeix\n", stderr);
+    exit(1);
+  }
+  fscanf(fp, "%s %s", nom, arxiu);
+  i = 0;
+  while (arxiu[i] != '.')
+    i++;
+  strncpy(f_ini, arxiu, i);
+  f_ini[i] = '\0';
+  for (i = 0; i < 2; i++)
+    fscanf(fp, "%s %d", nom, &param[i]);
+  
+  *h = atof(vec[3]);
+  *N = ceil(((real) atof(vec[4])) / *h);
+  *pop = param[0];
+  *pit = param[1];
+  strcpy(t_metode, vec[1]);
+  sprintf(f_coef, "%s_%s", vec[1], vec[2]);
+  fclose(fp);
+}
+
+double temps() {
+  clock_t ct;
+  struct tms t;
+  ct = times(&t);
+  if (ct == (clock_t) - 1)
+    return 0.0;
+  else
+    return (((double) t.tms_utime) / ((double) sysconf(_SC_CLK_TCK)));
+}
+
 void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef) {
 #if TIPUS == 3
   char buf[128];
@@ -113,16 +154,6 @@ real norm(real v[COMP]) {
   for (i = 0; i < COMP; i++)
     ret += (v[i] * v[i]);
   return ARREL_Q(ret);
-}
-
-double temps() {
-  clock_t ct;
-  struct tms t;
-  ct = times(&t);
-  if (ct == (clock_t) - 1)
-    return 0.0;
-  else
-    return (((double) t.tms_utime) / ((double) sysconf(_SC_CLK_TCK)));
 }
 
 void phi_T(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl, real t) {
