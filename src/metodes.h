@@ -9,15 +9,9 @@
 #include <string.h>
 #include <math.h>
 #include <quadmath.h>
-#include <sys/stat.h>
-#include <sys/times.h>
 #include "tipus.h"
-#undef NUM_MAX_COEF
-#undef LINIA_MAX
 #undef COMP
 #undef MAX_PAR
-#define NUM_MAX_COEF 100
-#define LINIA_MAX 2000
 #define COMP 3
 #define MAX_PAR 20
 
@@ -28,15 +22,6 @@ real (*deriv2q)(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int npl);
 void (*gradVmod)(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int npl, real * gV, real * gV2);
 void (*phi0)(real q[COMP], real p[COMP], real h, real m);
 real (*energia)(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl);
-
-/* configuracio */
-void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef);
-double temps();
-
-
-/* lectura de coeficients */
-void vec_coef_copia(real vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef);
-void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], int * tam_a, int * tam_b, int * tam_y, int * tam_z);
 
 /* mètodes */
 void phi_T(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int npl, real t);

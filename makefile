@@ -13,13 +13,19 @@ DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
 
-composicio: src/composicio.c metodes.o solar.o
+composicio: src/composicio.c metodes.o solar.o config.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
 	@echo -n "\033[0m"
 
 metodes.o: src/metodes.c src/metodes.h src/tipus.h
+	@echo "\033[0;36m"Compilant $<"\033[0m"
+	@echo -n "  \033[0;37m"
+	$(COM) $(OPC) -c $<
+	@echo -n "\033[0m"
+
+config.o: src/config.c src/config.h src/tipus.h
 	@echo "\033[0;36m"Compilant $<"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) -c $<

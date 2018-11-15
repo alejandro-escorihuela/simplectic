@@ -3,6 +3,7 @@
 /* composicio.c */
 #include <stdio.h>
 #include <stdlib.h>
+#include "config.h"
 #include "metodes.h"
 #include "solar.h"
 
