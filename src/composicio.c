@@ -7,7 +7,7 @@
 #include "solar.h"
 
 int main (int num_arg, char * vec_arg[]) {
-  int i, it, planetes, N, pop, pit, Neval = 0;
+  int i, it, Npart, N, pop, pit, Neval = 0;
   char noms[MAX_PAR][MAX_CAD], f_ini[20], f_coef[20], t_metode[20];
   real masses[MAX_PAR], q[MAX_PAR][COMP], p[MAX_PAR][COMP], v[MAX_PAR][COMP];
   real a[NUM_MAX_COEF], b[NUM_MAX_COEF], y[NUM_MAX_COEF], z[NUM_MAX_COEF];
@@ -29,9 +29,9 @@ int main (int num_arg, char * vec_arg[]) {
   
   /* carregar_configuracio */
   carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_metode, f_coef);
-  planetes = carregar_planetes(f_ini, masses, noms, q, p);
-  H0 = energia(masses, q, p, planetes);
-  obrir_fitxers(fit_pl, noms, f_ini, f_coef, planetes);
+  Npart = carregar_planetes(f_ini, masses, noms, q, p);
+  H0 = energia(masses, q, p, Npart);
+  obrir_fitxers(fit_pl, noms, f_ini, f_coef, Npart);
 
   /* coeficients */
   lectura_coef(f_coef, a, b, y, z, &tam_a, &tam_b, &tam_y, &tam_z);
@@ -58,11 +58,11 @@ int main (int num_arg, char * vec_arg[]) {
     s = tam_a;
   }
   else if (strcmp(t_metode, "nb") == 0) {
-    p2v(masses, p, v, planetes);
+    p2v(masses, p, v, Npart);
     s = tam_a;
   }
   else if (strcmp(t_metode, "na") == 0) {
-    p2v(masses, p, v, planetes);
+    p2v(masses, p, v, Npart);
     s = tam_b;
   }
   else if (strcmp(t_metode, "nia") == 0) {
@@ -80,69 +80,69 @@ int main (int num_arg, char * vec_arg[]) {
     /* composició del mètode */
     if (strcmp(t_metode, "ss") == 0) {
       for (i = 0; i < s; i++)
-	phi_storAdj(masses, q, p, planetes, ah[i]);
-      Neval += (s * (planetes - 1));
+	phi_storAdj(masses, q, p, Npart, ah[i]);
+      Neval += (s * (Npart - 1));
     }
     else if (strcmp(t_metode, "sb") == 0) {
       for (i = 0; i < s; i++) {
-	phi_V(masses, q, p, planetes, bh[i]);
-	phi_T(masses, q, p, planetes, ah[i]);
+	phi_V(masses, q, p, Npart, bh[i]);
+	phi_T(masses, q, p, Npart, ah[i]);
       }
-      phi_V(masses, q, p, planetes, bh[s]);
-      Neval += ((s + 1) * (planetes - 1));
+      phi_V(masses, q, p, Npart, bh[s]);
+      Neval += ((s + 1) * (Npart - 1));
     }
     else if (strcmp(t_metode, "sa") == 0) {
       for (i = 0; i < s; i++) {
-	phi_T(masses, q, p, planetes, ah[i]);
-	phi_V(masses, q, p, planetes, bh[i]);
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_V(masses, q, p, Npart, bh[i]);
       }
-      phi_T(masses, q, p, planetes, ah[s]);
-      Neval += (s * (planetes - 1));
+      phi_T(masses, q, p, Npart, ah[s]);
+      Neval += (s * (Npart - 1));
     }
     else if (strcmp(t_metode, "sx") == 0) {
       for (i = 0; i < s; i += 2) {
-	phi_simpVT(masses, q, p, planetes, ah[i]);
-	phi_simpTV(masses, q, p, planetes, ah[i + 1]);
+	phi_simpVT(masses, q, p, Npart, ah[i]);
+	phi_simpTV(masses, q, p, Npart, ah[i + 1]);
       }
-      Neval += (s * (planetes - 1));
+      Neval += (s * (Npart - 1));
     }    
     else if (strcmp(t_metode, "nb") == 0) {
       for (i = 0; i < s; i++) {
-	phi_Vv(masses, q, v, planetes, bh[i]);
-	phi_Tv(masses, q, v, planetes, ah[i]);
+	phi_Vv(masses, q, v, Npart, bh[i]);
+	phi_Tv(masses, q, v, Npart, ah[i]);
       }
-      phi_Vv(masses, q, v, planetes, bh[s]);
-      v2p(masses, p, v, planetes);
-      Neval += ((s + 1) * (planetes - 1));
+      phi_Vv(masses, q, v, Npart, bh[s]);
+      v2p(masses, p, v, Npart);
+      Neval += ((s + 1) * (Npart - 1));
     }
     else if (strcmp(t_metode, "na") == 0) {
       for (i = 0; i < s; i++) {
-	phi_Tv(masses, q, v, planetes, ah[i]);
-	phi_Vv(masses, q, v, planetes, bh[i]);
+	phi_Tv(masses, q, v, Npart, ah[i]);
+	phi_Vv(masses, q, v, Npart, bh[i]);
       }
-      phi_Tv(masses, q, v, planetes, ah[s]);
-      v2p(masses, p, v, planetes);
-      Neval += ((s + 1) * (planetes - 1));
+      phi_Tv(masses, q, v, Npart, ah[s]);
+      v2p(masses, p, v, Npart);
+      Neval += ((s + 1) * (Npart - 1));
     }
     else if (strcmp(t_metode, "nia") == 0) {
       for (i = 0; i < s; i++) {
-	phi_H0(masses, q, p, planetes, ah[i]);
-	phi_eV1(masses, q, p, planetes, bh[i]);
+	phi_H0(masses, q, p, Npart, ah[i]);
+	phi_eV1(masses, q, p, Npart, bh[i]);
       }
-      phi_H0(masses, q, p, planetes, ah[s]);
+      phi_H0(masses, q, p, Npart, ah[s]);
     
-      Neval += (s * (planetes - 1));
+      Neval += (s * (Npart - 1));
     }
 
     t += temps() - t0;
-    H = energia(masses, q, p, planetes);
+    H = energia(masses, q, p, Npart);
     DH = ABSOLUT(H - H0);
     if (DH > Hemax)
       Hemax = DH;
     if ((it % pit) == 0)
-      escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, planetes);
+      escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, Npart);
   }
-  tancar_fitxers(fit_pl, planetes);
+  tancar_fitxers(fit_pl, Npart);
   print_info(h, t, Neval, Hemax / H0);
   return 0;
 }
