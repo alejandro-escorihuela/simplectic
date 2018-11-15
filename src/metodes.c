@@ -195,7 +195,7 @@ void phi_storMod(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], 
 void phi_H0(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
   int i;
   for (i = 1; i < npl; i++)
-    phiKepler(q[i], p[i], t, m[i]);
+    phi0(q[i], p[i], t, m[i]);
 }
 
 void phi_eV1(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t) {
@@ -203,46 +203,4 @@ void phi_eV1(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int 
   for (i = 1; i < npl; i++) 
     for (j = 0; j < COMP; j++)
       p[i][j] -= t * egradV(m, q, i, j, npl);
-}
-
-void phiKepler(real q[COMP], real p[COMP], real h, real m) {
-  /* Sergio Blanes and Fernando Casas: A Concise Introduction to Geometric Numerical Integrator p[28,29]*/
-  real q_ant[COMP], p_ant[COMP];
-  real t, mu, r0, v02, u, a;
-  real c, s, sig, psi, w, x, x_ant;
-  real ff, gg, fp, gp, aux;
-  real tol = 1e-12;
-  int i;
-
-  for (i = 0; i < COMP; i++) {
-    q_ant[i] = q[i];
-    p_ant[i] = p[i];
-  }
-
-  t = h / m;
-  mu = GRAV_CNT * SOL_MASSA * m * m;
-  r0 = norm(q);
-  v02 = dot(p, p);
-  u = dot(q, p);
-  a = -mu / (v02 - ((2.0 * mu) / r0));
-  w = ARREL_Q(mu / (a * a * a));
-  sig = 1 - r0 / a;
-  psi = u / (w * a * a);
-  
-  x = x_ant = w * t * (a / r0);
-  do {
-    x_ant = x;
-    c = COSINUS(x);
-    s = SINUS(x);
-    x = x - ((x - (sig * s) + (psi * (1.0 - c)) - (w * t)) / (1.0 - (sig * c) + (psi * s)));
-  } while (ABSOLUT(x - x_ant) > tol);
-  aux = 1.0 - (sig * c) + (psi * s);
-  ff = 1.0 + (((c - 1.0) * a) / r0);
-  gg = t + ((s - x) / w);
-  fp = (-a * w * s) / (aux * r0);
-  gp = 1.0 + ((c - 1) / aux);
-  for (i = 0; i < COMP; i++) {
-    q[i] = (ff * q_ant[i]) + (gg * p_ant[i]);
-    p[i] = (fp * q_ant[i]) + (gp * p_ant[i]);
-  }
 }

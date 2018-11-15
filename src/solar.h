@@ -12,12 +12,9 @@
 #include <sys/stat.h>
 #include <sys/times.h>
 #include "tipus.h"
-#undef MAX_PLA
-#define MAX_PLA 20
+#include "metodes.h"
 #undef MAX_CAD
 #define MAX_CAD 40
-#undef COMP
-#define COMP 3
 #undef SOL_MASSA
 #define SOL_MASSA 1.00000597682
 #undef GRAV_CNT
@@ -32,6 +29,7 @@ real gradVSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 real egradVSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 real deriv2qSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 void gradVmodSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
+void phiKepler(real q[COMP], real p[COMP], real h, real m);
 real energiaSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl);
 void obrir_fitxers(FILE * fitxers[MAX_PLA + 1], char noms[MAX_PLA][MAX_CAD], char * f_ini, char * metode, int npl);
 void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], real H0, real H, int npl);

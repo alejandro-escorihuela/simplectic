@@ -24,6 +24,7 @@ int main (int num_arg, char * vec_arg[]) {
   egradV = egradVSolar;
   deriv2q = deriv2qSolar;
   gradVmod = gradVmodSolar;
+  phi0 = phiKepler;
   energia = energiaSolar;
   
   /* carregar_configuracio */

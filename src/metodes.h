@@ -5,16 +5,28 @@
 #define _METODES_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "solar.h"
+#include <unistd.h>
+#include <string.h>
+#include <math.h>
+#include <quadmath.h>
+#include <sys/stat.h>
+#include <sys/times.h>
 #include "tipus.h"
+#undef NUM_MAX_COEF
+#undef LINIA_MAX
+#undef COMP
+#undef MAX_PLA
 #define NUM_MAX_COEF 100
 #define LINIA_MAX 2000
+#define COMP 3
+#define MAX_PLA 20
 
 /* variables globals per a potencials genèrics */
 real (*gradV)(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 real (*egradV)(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 real (*deriv2q)(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
 void (*gradVmod)(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
+void (*phi0)(real q[COMP], real p[COMP], real h, real m);
 real (*energia)(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl);
 
 void vec_coef_copia(real vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef);
@@ -41,5 +53,4 @@ void phi_storAdj(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], 
 void phi_storMod(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
 void phi_H0(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
 void phi_eV1(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl, real t);
-void phiKepler(real q[COMP], real p[COMP], real h, real m);
 #endif
