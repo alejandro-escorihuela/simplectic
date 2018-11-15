@@ -24,7 +24,7 @@
 #define _DERIV2QSOLAR_(M, Q, I, J, P) ((-1.0 / M[I]) * gradVSolar(M, Q, I, J, P))
 
 void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef);
-int carregar_planetes(char * f_ini, real masses[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]);
+int init_planetes(char * f_ini, real masses[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]);
 real gradVSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real egradVSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real deriv2qSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);

@@ -29,7 +29,7 @@ int main (int num_arg, char * vec_arg[]) {
   
   /* carregar_configuracio */
   carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_metode, f_coef);
-  Npart = carregar_planetes(f_ini, masses, noms, q, p);
+  Npart = init_planetes(f_ini, masses, noms, q, p);
   H0 = energia(masses, q, p, Npart);
   obrir_fitxers(fit_pl, noms, f_ini, f_coef, Npart);
 
@@ -45,18 +45,14 @@ int main (int num_arg, char * vec_arg[]) {
   (void) zh;
   
   /* preconfiguració per a cada mètode */
-  if (strcmp(t_metode, "ss") == 0) {
+  if (strcmp(t_metode, "ss") == 0)
     s = tam_a;
-  }
-  else if (strcmp(t_metode, "sb") == 0) {
+  else if (strcmp(t_metode, "sb") == 0)
     s = tam_a;
-  }
-  else if (strcmp(t_metode, "sa") == 0) {
+  else if (strcmp(t_metode, "sa") == 0)
     s = tam_b;
-  }
-  else if (strcmp(t_metode, "sx") == 0) {
+  else if (strcmp(t_metode, "sx") == 0)
     s = tam_a;
-  }
   else if (strcmp(t_metode, "nb") == 0) {
     p2v(masses, p, v, Npart);
     s = tam_a;
@@ -65,9 +61,8 @@ int main (int num_arg, char * vec_arg[]) {
     p2v(masses, p, v, Npart);
     s = tam_b;
   }
-  else if (strcmp(t_metode, "nia") == 0) {
+  else if (strcmp(t_metode, "nia") == 0)
     s = tam_b;
-  }
   else {
     fputs("El mètode especificat no existeix\n", stderr);
     exit(1);
@@ -76,7 +71,6 @@ int main (int num_arg, char * vec_arg[]) {
   /* bucle principal */  
   for (it = 0; it < N; it++) {
     t0 = temps();
-
     /* composició del mètode */
     if (strcmp(t_metode, "ss") == 0) {
       for (i = 0; i < s; i++)
@@ -129,8 +123,7 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_H0(masses, q, p, Npart, ah[i]);
 	phi_eV1(masses, q, p, Npart, bh[i]);
       }
-      phi_H0(masses, q, p, Npart, ah[s]);
-    
+      phi_H0(masses, q, p, Npart, ah[s]);    
       Neval += (s * (Npart - 1));
     }
 

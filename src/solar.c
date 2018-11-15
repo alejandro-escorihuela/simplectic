@@ -36,7 +36,7 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   fclose(fp);
 }
 
-int carregar_planetes(char * f_ini, real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
+int init_planetes(char * f_ini, real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
   int i = 1, j;
   char cadena[20], nom_fit[30];
   double lec[7];
