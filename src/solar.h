@@ -24,16 +24,16 @@
 #define _DERIV2QSOLAR_(M, Q, I, J, P) ((-1.0 / M[I]) * gradVSolar(M, Q, I, J, P))
 
 void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef);
-int carregar_planetes(char * f_ini, real masses[MAX_PLA], char noms[MAX_PLA][MAX_CAD], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP]);
-real gradVSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
-real egradVSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
-real deriv2qSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl);
-void gradVmodSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2);
+int carregar_planetes(char * f_ini, real masses[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]);
+real gradVSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
+real egradVSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
+real deriv2qSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
+void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2);
 void phiKepler(real q[COMP], real p[COMP], real h, real m);
-real energiaSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl);
-void obrir_fitxers(FILE * fitxers[MAX_PLA + 1], char noms[MAX_PLA][MAX_CAD], char * f_ini, char * metode, int npl);
-void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], real H0, real H, int npl);
-void tancar_fitxers(FILE * fitxers[MAX_PLA + 1], int npl);
+real energiaSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
+void obrir_fitxers(FILE * fitxers[MAX_PAR + 1], char noms[MAX_PAR][MAX_CAD], char * f_ini, char * metode, int np);
+void escriure_fitxers(FILE * fitxers[MAX_PAR + 1], int pop, real dia, real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], real H0, real H, int np);
+void tancar_fitxers(FILE * fitxers[MAX_PAR + 1], int np);
 void print_info(real h, double t, int eval, real error);
 
 #endif

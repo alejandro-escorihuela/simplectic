@@ -8,8 +8,8 @@
 
 int main (int num_arg, char * vec_arg[]) {
   int i, it, planetes, N, pop, pit, Neval = 0;
-  char noms[MAX_PLA][MAX_CAD], f_ini[20], f_coef[20], t_metode[20];
-  real masses[MAX_PLA], q[MAX_PLA][COMP], p[MAX_PLA][COMP], v[MAX_PLA][COMP];
+  char noms[MAX_PAR][MAX_CAD], f_ini[20], f_coef[20], t_metode[20];
+  real masses[MAX_PAR], q[MAX_PAR][COMP], p[MAX_PAR][COMP], v[MAX_PAR][COMP];
   real a[NUM_MAX_COEF], b[NUM_MAX_COEF], y[NUM_MAX_COEF], z[NUM_MAX_COEF];
   real ah[NUM_MAX_COEF], bh[NUM_MAX_COEF], yh[NUM_MAX_COEF], zh[NUM_MAX_COEF];
   int tam_a = 0, tam_b = 0, tam_y = 0, tam_z = 0;
@@ -17,7 +17,7 @@ int main (int num_arg, char * vec_arg[]) {
   real h;
   int s;
   double t0, t = 0.0;
-  FILE * fit_pl[MAX_PLA + 1];
+  FILE * fit_pl[MAX_PAR + 1];
 
   /*tipus de potencial */
   gradV = gradVSolar;

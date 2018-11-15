@@ -36,7 +36,7 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   fclose(fp);
 }
 
-int carregar_planetes(char * f_ini, real m[MAX_PLA], char noms[MAX_PLA][MAX_CAD], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP]) {
+int carregar_planetes(char * f_ini, real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
   int i = 1, j;
   char cadena[20], nom_fit[30];
   double lec[7];
@@ -79,10 +79,10 @@ int carregar_planetes(char * f_ini, real m[MAX_PLA], char noms[MAX_PLA][MAX_CAD]
   return i;
 }
 
-real gradVSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
+real gradVSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   int k, m;
   real gV = 0.0, resta[COMP], den;
-  for (k = 0; k < npl; k++)
+  for (k = 0; k < np; k++)
     if (i != k) {
       for (m = 0; m < COMP; m++)
 	resta[m] = q[i][m] - q[k][m];
@@ -93,10 +93,10 @@ real gradVSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int n
   return gV;
 }
 
-real egradVSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
+real egradVSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   int k, m;
   real gV = 0.0, resta[COMP], den;
-  for (k = 1; k < npl; k++)
+  for (k = 1; k < np; k++)
     if (i != k) {
       for (m = 0; m < COMP; m++)
 	resta[m] = q[i][m] - q[k][m];
@@ -107,10 +107,10 @@ real egradVSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int 
   return gV;
 }
 
-real deriv2qSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl) {
+real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   int k, m;
   real gV = 0.0, resta[COMP], den;
-  for (k = 0; k < npl; k++)
+  for (k = 0; k < np; k++)
     if (i != k) {
       for (m = 0; m < COMP; m++)
 	resta[m] = q[i][m] - q[k][m];
@@ -121,11 +121,11 @@ real deriv2qSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int
   return -gV;
 }
 
-void gradVmodSolar(real masses[MAX_PLA], real q[MAX_PLA][COMP], int i, int j, int npl, real * gV, real * gV2) {
+void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
   int k, m;
   real resta[COMP], g1, g2, den, num;
   g1 = g2 = 0.0;
-  for (k = 0; k < npl; k++)
+  for (k = 0; k < np; k++)
     if (i != k) {
       for (m = 0; m < COMP; m++)
 	resta[m] = q[i][m] - q[k][m];
@@ -183,14 +183,14 @@ void phiKepler(real q[COMP], real p[COMP], real h, real m) {
   }
 }
 
-real energiaSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], int npl) {
+real energiaSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
   int i, j, k;
   real cin = 0.0, pot = 0.0;
   real resta[COMP];
-  for (i = 0; i < npl; i++)
+  for (i = 0; i < np; i++)
     cin += ((p[i][0] * p[i][0]) + (p[i][1] * p[i][1]) + (p[i][2] * p[i][2])) / m[i];
   cin *= 0.5;
-  for (i = 1; i < npl; i++)
+  for (i = 1; i < np; i++)
     for (j = 0; j < i; j++) {
       for (k = 0; k < COMP; k++)
   	resta[k] = q[i][k] - q[j][k];
@@ -200,21 +200,21 @@ real energiaSolar(real m[MAX_PLA], real q[MAX_PLA][COMP], real p[MAX_PLA][COMP],
   return (cin + pot);
 }
 
-void obrir_fitxers(FILE * fitxers[MAX_PLA + 1], char noms[MAX_PLA][MAX_CAD], char * f_ini, char * metode, int npl) {
+void obrir_fitxers(FILE * fitxers[MAX_PAR + 1], char noms[MAX_PAR][MAX_CAD], char * f_ini, char * metode, int np) {
   int i;
   char cad1[MAX_CAD], cad2[MAX_CAD];
   mkdir("./dat", 0755);
   sprintf(cad1, "./dat/%s_%s", metode, f_ini);
   mkdir(cad1, 0755);
-  for (i = 0; i < npl; i++) {
+  for (i = 0; i < np; i++) {
     sprintf(cad2, "%s/%c%c%c.dat", cad1, noms[i][0], noms[i][1], noms[i][2]);
     fitxers[i] = fopen(cad2, "w");
   }
   sprintf(cad2, "%s/err.dat", cad1);
-  fitxers[npl] = fopen(cad2, "w");
+  fitxers[np] = fopen(cad2, "w");
 }
 
-void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX_PLA][COMP], real p[MAX_PLA][COMP], real H0, real H, int npl) {
+void escriure_fitxers(FILE * fitxers[MAX_PAR + 1], int pop, real dia, real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], real H0, real H, int np) {
   int i, j;
 #if TIPUS == 3
   char buf[128];
@@ -222,7 +222,7 @@ void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX
   if (pop < 2) {
 #if TIPUS == 2
     if (pop == 0) {
-      for (i = 0; i < npl; i++) {
+      for (i = 0; i < np; i++) {
 	fprintf(fitxers[i], "%.24Le ", dia);
 	for (j = 0; j < COMP; j++)
 	  fprintf(fitxers[i], "%.24Le ", q[i][j]);
@@ -231,10 +231,10 @@ void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX
 	fprintf(fitxers[i], "\n");
       }
     }
-    fprintf(fitxers[npl], "%.24Le %.24Le %.24Le\n", dia, H0, H);
+    fprintf(fitxers[np], "%.24Le %.24Le %.24Le\n", dia, H0, H);
 #elif TIPUS == 3
     if (pop == 0) {
-      for (i = 0; i < npl; i++) {
+      for (i = 0; i < np; i++) {
 	quadmath_snprintf(buf, sizeof(buf), "%.34Qg", dia);
 	fprintf(fitxers[i], "%s ", buf);
 	for (j = 0; j < COMP; j++) {
@@ -249,14 +249,14 @@ void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX
       }
     }
     quadmath_snprintf(buf, sizeof(buf), "%.34Qg", dia);
-    fprintf(fitxers[npl], "%s ", buf);
+    fprintf(fitxers[np], "%s ", buf);
     quadmath_snprintf(buf, sizeof(buf), "%.34Qg", H0);
-    fprintf(fitxers[npl], "%s ", buf);
+    fprintf(fitxers[np], "%s ", buf);
     quadmath_snprintf(buf, sizeof(buf), "%.34Qg", H);
-    fprintf(fitxers[npl], "%s\n", buf);
+    fprintf(fitxers[np], "%s\n", buf);
 #else
     if (pop == 0) {
-      for (i = 0; i < npl; i++) {
+      for (i = 0; i < np; i++) {
 	fprintf(fitxers[i], "%.15e ", dia);
 	for (j = 0; j < COMP; j++)
 	  fprintf(fitxers[i], "%.15e ", q[i][j]);
@@ -265,14 +265,14 @@ void escriure_fitxers(FILE * fitxers[MAX_PLA + 1], int pop, real dia, real q[MAX
 	fprintf(fitxers[i], "\n");
       }
     }
-    fprintf(fitxers[npl], "%.15e %.15e %.15e\n", dia, H0, H);
+    fprintf(fitxers[np], "%.15e %.15e %.15e\n", dia, H0, H);
 #endif
   }
 }
 
-void tancar_fitxers(FILE * fitxers[MAX_PLA + 1], int npl) {
+void tancar_fitxers(FILE * fitxers[MAX_PAR + 1], int np) {
   int i;
-  for (i = 0; i <= npl; i++)
+  for (i = 0; i <= np; i++)
     fclose(fitxers[i]);
 }
 
