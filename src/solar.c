@@ -27,14 +27,14 @@ int init_planetes(char * f_ini, real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], re
   while (!feof(fp)) {
     fscanf(fp, "%s %lf %lf %lf %lf %lf %lf %lf", noms[i], &lec[0], &lec[1], &lec[2], &lec[3], &lec[4], &lec[5], &lec[6]);
 #if TIPUS == 3
-    sprintf(buf, "%lf", lec[0]);
+    sprintf(buf, "%.18e", lec[0]);
     m[i] = strtoflt128(buf, NULL);
     for (j = 0; j < COMP; j++) {
-      sprintf(buf, "%lf", lec[j + 1]);
+      sprintf(buf, "%.18e", lec[j + 1]);
       q[i][j] = strtoflt128(buf, NULL);
-      sprintf(buf, "%lf", lec[j + 4]);
+      sprintf(buf, "%.18e", lec[j + 4]);
       p[i][j] = m[i] * strtoflt128(buf, NULL);
-    }    
+    }
 #else
     m[i] = (real) lec[0];
     for (j = 0; j < COMP; j++) {
@@ -87,6 +87,8 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
       gV += (masses[k] * (q[i][j] - q[k][j])) / den;
     }
   gV *= GRAV_CNT;
+  //if (i == 0)
+  //printf("%d %d %.18e\n", i, j, -gV);
   return -gV;
 }
 
@@ -168,94 +170,3 @@ real energiaSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP],
   pot *= -GRAV_CNT;
   return (cin + pot);
 }
-
-void obrir_fitxers(FILE * fitxers[MAX_PAR + 1], char noms[MAX_PAR][MAX_CAD], char * f_ini, char * metode, int np) {
-  int i;
-  char cad1[MAX_CAD], cad2[MAX_CAD];
-  mkdir("./dat", 0755);
-  sprintf(cad1, "./dat/%s_%s", metode, f_ini);
-  mkdir(cad1, 0755);
-  for (i = 0; i < np; i++) {
-    sprintf(cad2, "%s/%c%c%c.dat", cad1, noms[i][0], noms[i][1], noms[i][2]);
-    fitxers[i] = fopen(cad2, "w");
-  }
-  sprintf(cad2, "%s/err.dat", cad1);
-  fitxers[np] = fopen(cad2, "w");
-}
-
-void escriure_fitxers(FILE * fitxers[MAX_PAR + 1], int pop, real dia, real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], real H0, real H, int np) {
-  int i, j;
-#if TIPUS == 3
-  char buf[128];
-#endif
-  if (pop < 2) {
-#if TIPUS == 2
-    if (pop == 0) {
-      for (i = 0; i < np; i++) {
-	fprintf(fitxers[i], "%.24Le ", dia);
-	for (j = 0; j < COMP; j++)
-	  fprintf(fitxers[i], "%.24Le ", q[i][j]);
-	for (j = 0; j < COMP; j++)
-	  fprintf(fitxers[i], "%.24Le ", p[i][j]);
-	fprintf(fitxers[i], "\n");
-      }
-    }
-    fprintf(fitxers[np], "%.24Le %.24Le %.24Le\n", dia, H0, H);
-#elif TIPUS == 3
-    if (pop == 0) {
-      for (i = 0; i < np; i++) {
-	quadmath_snprintf(buf, sizeof(buf), "%.34Qg", dia);
-	fprintf(fitxers[i], "%s ", buf);
-	for (j = 0; j < COMP; j++) {
-	  quadmath_snprintf(buf, sizeof(buf), "%.34Qg", q[i][j]);
-	  fprintf(fitxers[i], "%s ", buf);
-	}
-	for (j = 0; j < COMP; j++) {
-	  quadmath_snprintf(buf, sizeof(buf), "%.34Qg", p[i][j]);
-	  fprintf(fitxers[i], "%s ", buf);
-	}
-	fprintf(fitxers[i], "\n");
-      }
-    }
-    quadmath_snprintf(buf, sizeof(buf), "%.34Qg", dia);
-    fprintf(fitxers[np], "%s ", buf);
-    quadmath_snprintf(buf, sizeof(buf), "%.34Qg", H0);
-    fprintf(fitxers[np], "%s ", buf);
-    quadmath_snprintf(buf, sizeof(buf), "%.34Qg", H);
-    fprintf(fitxers[np], "%s\n", buf);
-#else
-    if (pop == 0) {
-      for (i = 0; i < np; i++) {
-	fprintf(fitxers[i], "%.15e ", dia);
-	for (j = 0; j < COMP; j++)
-	  fprintf(fitxers[i], "%.15e ", q[i][j]);
-	for (j = 0; j < COMP; j++)
-	  fprintf(fitxers[i], "%.15e ", p[i][j]);
-	fprintf(fitxers[i], "\n");
-      }
-    }
-    fprintf(fitxers[np], "%.15e %.15e %.15e\n", dia, H0, H);
-#endif
-  }
-}
-
-void tancar_fitxers(FILE * fitxers[MAX_PAR + 1], int np) {
-  int i;
-  for (i = 0; i <= np; i++)
-    fclose(fitxers[i]);
-}
-
-void print_info(real h, double t, int eval, real error) {
-#if TIPUS == 3
-  char buf[128];
-#endif
-#if TIPUS == 2
-  printf("%.5f %f %d %.24Le\n", (float) h, t, eval, error);
-#elif TIPUS == 3
-  quadmath_snprintf(buf, sizeof(buf), "%.34Qg", error);
-  printf("%.5f %f %d %s\n", (float) h, t, eval, buf);
-#else
-  printf("%.5f %f %d %.15e\n", (float) h, t, eval, error);
-#endif
-}
-

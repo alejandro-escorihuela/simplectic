@@ -9,7 +9,7 @@
 
 int main (int num_arg, char * vec_arg[]) {
   int i, it, Npart, N, pop, pit, Neval = 0;
-  char noms[MAX_PAR][MAX_CAD], f_ini[20], f_coef[20], t_metode[20];
+  char noms[MAX_PAR][MAX_CAD], f_ini[20], f_coef[20], t_metode[20], t_poten[20];
   real masses[MAX_PAR], q[MAX_PAR][COMP], p[MAX_PAR][COMP], v[MAX_PAR][COMP];
   real a[NUM_MAX_COEF], b[NUM_MAX_COEF], y[NUM_MAX_COEF], z[NUM_MAX_COEF];
   real ah[NUM_MAX_COEF], bh[NUM_MAX_COEF], yh[NUM_MAX_COEF], zh[NUM_MAX_COEF];
@@ -20,21 +20,28 @@ int main (int num_arg, char * vec_arg[]) {
   double t0, t = 0.0;
   FILE * fit_pl[MAX_PAR + 1];
 
-  /*tipus de potencial */
-  gradV = gradVSolar;
-  egradV = egradVSolar;
-  deriv2q = deriv2qSolar;
-  gradVmod = gradVmodSolar;
-  phi0 = phiKepler;
-  energia = energiaSolar;
-  
-  /* carregar_configuracio */
-  carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_metode, f_coef);
-  Npart = init_planetes(f_ini, masses, noms, q, p);
-  H0 = energia(masses, q, p, Npart);
-  obrir_fitxers(fit_pl, noms, f_ini, f_coef, Npart);
+  carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_poten, t_metode, f_coef);
 
-  /* coeficients */
+  /* tipus de potencial */
+  if (strcmp(t_poten, "solar") == 0) {
+    gradV = gradVSolar;
+    egradV = egradVSolar;
+    deriv2q = deriv2qSolar;
+    gradVmod = gradVmodSolar;
+    phi0 = phiKepler;
+    energia = energiaSolar;
+    Npart = init_planetes(f_ini, masses, noms, q, p);
+  }
+  else if (strcmp(t_poten, "molecular") == 0) {
+
+  }
+  else {
+    fputs("El potencial especificat no existeix\n", stderr);
+    exit(1);
+  }
+  
+  H0 = energia(masses, q, p, Npart);
+  obrir_fitxers(fit_pl, noms, f_ini, t_poten, f_coef, Npart);
   lectura_coef(f_coef, a, b, y, z, &tam_a, &tam_b, &tam_y, &tam_z);
   for (i = 0; i < NUM_MAX_COEF; i++) {
     ah[i] = a[i] * h;
@@ -72,7 +79,7 @@ int main (int num_arg, char * vec_arg[]) {
   /* bucle principal */  
   for (it = 0; it < N; it++) {
     t0 = temps();
-    /* composició del mètode */
+    /* tipus de mètode */
     if (strcmp(t_metode, "ss") == 0) {
       for (i = 0; i < s; i++)
 	phi_storAdj(masses, q, p, Npart, ah[i]);

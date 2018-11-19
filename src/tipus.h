@@ -45,4 +45,14 @@ typedef long double real;
 typedef __float128 real;
 #endif
 
+#undef MAX_CAD
+#undef NUM_MAX_COEF
+#undef LINIA_MAX
+#undef COMP
+#undef MAX_PAR
+#define MAX_CAD 40
+#define NUM_MAX_COEF 100
+#define LINIA_MAX 2000
+#define COMP 3
+#define MAX_PAR 20
 #endif

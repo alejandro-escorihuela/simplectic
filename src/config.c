@@ -6,13 +6,13 @@
 #include <string.h>
 #include "config.h"
 
-void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_metode, char * f_coef) {
+void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_potencial, char * t_metode, char * f_coef) {
   FILE * fp = fopen("./cnf/param.cnf", "r");
   int i, param[3];
   char nom[20], arxiu[25];
 
-  if (num != 5) {
-    fprintf(stderr, "Executeu %s [tipus de mètode] [fitxer de coeficients] [valor de h] [temps final]\n", vec[0]);
+  if (num != 6) {
+    fprintf(stderr, "Executeu %s [potencial] [tipus de mètode] [fitxer de coeficients] [valor de h] [temps final]\n", vec[0]);
     exit(1);
   }
   if (fp == NULL) {
@@ -28,12 +28,13 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   for (i = 0; i < 2; i++)
     fscanf(fp, "%s %d", nom, &param[i]);
   
-  *h = atof(vec[3]);
-  *N = ceil(((real) atof(vec[4])) / *h);
+  *h = atof(vec[4]);
+  *N = ceil(((real) atof(vec[5])) / *h);
   *pop = param[0];
   *pit = param[1];
-  strcpy(t_metode, vec[1]);
-  sprintf(f_coef, "%s_%s", vec[1], vec[2]);
+  strcpy(t_potencial, vec[1]);
+  strcpy(t_metode, vec[2]);
+  sprintf(f_coef, "%s_%s", vec[2], vec[3]);
   fclose(fp);
 }
 
@@ -107,4 +108,94 @@ void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_CO
   } 
   fclose(fp);
 
+}
+
+void obrir_fitxers(FILE * fitxers[MAX_PAR + 1], char noms[MAX_PAR][MAX_CAD], char * f_ini, char * potencial, char * metode, int np) {
+  int i;
+  char cad1[MAX_CAD], cad2[MAX_CAD];
+  mkdir("./dat", 0755);
+  sprintf(cad1, "./dat/%s_%s_%s", potencial, metode, f_ini);
+  mkdir(cad1, 0755);
+  for (i = 0; i < np; i++) {
+    sprintf(cad2, "%s/%c%c%c.dat", cad1, noms[i][0], noms[i][1], noms[i][2]);
+    fitxers[i] = fopen(cad2, "w");
+  }
+  sprintf(cad2, "%s/err.dat", cad1);
+  fitxers[np] = fopen(cad2, "w");
+}
+
+void tancar_fitxers(FILE * fitxers[MAX_PAR + 1], int np) {
+  int i;
+  for (i = 0; i <= np; i++)
+    fclose(fitxers[i]);
+}
+
+void escriure_fitxers(FILE * fitxers[MAX_PAR + 1], int pop, real dia, real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], real H0, real H, int np) {
+  int i, j;
+#if TIPUS == 3
+  char buf[128];
+#endif
+  if (pop < 2) {
+#if TIPUS == 2
+    if (pop == 0) {
+      for (i = 0; i < np; i++) {
+	fprintf(fitxers[i], "%.24Le ", dia);
+	for (j = 0; j < COMP; j++)
+	  fprintf(fitxers[i], "%.24Le ", q[i][j]);
+	for (j = 0; j < COMP; j++)
+	  fprintf(fitxers[i], "%.24Le ", p[i][j]);
+	fprintf(fitxers[i], "\n");
+      }
+    }
+    fprintf(fitxers[np], "%.24Le %.24Le %.24Le\n", dia, H0, H);
+#elif TIPUS == 3
+    if (pop == 0) {
+      for (i = 0; i < np; i++) {
+	quadmath_snprintf(buf, sizeof(buf), "%.34Qg", dia);
+	fprintf(fitxers[i], "%s ", buf);
+	for (j = 0; j < COMP; j++) {
+	  quadmath_snprintf(buf, sizeof(buf), "%.34Qg", q[i][j]);
+	  fprintf(fitxers[i], "%s ", buf);
+	}
+	for (j = 0; j < COMP; j++) {
+	  quadmath_snprintf(buf, sizeof(buf), "%.34Qg", p[i][j]);
+	  fprintf(fitxers[i], "%s ", buf);
+	}
+	fprintf(fitxers[i], "\n");
+      }
+    }
+    quadmath_snprintf(buf, sizeof(buf), "%.34Qg", dia);
+    fprintf(fitxers[np], "%s ", buf);
+    quadmath_snprintf(buf, sizeof(buf), "%.34Qg", H0);
+    fprintf(fitxers[np], "%s ", buf);
+    quadmath_snprintf(buf, sizeof(buf), "%.34Qg", H);
+    fprintf(fitxers[np], "%s\n", buf);
+#else
+    if (pop == 0) {
+      for (i = 0; i < np; i++) {
+	fprintf(fitxers[i], "%.15e ", dia);
+	for (j = 0; j < COMP; j++)
+	  fprintf(fitxers[i], "%.15e ", q[i][j]);
+	for (j = 0; j < COMP; j++)
+	  fprintf(fitxers[i], "%.15e ", p[i][j]);
+	fprintf(fitxers[i], "\n");
+      }
+    }
+    fprintf(fitxers[np], "%.15e %.15e %.15e\n", dia, H0, H);
+#endif
+  }
+}
+
+void print_info(real h, double t, int eval, real error) {
+#if TIPUS == 3
+  char buf[128];
+#endif
+#if TIPUS == 2
+  printf("%.5f %f %d %.24Le\n", (float) h, t, eval, error);
+#elif TIPUS == 3
+  quadmath_snprintf(buf, sizeof(buf), "%.34Qg", error);
+  printf("%.5f %f %d %s\n", (float) h, t, eval, buf);
+#else
+  printf("%.5f %f %d %.15e\n", (float) h, t, eval, error);
+#endif
 }

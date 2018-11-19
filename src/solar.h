@@ -13,8 +13,6 @@
 #include <sys/times.h>
 #include "tipus.h"
 #include "metodes.h"
-#undef MAX_CAD
-#define MAX_CAD 40
 #undef SOL_MASSA
 #define SOL_MASSA 1.00000597682
 #undef GRAV_CNT
@@ -30,10 +28,6 @@ real deriv2qSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2);
 void phiKepler(real q[COMP], real p[COMP], real h, real m);
 real energiaSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
-void obrir_fitxers(FILE * fitxers[MAX_PAR + 1], char noms[MAX_PAR][MAX_CAD], char * f_ini, char * metode, int np);
-void escriure_fitxers(FILE * fitxers[MAX_PAR + 1], int pop, real dia, real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], real H0, real H, int np);
-void tancar_fitxers(FILE * fitxers[MAX_PAR + 1], int np);
-void print_info(real h, double t, int eval, real error);
 
 #endif
 
