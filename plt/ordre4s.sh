@@ -3,6 +3,7 @@
 # alex
 # ordre4s.sh
 
+POTEN="solar"
 T_MAX=200000
 PAS=()
 MET=()
@@ -29,7 +30,7 @@ for i in ${MET[@]} ; do
 	k=$(echo $i | cut -d'_' -f 1)
 	l=$(echo $i | cut -d'_' -f 2-)
 	echo "Execució de composicio (tipus = $k, coeficients = $l, h = $j)"
-	./composicio $k $l $j $T_MAX >> .tmp_dat/$i.dat
+	./composicio $POTEN $k $l $j $T_MAX >> .tmp_dat/$i.dat
     done
 done
 cd .tmp_dat

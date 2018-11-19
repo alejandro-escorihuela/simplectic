@@ -6,6 +6,7 @@
 #include "config.h"
 #include "metodes.h"
 #include "solar.h"
+#include "molecular.h"
 
 int main (int num_arg, char * vec_arg[]) {
   int i, it, Npart, N, pop, pit, Neval = 0;
@@ -29,18 +30,24 @@ int main (int num_arg, char * vec_arg[]) {
     deriv2q = deriv2qSolar;
     gradVmod = gradVmodSolar;
     phi0 = phiKepler;
-    energia = energiaSolar;
+    q_conservada = energiaSolar;
     Npart = init_planetes(f_ini, masses, noms, q, p);
   }
   else if (strcmp(t_poten, "molecular") == 0) {
-
+    gradV = gradVMolecular;
+    egradV = egradVMolecular;
+    deriv2q = deriv2qMolecular;
+    gradVmod = gradVmodMolecular;
+    phi0 = phi0Molecular;
+    q_conservada = temperaturaMolecular;
+    Npart = init_molecules(masses, noms, q, p);
   }
   else {
     fputs("El potencial especificat no existeix\n", stderr);
     exit(1);
   }
   
-  H0 = energia(masses, q, p, Npart);
+  H0 = q_conservada(masses, q, p, Npart);
   obrir_fitxers(fit_pl, noms, f_ini, t_poten, f_coef, Npart);
   lectura_coef(f_coef, a, b, y, z, &tam_a, &tam_b, &tam_y, &tam_z);
   for (i = 0; i < NUM_MAX_COEF; i++) {
@@ -136,7 +143,7 @@ int main (int num_arg, char * vec_arg[]) {
     }
 
     t += temps() - t0;
-    H = energia(masses, q, p, Npart);
+    H = q_conservada(masses, q, p, Npart);
     DH = ABSOLUT(H - H0);
     if (DH > Hemax)
       Hemax = DH;

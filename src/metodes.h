@@ -17,7 +17,7 @@ real (*egradV)(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real (*deriv2q)(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 void (*gradVmod)(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2);
 void (*phi0)(real q[COMP], real p[COMP], real h, real m);
-real (*energia)(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
+real (*q_conservada)(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
 
 /* mètodes */
 void phi_T(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np, real t);
