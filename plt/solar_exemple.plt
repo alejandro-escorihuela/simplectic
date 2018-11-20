@@ -20,9 +20,9 @@ set style line 14 lc rgb '#7ce5eb' lt 1 lw 2 pt 7 pi -1 ps 1.5
 set style line 15 lc rgb '#609db0' lt 1 lw 2 pt 7 pi -1 ps 1.5
 set style line 16 lc rgb '#acafb6' lt 1 lw 2 pt 7 pi -1 ps 1.5
 set title "Sistema Solar\nMètode quasi-integrable d'ordre 2"
-LIN0 =`wc -l '../dat/solar_nia_2_ext18/err.dat' | cut -d' ' -f1`
+LIN0 =`wc -l '../dat/solar_ext18_nia_2/err.dat' | cut -d' ' -f1`
 LIN1 = LIN0 - 1
-arxiu(i, f, pl) = sprintf("<(sed -n '%d,%dp' ../dat/solar_nia_2_ext18/%s.dat)", i, f, pl)
+arxiu(i, f, pl) = sprintf("<(sed -n '%d,%dp' ../dat/solar_ext18_nia_2/%s.dat)", i, f, pl)
 splot arxiu(1, LIN0, "sol")    u 2:3:4 w l ls 1, \
       arxiu(1, LIN0, "jup")    u 2:3:4 w l ls 2, \
       arxiu(1, LIN0, "sat")    u 2:3:4 w l ls 3, \

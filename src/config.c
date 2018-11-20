@@ -114,7 +114,10 @@ void obrir_fitxers(FILE * fitxers[MAX_PAR + 1], char noms[MAX_PAR][MAX_CAD], cha
   int i;
   char cad1[MAX_CAD], cad2[MAX_CAD];
   mkdir("./dat", 0755);
-  sprintf(cad1, "./dat/%s_%s_%s", potencial, metode, f_ini);
+  if (strcmp(potencial, "solar") == 0)
+    sprintf(cad1, "./dat/%s_%s_%s", potencial, f_ini, metode);
+  else
+    sprintf(cad1, "./dat/%s_%s", potencial, metode);
   mkdir(cad1, 0755);
   for (i = 0; i < np; i++) {
     sprintf(cad2, "%s/%c%c%c.dat", cad1, noms[i][0], noms[i][1], noms[i][2]);
