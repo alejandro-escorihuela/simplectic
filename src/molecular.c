@@ -69,16 +69,17 @@ int init_molecules(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR]
 
 real gradVMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   int k, m;
-  real gV = 0.0, resta[COMP], fac, r_dos, r_sis, r_dot;
+  real gV = 0.0, resta[COMP], fac, r_dos, s2r2, s6r6, s12r12;
   (void) masses;
   for (k = 0; k < np; k++)
     if (i != k) {
-      for (m = 0; m < COMP; m++)
+      for (m = 0; m < 2; m++)
 	resta[m] = q[i][m] - q[k][m];
-      r_dos = (resta[0] * resta[0]) + (resta[1] * resta[1]);
-      r_sis = r_dos * r_dos * r_dos;
-      r_dot = r_sis * r_sis;
-      fac = ((SIGMA_SIS / r_sis) - (2.0 * (SIGMA_DOT / r_dot))) / r_dos;
+      r_dos = (resta[0] * resta[0]) + (resta[1] * resta[1]);      
+      s2r2 = SIGMA * SIGMA / r_dos;
+      s6r6 = s2r2 * s2r2 * s2r2;
+      s12r12 = s6r6 * s6r6;
+      fac = (s6r6 - (2.0 * s12r12)) / r_dos;
       gV += fac * (q[i][j] - q[k][j]);
     }
   gV *= 24.0 * EPSILON * BOLTZ;
@@ -131,4 +132,24 @@ real temperaturaMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR
   for (i = 0; i < np; i++)
     sum += m[i] * ((v[i][0] * v[i][0]) + (v[i][1] * v[i][1]));
   return sum / (2.0 * ((real) np) * BOLTZ);
+}
+
+real energiaMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
+  int i, j, k;
+  real cin = 0.0, pot = 0.0, resta[2], r_dos, s2r2, s6r6, s12r12;
+  for (i = 0; i < np; i++)
+    cin += ((p[i][0] * p[i][0]) + (p[i][1] * p[i][1])) / m[i];
+  cin *= 0.5;
+  for (i = 0; i < np; i++)
+    for (j = 0; j < i; j++) {
+      for (k = 0; k < COMP; k++)
+  	resta[k] = q[i][k] - q[j][k];
+      r_dos = (resta[0] * resta[0]) + (resta[1] * resta[1]);
+      s2r2 = SIGMA * SIGMA / r_dos;
+      s6r6 = s2r2 * s2r2 * s2r2;
+      s12r12 = s6r6 * s6r6;
+      pot += s12r12 - s6r6;
+    }
+  pot *= 4.0 * EPSILON * BOLTZ;
+  return (cin + pot);
 }

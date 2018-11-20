@@ -87,8 +87,6 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
       gV += (masses[k] * (q[i][j] - q[k][j])) / den;
     }
   gV *= GRAV_CNT;
-  //if (i == 0)
-  //printf("%d %d %.18e\n", i, j, -gV);
   return -gV;
 }
 
@@ -107,7 +105,6 @@ void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, in
     }
   g1 *= GRAV_CNT * masses[i];
   g2 *= -4.0 * GRAV_CNT2 * masses[i];
-  //printf("%.15e %.15e\n", g1, g2); exit(1);
   *gV = g1;
   *gV2 = g2;
 }
@@ -161,7 +158,7 @@ real energiaSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP],
   for (i = 0; i < np; i++)
     cin += ((p[i][0] * p[i][0]) + (p[i][1] * p[i][1]) + (p[i][2] * p[i][2])) / m[i];
   cin *= 0.5;
-  for (i = 1; i < np; i++)
+  for (i = 0; i < np; i++)
     for (j = 0; j < i; j++) {
       for (k = 0; k < COMP; k++)
   	resta[k] = q[i][k] - q[j][k];

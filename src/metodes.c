@@ -15,7 +15,7 @@ void phi_T(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np
 
 void phi_V(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np, real t) {
   int i, j;
-  for (i = 1; i < np; i++)
+  for (i = 0; i < np; i++)
     for (j = 0; j < COMP; j++)
       p[i][j] -= t * gradV(m, q, i, j, np);
 }
@@ -23,7 +23,7 @@ void phi_V(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np
 void phi_Vm(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np, real t1, real t2) {
   real gV, gV2;
   int i, j;
-  for (i = 1; i < np; i++)
+  for (i = 0; i < np; i++)
     for (j = 0; j < COMP; j++) {
       gradVmod(m, q, i, j, np, &gV, &gV2);
       p[i][j] = p[i][j] - (t1 * gV) + (t2 * gV2);
@@ -40,7 +40,7 @@ void phi_Tv(real m[MAX_PAR], real q[MAX_PAR][COMP], real v[MAX_PAR][COMP], int n
 
 void phi_Vv(real m[MAX_PAR], real q[MAX_PAR][COMP], real v[MAX_PAR][COMP], int np, real t) {
   int i, j;
-  for (i = 1; i < np; i++)
+  for (i = 0; i < np; i++)
     for (j = 0; j < COMP; j++)
       v[i][j] += t * deriv2q(m, q, i, j, np);
 }

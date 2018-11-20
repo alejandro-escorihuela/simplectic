@@ -1,18 +1,22 @@
 #!/bin/bash
-# 26-04-2018
+# 20-11-2018
 # alex
-# ordre.sh
+# ordre_molecular.sh
 
-POTEN="solar"
-T_MAX=200000
+POTEN="molecular"
+T_MAX=0.02
 PAS=()
 MET=()
-PAS[0]=500
-PAS[1]=200
-PAS[2]=100
-PAS[3]=50
-PAS[4]=25
-PAS[5]=10
+PAS[0]=1.0e-4
+PAS[1]=7.5e-5
+PAS[2]=5.0e-5
+PAS[3]=2.5e-5
+PAS[4]=1.0e-5
+PAS[5]=7.5e-6
+PAS[6]=5.0e-6
+PAS[7]=2.5e-6
+PAS[8]=1.0e-6
+PAS[9]=7.5e-7
 MET[0]="sb_6_4"
 MET[1]="ss_5_4"
 MET[2]="sa_5_4_3"
@@ -34,7 +38,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/ordre.pdf\"" >> plot.plt
+echo "set output \"../graf/ordre_molecular.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt

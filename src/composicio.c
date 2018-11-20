@@ -39,7 +39,7 @@ int main (int num_arg, char * vec_arg[]) {
     deriv2q = deriv2qMolecular;
     gradVmod = gradVmodMolecular;
     phi0 = phi0Molecular;
-    q_conservada = temperaturaMolecular;
+    q_conservada = energiaMolecular;
     Npart = init_molecules(masses, noms, q, p);
   }
   else {

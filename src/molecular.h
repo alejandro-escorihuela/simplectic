@@ -33,6 +33,7 @@ real deriv2qMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int 
 void gradVmodMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2);
 void phi0Molecular(real q[COMP], real p[COMP], real h, real m);
 real temperaturaMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
+real energiaMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
 
 #endif
 
