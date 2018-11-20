@@ -90,7 +90,7 @@ int main (int num_arg, char * vec_arg[]) {
     if (strcmp(t_metode, "ss") == 0) {
       for (i = 0; i < s; i++)
 	phi_storAdj(masses, q, p, Npart, ah[i]);
-      Neval += (s * (Npart - 1));
+      Neval += (s * Npart);
     }
     else if (strcmp(t_metode, "sb") == 0) {
       for (i = 0; i < s; i++) {
@@ -98,7 +98,7 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_T(masses, q, p, Npart, ah[i]);
       }
       phi_V(masses, q, p, Npart, bh[s]);
-      Neval += ((s + 1) * (Npart - 1));
+      Neval += ((s + 1) * Npart);
     }
     else if (strcmp(t_metode, "sa") == 0) {
       for (i = 0; i < s; i++) {
@@ -106,14 +106,14 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_V(masses, q, p, Npart, bh[i]);
       }
       phi_T(masses, q, p, Npart, ah[s]);
-      Neval += (s * (Npart - 1));
+      Neval += (s * Npart);
     }
     else if (strcmp(t_metode, "sx") == 0) {
       for (i = 0; i < s; i += 2) {
 	phi_simpVT(masses, q, p, Npart, ah[i]);
 	phi_simpTV(masses, q, p, Npart, ah[i + 1]);
       }
-      Neval += (s * (Npart - 1));
+      Neval += (s * Npart);
     }    
     else if (strcmp(t_metode, "nb") == 0) {
       for (i = 0; i < s; i++) {
@@ -122,7 +122,7 @@ int main (int num_arg, char * vec_arg[]) {
       }
       phi_Vv(masses, q, v, Npart, bh[s]);
       v2p(masses, p, v, Npart);
-      Neval += ((s + 1) * (Npart - 1));
+      Neval += ((s + 1) * Npart);
     }
     else if (strcmp(t_metode, "na") == 0) {
       for (i = 0; i < s; i++) {
@@ -131,7 +131,7 @@ int main (int num_arg, char * vec_arg[]) {
       }
       phi_Tv(masses, q, v, Npart, ah[s]);
       v2p(masses, p, v, Npart);
-      Neval += ((s + 1) * (Npart - 1));
+      Neval += (s * Npart);
     }
     else if (strcmp(t_metode, "nia") == 0) {
       for (i = 0; i < s; i++) {
@@ -139,7 +139,7 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_eV1(masses, q, p, Npart, bh[i]);
       }
       phi_H0(masses, q, p, Npart, ah[s]);    
-      Neval += (s * (Npart - 1));
+      Neval += (s * Npart);
     }
 
     t += temps() - t0;

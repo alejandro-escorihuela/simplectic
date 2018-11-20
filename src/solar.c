@@ -77,17 +77,11 @@ real egradVSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int 
 }
 
 real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
-  int k, m;
-  real gV = 0.0, resta[COMP], den;
-  for (k = 0; k < np; k++)
-    if (i != k) {
-      for (m = 0; m < COMP; m++)
-	resta[m] = q[i][m] - q[k][m];
-      den = POTENCIA((resta[0] * resta[0]) + (resta[1] * resta[1]) + (resta[2] * resta[2]), 1.5);
-      gV += (masses[k] * (q[i][j] - q[k][j])) / den;
-    }
-  gV *= GRAV_CNT;
-  return -gV;
+  /* if (i == 0) { */
+  /*   printf("%.18e\n", gradVSolar(masses, q, i, j, np)); */
+  /*   return 0.0; */
+  /* } */
+  return -gradVSolar(masses, q, i, j, np) / masses[i];
 }
 
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {

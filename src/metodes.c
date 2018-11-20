@@ -95,14 +95,14 @@ void copiar(real orig[MAX_PAR][COMP], real copi[MAX_PAR][COMP], int np) {
 
 void p2v(real m[MAX_PAR], real p[MAX_PAR][COMP], real v[MAX_PAR][COMP], int np) {
   int i, j;
-  for (i = 1; i < np; i++)
+  for (i = 0; i < np; i++)
     for (j = 0; j < COMP; j++)
       v[i][j] = p[i][j] / m[i];
 }
 
 void v2p(real m[MAX_PAR], real p[MAX_PAR][COMP], real v[MAX_PAR][COMP], int np) {
   int i, j;
-  for (i = 1; i < np; i++)
+  for (i = 0; i < np; i++)
     for (j = 0; j < COMP; j++)
       p[i][j] = v[i][j] * m[i];
 }
