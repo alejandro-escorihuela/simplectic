@@ -1,11 +1,11 @@
-/* 19-11-2018 */
+/* 21-11-2018 */
 /* alex */
-/* molecular.c */
+/* fput.c */
 #include <stdio.h>
 #include <stdlib.h>
-#include "molecular.h"
-
-int init_molecules(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
+#include "fput.h"
+int
+ init_(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
   int i, j, N = 7;
   double q_aux[N][2], p_aux[N][2];
 #if TIPUS == 3
@@ -67,7 +67,7 @@ int init_molecules(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR]
   return N;
 }
 
-real gradVMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
+real gradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   int k, m;
   real gV = 0.0, resta[COMP], fac, r_dos, s2r2, s6r6, s12r12;
   (void) masses;
@@ -82,26 +82,26 @@ real gradVMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, i
       fac = (s6r6 - (2.0 * s12r12)) / r_dos;
       gV += fac * (q[i][j] - q[k][j]);
     }
-  gV *= 24.0 * EPSILON * BOLTZ;
+  gV *= 24.0;
   return gV;
 }
 
-real egradVMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
+real egradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   (void) masses;
   (void) q;
   (void) i;
   (void) j;
   (void) np;
-  fputs("eH1 no definit per al potencial molecular\n", stderr);
+  fputs("eH1 no definit per al potencial FPUT\n", stderr);
   exit(1);
   return masses[0];
 }
 
-real deriv2qMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
-  return -gradVMolecular(masses, q, i, j, np) / masses[i];
+real deriv2qFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
+  return -gradVFPUT(masses, q, i, j, np) / masses[i];
 }
 
-void gradVmodMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
+void gradVmodFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
   (void) masses;
   (void) q;
   (void) i;
@@ -109,33 +109,20 @@ void gradVmodMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j
   (void) np;
   (void) gV;
   (void) gV2;
-  fputs("Potencial molecular modificat no definit\n", stderr);
+  fputs("Potencial FPUT modificat no definit\n", stderr);
   exit(1);
 }
 
-void phi0Molecular(real q[COMP], real p[COMP], real h, real m) {
+void phi0FPUT(real q[COMP], real p[COMP], real h, real m) {
   (void) q;
   (void) p;
   (void) h;
   (void) m;
-  fputs("H0 no definit per al potencial molecular\n", stderr);
+  fputs("H0 no definit per al potencial FPUT\n", stderr);
   exit(1);
 }
 
-real temperaturaMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
-  /* no és un invariant exacte, fluctua al voltant d'un valor (22.72K) */
-  int i;
-  real sum = 0.0;
-  real v[MAX_PAR][COMP];
-
-  (void) q;
-  p2v(m, p, v, np);
-  for (i = 0; i < np; i++)
-    sum += m[i] * ((v[i][0] * v[i][0]) + (v[i][1] * v[i][1]));
-  return sum / (2.0 * ((real) np) * BOLTZ);
-}
-
-real energiaMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
+real energiaFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
   int i, j, k;
   real cin = 0.0, pot = 0.0, resta[2], r_dos, s2r2, s6r6, s12r12;
   for (i = 0; i < np; i++)

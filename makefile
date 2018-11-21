@@ -31,6 +31,12 @@ config.o: src/config.c src/config.h src/tipus.h
 	$(COM) $(OPC) -c $<
 	@echo -n "\033[0m"
 
+fput.o: src/fput.c src/fput.h src/tipus.h metodes.o
+	@echo "\033[0;36m"Compilant $<"\033[0m"
+	@echo -n "  \033[0;37m"
+	$(COM) $(OPC) -c $<
+	@echo -n "\033[0m"
+
 molecular.o: src/molecular.c src/molecular.h src/tipus.h metodes.o
 	@echo "\033[0;36m"Compilant $<"\033[0m"
 	@echo -n "  \033[0;37m"
