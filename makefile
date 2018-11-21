@@ -13,7 +13,7 @@ DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
 
-composicio: src/composicio.c metodes.o solar.o molecular.o config.o
+composicio: src/composicio.c metodes.o solar.o molecular.o fput.o config.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@

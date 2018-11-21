@@ -77,10 +77,6 @@ real egradVSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int 
 }
 
 real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
-  /* if (i == 0) { */
-  /*   printf("%.18e\n", gradVSolar(masses, q, i, j, np)); */
-  /*   return 0.0; */
-  /* } */
   return -gradVSolar(masses, q, i, j, np) / masses[i];
 }
 

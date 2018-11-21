@@ -4,86 +4,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fput.h"
-int
- init_(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
-  int i, j, N = 7;
-  double q_aux[N][2], p_aux[N][2];
+int init_FPUT(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
+  int i, N = 10;
+  double q_aux[N], p_aux[N], massa = 1.0, dist = 0.25;
 #if TIPUS == 3
   char buf[128];
 #endif
   for (i = 0; i < N; i++)
-    sprintf(noms[i], "pt%d", i);
+    sprintf(noms[i], "p%.2d", i);
+  q_aux[0] = 0.0;
+  for (i = 1; i < N; i++)
+    q_aux[i] = q_aux[i - 1] + dist;
   for (i = 0; i < N; i++)
-    for (j = 0; j < COMP; j++)
-      q[i][2] = p[i][2] = 0.0;
-  q_aux[0][0] = 0.00;
-  q_aux[0][1] = 0.00;
-  q_aux[1][0] = 0.02;
-  q_aux[1][1] = 0.39;
-  q_aux[2][0] = 0.34;
-  q_aux[2][1] = 0.17;
-  q_aux[3][0] = 0.36;
-  q_aux[3][1] = -0.21;
-  q_aux[4][0] = -0.02;
-  q_aux[4][1] = -0.40;
-  q_aux[5][0] = -0.35;
-  q_aux[5][1] = -0.16;
-  q_aux[6][0] = -0.31;
-  q_aux[6][1] = 0.21;
-  p_aux[0][0] = MASSA_P * (-30.0);
-  p_aux[0][1] = MASSA_P * (-20.0);
-  p_aux[1][0] = MASSA_P * (+50.0);
-  p_aux[1][1] = MASSA_P * (-90.0);
-  p_aux[2][0] = MASSA_P * (-70.0);
-  p_aux[2][1] = MASSA_P * (-60.0);
-  p_aux[3][0] = MASSA_P * (+90.0);
-  p_aux[3][1] = MASSA_P * (+40.0);
-  p_aux[4][0] = MASSA_P * (+80.0);
-  p_aux[4][1] = MASSA_P * (+90.0);
-  p_aux[5][0] = MASSA_P * (-40.0);
-  p_aux[5][1] = MASSA_P * (100.0);
-  p_aux[6][0] = MASSA_P * (-80.0);
-  p_aux[6][1] = MASSA_P * (-60.0);
+    p_aux[i] = 0.0;
+  p_aux[5] = 0.1;
 #if TIPUS == 3
   for (i = 0; i < N; i++) {
-    for (j = 0; j < 2; j++) {
-      sprintf(buf, "%.18e", q_aux[i][j]);
-      q[i][j] = strtoflt128(buf, NULL);
-      sprintf(buf, "%.18e", p_aux[i][j]);
-      p[i][j] = strtoflt128(buf, NULL);
-    }
-    sprintf(buf, "%.18e", MASSA_P);
+      sprintf(buf, "%.18e", q_aux[i]);
+      q[i][0] = strtoflt128(buf, NULL);
+      sprintf(buf, "%.18e", p_aux[i]);
+      p[i][0] = strtoflt128(buf, NULL);
+    sprintf(buf, "%.18e", massa);
     m[i] = strtoflt128(buf, NULL);
   }
 #else
   for (i = 0; i < N; i++) {
-    for (j = 0; j < 2; j++) {
-      q[i][j] = (real) q_aux[i][j];
-      p[i][j] = (real) p_aux[i][j];
-    }
-    m[i] = MASSA_P;
+    q[i][0] = (real) q_aux[i];
+    p[i][0] = (real) p_aux[i];
+    m[i] = massa;
   }
 #endif
   return N;
 }
 
 real gradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
-  int k, m;
-  real gV = 0.0, resta[COMP], fac, r_dos, s2r2, s6r6, s12r12;
   (void) masses;
-  for (k = 0; k < np; k++)
-    if (i != k) {
-      for (m = 0; m < 2; m++)
-	resta[m] = q[i][m] - q[k][m];
-      r_dos = (resta[0] * resta[0]) + (resta[1] * resta[1]);      
-      s2r2 = SIGMA * SIGMA / r_dos;
-      s6r6 = s2r2 * s2r2 * s2r2;
-      s12r12 = s6r6 * s6r6;
-      fac = (s6r6 - (2.0 * s12r12)) / r_dos;
-      gV += fac * (q[i][j] - q[k][j]);
-    }
-  gV *= 24.0;
-  return gV;
+  
+  if ((j != 0) || (i == 0) || (i == (np - 1)))
+    return 0.0;
+  return (q[i][0] - q[i - 1][0]) - (q[i + 1][0] - q[i][0]) + POTENCIA(q[i][0] - q[i - 1][0], 2) - POTENCIA(q[i + 1][0] - q[i][0], 2);
 }
 
 real egradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
@@ -123,21 +82,18 @@ void phi0FPUT(real q[COMP], real p[COMP], real h, real m) {
 }
 
 real energiaFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
-  int i, j, k;
-  real cin = 0.0, pot = 0.0, resta[2], r_dos, s2r2, s6r6, s12r12;
+  int i;
+  real cin = 0.0, sum1 = 0.0, sum2 = 0.0, aux1, aux2, terme, pot;
   for (i = 0; i < np; i++)
-    cin += ((p[i][0] * p[i][0]) + (p[i][1] * p[i][1])) / m[i];
+    cin += (p[i][0] * p[i][0]) / m[i];
   cin *= 0.5;
-  for (i = 0; i < np; i++)
-    for (j = 0; j < i; j++) {
-      for (k = 0; k < COMP; k++)
-  	resta[k] = q[i][k] - q[j][k];
-      r_dos = (resta[0] * resta[0]) + (resta[1] * resta[1]);
-      s2r2 = SIGMA * SIGMA / r_dos;
-      s6r6 = s2r2 * s2r2 * s2r2;
-      s12r12 = s6r6 * s6r6;
-      pot += s12r12 - s6r6;
-    }
-  pot *= 4.0 * EPSILON * BOLTZ;
+  for (i = 0; i < np; i++) {
+    terme = q[i + 1][0] - q[i][0];
+    aux1 = terme * terme;
+    sum1 += aux1;
+    aux2 = aux1 * terme;
+    sum2 += aux2;
+  }
+  pot = (0.5 * sum1) + (sum2 / 3.0);
   return (cin + pot);
 }

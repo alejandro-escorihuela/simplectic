@@ -14,8 +14,7 @@ int init_molecules(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR]
   for (i = 0; i < N; i++)
     sprintf(noms[i], "pt%d", i);
   for (i = 0; i < N; i++)
-    for (j = 0; j < COMP; j++)
-      q[i][2] = p[i][2] = 0.0;
+    q[i][2] = p[i][2] = 0.0;
   q_aux[0][0] = 0.00;
   q_aux[0][1] = 0.00;
   q_aux[1][0] = 0.02;

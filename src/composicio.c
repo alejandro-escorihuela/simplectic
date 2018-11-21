@@ -7,6 +7,7 @@
 #include "metodes.h"
 #include "solar.h"
 #include "molecular.h"
+#include "fput.h"
 
 int main (int num_arg, char * vec_arg[]) {
   int i, it, Npart, N, pop, pit, Neval = 0;
@@ -41,6 +42,15 @@ int main (int num_arg, char * vec_arg[]) {
     phi0 = phi0Molecular;
     q_conservada = energiaMolecular;
     Npart = init_molecules(masses, noms, q, p);
+  }
+  else if (strcmp(t_poten, "fput") == 0) {
+    gradV = gradVFPUT;
+    egradV = egradVFPUT;
+    deriv2q = deriv2qFPUT;
+    gradVmod = gradVmodFPUT;
+    phi0 = phi0FPUT;
+    q_conservada = energiaFPUT;
+    Npart = init_FPUT(masses, noms, q, p);
   }
   else {
     fputs("El potencial especificat no existeix\n", stderr);
