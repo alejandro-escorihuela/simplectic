@@ -31,7 +31,7 @@ real gradVMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np
 real egradVMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real deriv2qMolecular(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 void gradVmodMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2);
-void phi0Molecular(real q[COMP], real p[COMP], real h, real m);
+void phi0Molecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np);
 real temperaturaMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
 real energiaMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
 

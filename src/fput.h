@@ -19,7 +19,7 @@ real gradVFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real egradVFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real deriv2qFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 void gradVmodFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2);
-void phi0FPUT(real q[COMP], real p[COMP], real h, real m);
+void phi0FPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np);
 real energiaFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
 
 #endif

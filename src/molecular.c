@@ -112,11 +112,13 @@ void gradVmodMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j
   exit(1);
 }
 
-void phi0Molecular(real q[COMP], real p[COMP], real h, real m) {
+void phi0Molecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {
+  (void) masses;
   (void) q;
   (void) p;
+  (void) i;
   (void) h;
-  (void) m;
+  (void) np;
   fputs("H0 no definit per al potencial molecular\n", stderr);
   exit(1);
 }
