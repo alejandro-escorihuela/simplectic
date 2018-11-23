@@ -77,6 +77,7 @@ void phi_H0(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int n
   int i;
   for (i = 1; i < np; i++)
     phi0(q[i], p[i], t, m[i]);
+  //phi0(m, q, p, i, t, np)
 }
 
 void phi_eV1(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np, real t) {

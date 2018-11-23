@@ -26,7 +26,7 @@ real gradVSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real egradVSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 real deriv2qSolar(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2);
-void phiKepler(real q[COMP], real p[COMP], real h, real m);
+void phiKepler(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np);
 real energiaSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np);
 
 #endif

@@ -47,13 +47,9 @@ real gradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np
 
 real egradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   (void) masses;
-  (void) q;
-  (void) i;
-  (void) j;
-  (void) np;
-  fputs("eH1 no definit per al potencial FPUT\n", stderr);
-  exit(1);
-  return masses[0];
+  if ((j != 0) || (i == 0) || (i == (np - 1)))
+    return 0.0;
+  return (q[i][0] - q[i + 1][0] - q[i - 1][0]) + POTENCIA(q[i][0] - q[i - 1][0], 2) - POTENCIA(q[i + 1][0] - q[i][0], 2);
 }
 
 real deriv2qFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
@@ -73,12 +69,13 @@ void gradVmodFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
 }
 
 void phi0FPUT(real q[COMP], real p[COMP], real h, real m) {
-  (void) q;
-  (void) p;
-  (void) h;
+  real q_ant, p_ant;
   (void) m;
-  fputs("H0 no definit per al potencial FPUT\n", stderr);
-  exit(1);
+  
+  q_ant = q[0];
+  p_ant = p[0];
+  q[0] = COSINUS(h) * q_ant + SINUS(h) * p_ant;
+  p[0] = -SINUS(h) * q_ant + COSINUS(h) * p_ant;
 }
 
 real energiaFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
