@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fput.h"
+
 int init_FPUT(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]) {
   int i, N = 10;
   double q_aux[N], p_aux[N], massa = 1.0, dist = 0.25;
@@ -42,14 +43,14 @@ real gradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np
   
   if ((j != 0) || (i == 0) || (i == (np - 1)))
     return 0.0;
-  return (q[i][0] - q[i - 1][0]) - (q[i + 1][0] - q[i][0]) + POTENCIA(q[i][0] - q[i - 1][0], 2) - POTENCIA(q[i + 1][0] - q[i][0], 2);
+  return (q[i][0] - q[i - 1][0]) - (q[i + 1][0] - q[i][0]) + POTENCIA(q[i][0] - q[i - 1][0], ORDRE_FPUT - 1) - POTENCIA(q[i + 1][0] - q[i][0], ORDRE_FPUT - 1);
 }
 
 real egradVFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
   (void) masses;
   if ((j != 0) || (i == 0) || (i == (np - 1)))
     return 0.0;
-  return (q[i][0] - q[i + 1][0] - q[i - 1][0]) + POTENCIA(q[i][0] - q[i - 1][0], 2) - POTENCIA(q[i + 1][0] - q[i][0], 2);
+  return (q[i][0] - q[i + 1][0] - q[i - 1][0]) + POTENCIA(q[i][0] - q[i - 1][0], ORDRE_FPUT - 1) - POTENCIA(q[i + 1][0] - q[i][0], ORDRE_FPUT - 1);
 }
 
 real deriv2qFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np) {
@@ -81,8 +82,9 @@ void phi0FPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]
 }
 
 real energiaFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int np) {
-  int i;
+  int i, j;
   real cin = 0.0, sum1 = 0.0, sum2 = 0.0, aux1, aux2, terme, pot;
+  
   for (i = 0; i < np; i++)
     cin += (p[i][0] * p[i][0]) / m[i];
   cin *= 0.5;
@@ -91,8 +93,10 @@ real energiaFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], 
     aux1 = terme * terme;
     sum1 += aux1;
     aux2 = aux1 * terme;
+    for (j = 3; j < ORDRE_FPUT; j++)
+      aux2 *= terme;
     sum2 += aux2;
   }
-  pot = (0.5 * sum1) + (sum2 / 3.0);
+  pot = (0.5 * sum1) + (sum2 / (real) ORDRE_FPUT);
   return (cin + pot);
 }
