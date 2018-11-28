@@ -18,7 +18,9 @@ MET[1]="ss_5_4"
 MET[2]="sa_5_4_3"
 MET[3]="sa_4_4_2"
 MET[4]="nb_6_4"
-MET[5]="nia_2"
+MET[5]="ss_9_6"
+MET[6]="sa_9_6_6"
+#MET[5]="nia_2"
 
 cd ..
 mkdir .tmp_dat
