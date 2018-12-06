@@ -1,7 +1,7 @@
 #!/bin/bash
-# 26-04-2018
+# 06-12-2018
 # alex
-# ordre_solar.sh
+# ordre_solarna.sh
 
 POTEN="solar"
 T_MAX=200000
@@ -53,7 +53,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/ordre_solar.pdf\"" >> plot.plt
+echo "set output \"../graf/ordre_solarna.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt
