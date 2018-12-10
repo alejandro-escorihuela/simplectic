@@ -19,7 +19,7 @@ MET[2]="sa_5_4"
 MET[3]="sa_4_4"
 MET[4]="ss_9_6"
 MET[5]="sa_9_6"
-
+MET[6]="sa_10_6"
 
 cd ..
 mkdir .tmp_dat
