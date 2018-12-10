@@ -17,9 +17,16 @@ MET[0]="sb_6_4"
 MET[1]="ss_5_4"
 MET[2]="sa_5_4"
 MET[3]="sa_4_4"
+
 MET[4]="ss_9_6"
 MET[5]="sa_9_6"
+<<<<<<< HEAD
 MET[6]="sa_10_6"
+=======
+
+MET[6]="nb_6_4"
+MET[7]="na_7_6"
+>>>>>>> c6f61729eb63671a13515b2e59232edffbc65650
 
 cd ..
 mkdir .tmp_dat
