@@ -22,7 +22,6 @@ MET[3]="sa_10_6"
 MET[4]="nb_6_4"
 MET[5]="na_7_6"
 
-
 cd ..
 mkdir .tmp_dat
 for i in ${MET[@]} ; do
