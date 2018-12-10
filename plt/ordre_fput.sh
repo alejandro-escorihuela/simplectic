@@ -14,16 +14,14 @@ PAS[3]=0.1
 PAS[4]=0.06
 PAS[5]=0.03
 PAS[6]=0.01
-MET[0]="sb_6_4"
-MET[1]="ss_5_4"
-MET[2]="sa_5_4"
-MET[3]="sa_4_4"
+MET[0]="sa_6_4"
+MET[1]="sa_5_4"
 
-MET[4]="ss_9_6"
-MET[5]="sa_9_6"
+MET[2]="sa_9_6"
+MET[3]="sa_10_6"
 
-MET[6]="nb_6_4"
-MET[7]="na_7_6"
+MET[4]="nb_6_4"
+MET[5]="na_7_6"
 
 cd ..
 mkdir .tmp_dat

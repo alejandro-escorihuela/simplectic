@@ -13,20 +13,15 @@ PAS[2]=100
 PAS[3]=50
 PAS[4]=25
 PAS[5]=10
-MET[0]="sb_6_4"
-MET[1]="ss_5_4"
-MET[2]="sa_5_4"
-MET[3]="sa_4_4"
+MET[0]="sa_6_4"
+MET[1]="sa_5_4"
 
-MET[4]="ss_9_6"
-MET[5]="sa_9_6"
-<<<<<<< HEAD
-MET[6]="sa_10_6"
-=======
+MET[2]="sa_9_6"
+MET[3]="sa_10_6"
 
-MET[6]="nb_6_4"
-MET[7]="na_7_6"
->>>>>>> c6f61729eb63671a13515b2e59232edffbc65650
+MET[4]="nb_6_4"
+MET[5]="na_7_6"
+
 
 cd ..
 mkdir .tmp_dat
@@ -57,7 +52,7 @@ for i in ${MET[@]} ; do
     l=$(echo $i | cut -d'_' -f 2)
     m=$(echo $i | cut -d'_' -f 3)
     #n=$(echo $i | cut -d'_' -f 4)
-    l="_$l^{[$m]}"
+    l="_{$l}^{[$m]}"
     echo -n "\"$i.dat\" u (log10(\$3)):(log10(\$4)) t \"$k$l $n\" w lp lw 2 ps 0.5 pt 2, " >> plot.plt
     let "IT++"
 done
