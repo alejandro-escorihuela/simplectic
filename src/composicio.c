@@ -76,6 +76,8 @@ int main (int num_arg, char * vec_arg[]) {
     s = tam_a;
   else if (strcmp(t_metode, "sa") == 0)
     s = tam_b;
+  else if (strcmp(t_metode, "ma") == 0)
+    s = tam_b;
   else if (strcmp(t_metode, "sx") == 0)
     s = tam_a;
   else if (strcmp(t_metode, "nb") == 0) {
