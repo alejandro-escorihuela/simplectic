@@ -13,14 +13,15 @@ PAS[2]=100
 PAS[3]=50
 PAS[4]=25
 PAS[5]=10
-MET[0]="sa_6_4"
-MET[1]="sa_5_4"
+MET[0]="sb_6_4"
+MET[1]="sa_6_4"
+MET[2]="sa_5_4"
 
-MET[2]="sa_9_6"
-MET[3]="sa_10_6"
+MET[3]="sa_9_6"
+MET[4]="sa_10_6"
 
-MET[4]="nb_6_4"
-MET[5]="na_7_6"
+MET[5]="nb_6_4"
+MET[6]="na_7_6"
 
 cd ..
 mkdir .tmp_dat
