@@ -10,7 +10,7 @@
 #include "fput.h"
 
 int main (int num_arg, char * vec_arg[]) {
-  int i, it, Npart, N, pop, pit, Neval = 0;
+  int i, it, Npart, N, pop, pit, Neval = 0, Neval_Vmod = 0;
   char noms[MAX_PAR][MAX_CAD], f_ini[20], f_coef[20], t_metode[20], t_poten[20];
   real masses[MAX_PAR], q[MAX_PAR][COMP], p[MAX_PAR][COMP], v[MAX_PAR][COMP];
   real a[NUM_MAX_COEF], b[NUM_MAX_COEF], y[NUM_MAX_COEF], z[NUM_MAX_COEF];
@@ -18,8 +18,8 @@ int main (int num_arg, char * vec_arg[]) {
   int tam_a = 0, tam_b = 0, tam_y = 0, tam_z = 0;
   real H0, H, DH, Hemax = 0.0;
   real h;
-  int s;
-  double t0, t = 0.0;
+  int s, sm;
+  double t0, t = 0.0, fac_Vmod;
   FILE * fit_pl[MAX_PAR + 1];
 
   carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_poten, t_metode, f_coef);
@@ -33,6 +33,7 @@ int main (int num_arg, char * vec_arg[]) {
     phi0 = phiKepler;
     q_conservada = energiaSolar;
     Npart = init_planetes(f_ini, masses, noms, q, p);
+    fac_Vmod = 0.05;
   }
   else if (strcmp(t_poten, "molecular") == 0) {
     gradV = gradVMolecular;
@@ -42,6 +43,7 @@ int main (int num_arg, char * vec_arg[]) {
     phi0 = phi0Molecular;
     q_conservada = energiaMolecular;
     Npart = init_molecules(masses, noms, q, p);
+    fac_Vmod = 0.10;
   }
   else if (strcmp(t_poten, "fput") == 0) {
     gradV = gradVFPUT;
@@ -51,6 +53,7 @@ int main (int num_arg, char * vec_arg[]) {
     phi0 = phi0FPUT;
     q_conservada = energiaFPUT;
     Npart = init_FPUT(masses, noms, q, p);
+    fac_Vmod = 0.15;
   }
   else {
     fputs("El potencial especificat no existeix\n", stderr);
@@ -76,9 +79,11 @@ int main (int num_arg, char * vec_arg[]) {
     s = tam_a;
   else if (strcmp(t_metode, "sa") == 0)
     s = tam_b;
+  else if (strcmp(t_metode, "sx") == 0)
+    s = tam_a;
   else if (strcmp(t_metode, "ma") == 0)
     s = tam_b;
-  else if (strcmp(t_metode, "sx") == 0)
+  else if (strcmp(t_metode, "mb") == 0)
     s = tam_a;
   else if (strcmp(t_metode, "nb") == 0) {
     p2v(masses, p, v, Npart);
@@ -126,7 +131,55 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_simpTV(masses, q, p, Npart, ah[i + 1]);
       }
       Neval += (s * Npart);
-    }    
+    }
+    else if (strcmp(t_metode, "ma") == 0) {
+      sm = (s - 1)/ 2;
+      for (i = 0; i < sm; i++) {
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_V(masses, q, p, Npart, bh[i]);
+      }
+      if ((s % 2) == 0 ) {
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	phi_T(masses, q, p, Npart, ah[i]);
+	Neval_Vmod += (2 * Npart);
+      }
+      else {
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	phi_T(masses, q, p, Npart, ah[i]);
+	Neval_Vmod += Npart;
+      }
+      for (i = 0; i < sm; i++) {
+	phi_V(masses, q, p, Npart, bh[i]);
+	phi_T(masses, q, p, Npart, ah[i]);
+      }
+      Neval += ((s + 1) * Npart);      
+    }
+    else if (strcmp(t_metode, "mb") == 0) {
+      sm = s / 2;
+      for (i = 0; i < sm; i++) {
+	phi_V(masses, q, p, Npart, bh[i]);
+	phi_T(masses, q, p, Npart, ah[i]);
+      }
+      if ((s % 2) == 0 ) {
+	phi_Vm(masses, q, p, Npart, bh[i]);
+	Neval_Vmod += Npart;
+      }
+      else {
+	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	Neval_Vmod += (2 * Npart);
+      }
+      for (i = 0; i < sm; i++) {
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_V(masses, q, p, Npart, bh[i]);
+      }
+      Neval += ((s + 1) * Npart);
+    }
     else if (strcmp(t_metode, "nb") == 0) {
       for (i = 0; i < s; i++) {
 	phi_Vv(masses, q, v, Npart, bh[i]);
@@ -163,7 +216,7 @@ int main (int num_arg, char * vec_arg[]) {
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, Npart);
   }
   tancar_fitxers(fit_pl, Npart);
-  print_info(h, t, Neval, Hemax / H0);
+  print_info(h, t, Neval + ceil(((double) Neval_Vmod) * fac_Vmod), Hemax / H0);
   return 0;
 }
 
