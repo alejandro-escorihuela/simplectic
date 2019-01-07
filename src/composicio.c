@@ -133,7 +133,7 @@ int main (int num_arg, char * vec_arg[]) {
       Neval += (s * Npart);
     }
     else if (strcmp(t_metode, "ma") == 0) {
-      sm = (s - 1)/ 2;
+      sm = (s - 1) / 2;
       for (i = 0; i < sm; i++) {
 	phi_T(masses, q, p, Npart, ah[i]);
 	phi_V(masses, q, p, Npart, bh[i]);
