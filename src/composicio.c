@@ -134,48 +134,58 @@ int main (int num_arg, char * vec_arg[]) {
     }
     else if (strcmp(t_metode, "ma") == 0) {
       sm = (s - 1) / 2;
-      for (i = 0; i < sm; i++) {
+      i = 0;
+      while (i < sm) {
 	phi_T(masses, q, p, Npart, ah[i]);
 	phi_V(masses, q, p, Npart, bh[i]);
+	i++;
       }
       if ((s % 2) == 0 ) {
 	phi_T(masses, q, p, Npart, ah[i]);
 	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	i++;
 	phi_T(masses, q, p, Npart, ah[i]);
 	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	i++;
 	phi_T(masses, q, p, Npart, ah[i]);
 	Neval_Vmod += (2 * Npart);
       }
       else {
 	phi_T(masses, q, p, Npart, ah[i]);
 	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
+	i++;
 	phi_T(masses, q, p, Npart, ah[i]);
 	Neval_Vmod += Npart;
       }
-      for (i = 0; i < sm; i++) {
+      while (i < s) {
 	phi_V(masses, q, p, Npart, bh[i]);
+	i++;
 	phi_T(masses, q, p, Npart, ah[i]);
       }
       Neval += ((s + 1) * Npart);      
     }
     else if (strcmp(t_metode, "mb") == 0) {
       sm = s / 2;
-      for (i = 0; i < sm; i++) {
+      i = 0;
+      while (i < sm) {
 	phi_V(masses, q, p, Npart, bh[i]);
 	phi_T(masses, q, p, Npart, ah[i]);
+	i++;
       }
-      if ((s % 2) == 0 ) {
-	phi_Vm(masses, q, p, Npart, bh[i]);
+      if ((s % 2) == 0) {
+	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
 	Neval_Vmod += Npart;
       }
       else {
 	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
 	phi_T(masses, q, p, Npart, ah[i]);
+	i++;
 	phi_Vm(masses, q, p, Npart, bh[i], bh[i] * h * h / 24.0);
 	Neval_Vmod += (2 * Npart);
       }
-      for (i = 0; i < sm; i++) {
+      while (i < s) {
 	phi_T(masses, q, p, Npart, ah[i]);
+	i++;
 	phi_V(masses, q, p, Npart, bh[i]);
       }
       Neval += ((s + 1) * Npart);
