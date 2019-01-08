@@ -63,7 +63,7 @@ void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], 
   }
 }
 
-void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], int * tam_a, int * tam_b, int * tam_y, int * tam_z) {
+void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], real * b_m, int * tam_a, int * tam_b, int * tam_y, int * tam_z) {
   FILE * fp;
   char linia[LINIA_MAX], * valor, * tipus, nom_fit[30];
   double vec_aux[NUM_MAX_COEF];
@@ -104,6 +104,8 @@ void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_CO
       *tam_z = tam_aux;
       vec_coef_copia(vec_aux, vec_z, *tam_z);
     }
+    else if (strcmp(tipus, "m") == 0)
+      *b_m = vec_aux[0];
     fgets(linia, LINIA_MAX, fp);
   } 
   fclose(fp);

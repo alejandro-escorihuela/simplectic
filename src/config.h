@@ -20,7 +20,7 @@ double temps();
 
 /* lectura de coeficients */
 void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef);
-void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], int * tam_a, int * tam_b, int * tam_y, int * tam_z);
+void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], real * b_m, int * tam_a, int * tam_b, int * tam_y, int * tam_z);
 
 /* funcions comunes */
 void obrir_fitxers(FILE * fitxers[MAX_PAR + 1], char noms[MAX_PAR][MAX_CAD], char * f_ini, char * potencial, char * metode, int np);

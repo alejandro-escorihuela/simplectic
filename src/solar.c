@@ -96,7 +96,7 @@ void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, in
       den = POTENCIA((resta[0] * resta[0]) + (resta[1] * resta[1]) + (resta[2] * resta[2]), 1.5);
       num = (masses[k] * (q[i][j] - q[k][j]));
       g1 += num / den;
-      g2 += (masses[k] *  num) / (den * den);
+      g2 += (masses[k] * num) / (den * den);
     }
   g1 *= GRAV_CNT * masses[i];
   g2 *= -4.0 * GRAV_CNT2 * masses[i];
