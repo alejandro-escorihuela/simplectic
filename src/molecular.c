@@ -102,22 +102,31 @@ real deriv2qMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j,
 
 void gradVmodMolecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
   int k, m;
-  real g1 = 0.0, resta[COMP], fac, r_dos, s2r2, s6r6, s12r12;
+  real g1 = 0.0, g2 = 0.0, resta[COMP], r2, r6, r12, r28, s6, s12, f11, f12, f1, f2, f3;
   (void) masses;
   
   for (k = 0; k < np; k++)
     if (i != k) {
       for (m = 0; m < 2; m++)
-	resta[m] = q[i][m] - q[k][m];
-      r_dos = (resta[0] * resta[0]) + (resta[1] * resta[1]);      
-      s2r2 = SIGMA * SIGMA / r_dos;
-      s6r6 = s2r2 * s2r2 * s2r2;
-      s12r12 = s6r6 * s6r6;
-      fac = (s6r6 - (2.0 * s12r12)) / r_dos;
-      g1 += fac * (q[i][j] - q[k][j]);
+	resta[m] = q[i][m] - q[k][m];    
+      r2 = (resta[0] * resta[0]) + (resta[1] * resta[1]);
+      r6 = r2 * r2 * r2;
+      r12 = r6 * r6;
+      s6 = POTENCIA(SIGMA, 6);
+      s12 = s6 * s6;
+      f11 = s6 / r6;
+      f12 = s12 / r12;
+      r28 = r12 * r12 * r2 *r2;
+      f1 = (f11 - (2.0 * f12)) / r2;
+      f2 = (((26.0 * s6) - (7.0 * r6)) * ((2.0 * s6) - r6)) / r28;
+      g1 += f1 * (q[i][j] - q[k][j]);
+      g2 += f2 * (q[i][j] - q[k][j]);
     }
-  g1 *= 24.0 * EPSILON * BOLTZ;
+  f3 = EPSILON * BOLTZ;
+  g1 *= 24.0 * f3;
+  g2 *= -1152.0 * f3 * f3 * s12 / masses[i];
   *gV = g1;
+  *gV2 = g2;
 }
 
 void phi0Molecular(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {

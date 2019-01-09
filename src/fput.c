@@ -58,15 +58,21 @@ real deriv2qFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int 
 }
 
 void gradVmodFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
-  (void) masses;
-  (void) q;
-  (void) i;
-  (void) j;
-  (void) np;
-  (void) gV;
-  (void) gV2;
-  fputs("Potencial FPUT modificat no definit\n", stderr);
-  exit(1);
+  real xi0, xi1, xi2, t1, t2, t3, t4, a = (real) ORDRE_FPUT;
+  if ((j != 0) || (i == 0) || (i == (np - 1)))
+    *gV = *gV2 = 0.0;
+  else {
+    xi0 = q[i - 1][0];
+    xi1 = q[i][0];
+    xi2 = q[i + 1][0];
+    t1 = POTENCIA(xi1 - xi0, ORDRE_FPUT - 2);
+    t2 = POTENCIA(xi2 - xi1, ORDRE_FPUT - 2);
+    t3 = POTENCIA(xi1 - xi0, ORDRE_FPUT - 1);
+    t4 = POTENCIA(xi2 - xi1, ORDRE_FPUT - 1);
+    *gV = (xi1 - xi2 - xi0) + t3 - t4;
+    *gV2 = (2.0 * (2.0 + ((a - 1.0) * t1) + ((a - 1.0) * t2)) * ((2.0 * xi1) + t3 - xi0 - xi2 - t4)) / masses[i];
+    *gV2 = 0.0;
+  }
 }
 
 void phi0FPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {
