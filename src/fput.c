@@ -69,9 +69,8 @@ void gradVmodFPUT(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
     t2 = POTENCIA(xi2 - xi1, ORDRE_FPUT - 2);
     t3 = POTENCIA(xi1 - xi0, ORDRE_FPUT - 1);
     t4 = POTENCIA(xi2 - xi1, ORDRE_FPUT - 1);
-    *gV = (xi1 - xi2 - xi0) + t3 - t4;
+    *gV = (xi1 - xi0) - (xi2 - xi1) + t3 - t4;
     *gV2 = (2.0 * (2.0 + ((a - 1.0) * t1) + ((a - 1.0) * t2)) * ((2.0 * xi1) + t3 - xi0 - xi2 - t4)) / masses[i];
-    *gV2 = 0.0;
   }
 }
 
