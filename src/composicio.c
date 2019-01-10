@@ -33,7 +33,7 @@ int main (int num_arg, char * vec_arg[]) {
     phi0 = phiKepler;
     q_conservada = energiaSolar;
     Npart = init_planetes(f_ini, masses, noms, q, p);
-    fac_Vmod = 0.05;
+    fac_Vmod = 0.08;
   }
   else if (strcmp(t_poten, "molecular") == 0) {
     gradV = gradVMolecular;
@@ -43,7 +43,7 @@ int main (int num_arg, char * vec_arg[]) {
     phi0 = phi0Molecular;
     q_conservada = energiaMolecular;
     Npart = init_molecules(masses, noms, q, p);
-    fac_Vmod = 0.10;
+    fac_Vmod = 0.20;
   }
   else if (strcmp(t_poten, "fput") == 0) {
     gradV = gradVFPUT;
@@ -53,7 +53,7 @@ int main (int num_arg, char * vec_arg[]) {
     phi0 = phi0FPUT;
     q_conservada = energiaFPUT;
     Npart = init_FPUT(masses, noms, q, p);
-    fac_Vmod = 0.15;
+    fac_Vmod = 0.10;
   }
   else {
     fputs("El potencial especificat no existeix\n", stderr);
