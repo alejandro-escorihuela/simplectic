@@ -1,18 +1,15 @@
 #!/bin/bash
 # 09-01-2019
 # alex
-# mod_fput.sh
+# mod_harmonic.sh
 
-POTEN="fput"
-T_MAX=500
+POTEN="harmonic"
+T_MAX=10000
 PAS=()
 MET=()
-PAS[0]=0.1
-PAS[1]=0.06
-PAS[2]=0.03
-PAS[3]=0.01
-# PAS[4]=5
-# PAS[5]=1
+PAS[0]=1.0
+PAS[1]=0.1
+PAS[2]=0.01
 MET[0]="sa_1_2"
 MET[1]="ma_1_2"
 MET[2]="ma_2_4"
@@ -35,7 +32,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/mod_fput.pdf\"" >> plot.plt
+echo "set output \"../graf/mod_harmonic.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt

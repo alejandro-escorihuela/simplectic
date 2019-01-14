@@ -8,6 +8,7 @@
 #include "solar.h"
 #include "molecular.h"
 #include "fput.h"
+#include "harmonic.h"
 
 int main (int num_arg, char * vec_arg[]) {
   int i, it, Npart, N, pop, pit, Neval = 0, Neval_Vmod = 0;
@@ -54,6 +55,16 @@ int main (int num_arg, char * vec_arg[]) {
     q_conservada = energiaFPUT;
     Npart = init_FPUT(masses, noms, q, p);
     fac_Vmod = 0.10;
+  }
+  else if (strcmp(t_poten, "harmonic") == 0) {
+    gradV = gradVharmonic;
+    egradV = egradVharmonic;
+    deriv2q = deriv2qharmonic;
+    gradVmod = gradVmodharmonic;
+    phi0 = phi0harmonic;
+    q_conservada = energiaharmonic;
+    Npart = init_harmonic(masses, noms, q, p);
+    fac_Vmod = 0.05;
   }
   else {
     fputs("El potencial especificat no existeix\n", stderr);
@@ -169,25 +180,25 @@ int main (int num_arg, char * vec_arg[]) {
       sm = s / 2;
       i = 0;
       while (i < sm) {
-	phi_V(masses, q, p, Npart, bh[i]);
-	phi_T(masses, q, p, Npart, ah[i]);
-	i++;
+      	phi_V(masses, q, p, Npart, bh[i]);
+      	phi_T(masses, q, p, Npart, ah[i]);
+      	i++;
       }
       if ((s % 2) == 0) {
-	phi_Vm(masses, q, p, Npart, bh[i], bmh);
-	Neval_Vmod += Npart;
+      	phi_Vm(masses, q, p, Npart, bh[i], bmh);
+      	Neval_Vmod += Npart;
       }
       else {
-	phi_Vm(masses, q, p, Npart, bh[i], bmh);
-	phi_T(masses, q, p, Npart, ah[i]);
-	i++;
-	phi_Vm(masses, q, p, Npart, bh[i], bmh);
-	Neval_Vmod += (2 * Npart);
+      	phi_Vm(masses, q, p, Npart, bh[i], bmh);
+      	phi_T(masses, q, p, Npart, ah[i]);
+      	i++;
+      	phi_Vm(masses, q, p, Npart, bh[i], bmh);
+      	Neval_Vmod += (2 * Npart);
       }
       while (i < s) {
-	phi_T(masses, q, p, Npart, ah[i]);
-	i++;
-	phi_V(masses, q, p, Npart, bh[i]);
+      	phi_T(masses, q, p, Npart, ah[i]);
+      	i++;
+      	phi_V(masses, q, p, Npart, bh[i]);
       }
       Neval += ((s + 1) * Npart);
     }
