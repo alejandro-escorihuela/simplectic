@@ -85,21 +85,34 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
 }
 
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
-  int k, m;
-  real resta[COMP], g1, g2, den, num;
+  int k, l, m;
+  real pos[COMP], g1, g2, r2, r3, r5, qq, ter, terme1, terme2;
   
   g1 = g2 = 0.0;
   for (k = 0; k < np; k++)
     if (i != k) {
       for (m = 0; m < COMP; m++)
-	resta[m] = q[i][m] - q[k][m];
-      den = POTENCIA((resta[0] * resta[0]) + (resta[1] * resta[1]) + (resta[2] * resta[2]), 1.5);
-      num = (masses[k] * (q[i][j] - q[k][j]));
-      g1 += num / den;
-      g2 += (masses[k] * num) / (den * den);
+	pos[m] = q[i][m] - q[k][m];
+      r2 = (pos[0] * pos[0]) + (pos[1] * pos[1]) + (pos[2] * pos[2]);
+      r3 = POTENCIA(r2, 1.5);
+      r5 = r3 * r2;
+      qq = (q[i][j] - q[k][j]);
+      terme1 = terme2 = 0.0;
+      for (l = 0; l < COMP; l++) {
+	ter = (q[i][l] - q[k][l]);
+	terme1 += (-3.0 * ter * masses[k] * qq) / r5;
+	if (l != j)
+	  terme2 += ter * masses[k] / r3;
+	else
+	  terme2 += ter / r3;
+      }
+      terme1 = (-3.0 * ter * masses[k] * qq) / r5;
+      terme2 = ter * masses[k] / r3;
+      g1 += (masses[k] * qq) / r3;
+      g2 += (terme1 * terme2) + ((qq * masses[k] * masses[k]) / POTENCIA(r2, 3));
     }
   g1 *= GRAV_CNT * masses[i];
-  g2 *= -4.0 * GRAV_CNT2 * masses[i];
+  g2 *= 2.0 * GRAV_CNT2 * masses[i];  
   *gV = g1;
   *gV2 = g2;
 }
