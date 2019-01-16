@@ -115,6 +115,8 @@ void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, in
   g2 *= 2.0 * GRAV_CNT2 * masses[i];  
   *gV = g1;
   *gV2 = g2;
+  fputs("Potencial modificat no definit per al Sistema Solar\n", stderr);
+  exit(1);
 }
 
 void phiKepler(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {

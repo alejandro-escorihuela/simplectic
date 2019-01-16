@@ -13,7 +13,7 @@ DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
 
-composicio: src/composicio.c metodes.o solar.o molecular.o fput.o harmonic.o config.o
+composicio: src/composicio.c metodes.o kepler.o solar.o molecular.o fput.o harmonic.o config.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
@@ -50,6 +50,12 @@ molecular.o: src/molecular.c src/molecular.h src/tipus.h metodes.o
 	@echo -n "\033[0m"
 
 solar.o: src/solar.c src/solar.h src/tipus.h metodes.o
+	@echo "\033[0;36m"Compilant $<"\033[0m"
+	@echo -n "  \033[0;37m"
+	$(COM) $(OPC) -c $<
+	@echo -n "\033[0m"
+
+kepler.o: src/kepler.c src/kepler.h src/tipus.h metodes.o
 	@echo "\033[0;36m"Compilant $<"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) -c $<

@@ -17,7 +17,6 @@
 void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, int * pit, char * f_ini, char * t_potencial, char * t_metode, char * f_coef);
 double temps();
 
-
 /* lectura de coeficients */
 void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], int coef);
 void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], real * b_m, int * tam_a, int * tam_b, int * tam_y, int * tam_z);

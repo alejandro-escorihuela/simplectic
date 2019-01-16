@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "config.h"
 #include "metodes.h"
+#include "kepler.h"
 #include "solar.h"
 #include "molecular.h"
 #include "fput.h"
@@ -24,9 +25,19 @@ int main (int num_arg, char * vec_arg[]) {
   FILE * fit_pl[MAX_PAR + 1];
 
   carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_poten, t_metode, f_coef);
-
+  
   /* tipus de potencial */
-  if (strcmp(t_poten, "solar") == 0) {
+  if (strcmp(t_poten, "kepler") == 0) {
+    gradV = gradVKepler;
+    egradV = egradVKepler;
+    deriv2q = deriv2qKepler;
+    gradVmod = gradVmodKepler;
+    phi0 = phi0Kepler;
+    q_conservada = energiaKepler;
+    Npart = init_kepler(masses, noms, q, p);
+    fac_Vmod = 0.11;
+  }
+  else if (strcmp(t_poten, "solar") == 0) {
     gradV = gradVSolar;
     egradV = egradVSolar;
     deriv2q = deriv2qSolar;
