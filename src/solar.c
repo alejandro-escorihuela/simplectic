@@ -86,7 +86,29 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
 
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
   int k, l, m;
-  real pos[COMP], g1, g2, r2, r3, r5, qq, ter, terme1, terme2;
+  real pos[np][COMP], g1, g2, r2[np], r3[np], r5[np], qq[np][COMP], ter, terme1, terme2;
+
+  
+  for (k = 0; k < np; k++) {
+    for (l = 0; l < COMP; l++)
+      qq[k][l] = (q[i][l] - q[k][l]);
+    r2[k] = (qq[k][0] * qq[k][0]) + (qq[k][1] * qq[k][1]) + (qq[k][2] * qq[k][2]);
+    r3[k] = POTENCIA(r2[k], 1.5);
+    r5[k] = r3[k] * r2[k];
+  }
+  for (k = 0; k < np; k++) {
+    for (l = 0; l < COMP; l++) {
+      sum1[k][l] = (-3.0 * qq[k][j] * qq[k][l] * masses[k]) / r5[k];
+      if (l == j) {
+	sum1[k][l] += masses[k] / r3[k];
+      }
+      sum2[k][l] = (qq[k][l] * masses[k]) / r3[k];
+    }
+  }
+  for (l = 0; l < COMP; l++) {
+    
+  }
+
   
   g1 = g2 = 0.0;
   for (k = 0; k < np; k++)
@@ -99,15 +121,16 @@ void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, in
       qq = (q[i][j] - q[k][j]);
       terme1 = terme2 = 0.0;
       for (l = 0; l < COMP; l++) {
-	ter = (q[i][l] - q[k][l]);
-	terme1 += (-3.0 * ter * masses[k] * qq) / r5;
-	if (l != j)
+	if (l != j) {
+	  ter = (q[i][l] - q[k][l]);
+	  terme1 += (-3.0 * ter * masses[k] * qq) / r5;
 	  terme2 += ter * masses[k] / r3;
-	else
-	  terme2 += ter / r3;
+	}
+	else {
+	  ter = (q[i][l] - q[k][l]);
+	  terme3 = ter;
+	}
       }
-      terme1 = (-3.0 * ter * masses[k] * qq) / r5;
-      terme2 = ter * masses[k] / r3;
       g1 += (masses[k] * qq) / r3;
       g2 += (terme1 * terme2) + ((qq * masses[k] * masses[k]) / POTENCIA(r2, 3));
     }
@@ -115,8 +138,8 @@ void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, in
   g2 *= 2.0 * GRAV_CNT2 * masses[i];  
   *gV = g1;
   *gV2 = g2;
-  fputs("Potencial modificat no definit per al Sistema Solar\n", stderr);
-  exit(1);
+  //fputs("Potencial modificat no definit per al Sistema Solar\n", stderr);
+  //exit(1);
 }
 
 void phiKepler(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {
