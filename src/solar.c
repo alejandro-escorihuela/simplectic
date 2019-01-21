@@ -73,6 +73,7 @@ real egradVSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int 
     if (i != k) {
       for (m = 0; m < COMP; m++)
 	resta[m] = q[i][m] - q[k][m];
+
       den = POTENCIA((resta[0] * resta[0]) + (resta[1] * resta[1]) + (resta[2] * resta[2]), 1.5);
       gV += (masses[k] * (q[i][j] - q[k][j])) / den;
     }
@@ -85,61 +86,52 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
 }
 
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
-  int k, l, m;
-  real pos[np][COMP], g1, g2, r2[np], r3[np], r5[np], qq[np][COMP], ter, terme1, terme2;
+  int k, l;
+  real pos[np][COMP], sum1[np][COMP], sum2[np][COMP], s1[COMP], s2[COMP], g2, r2[np], r3[np], r5[np], qq[np][COMP];
 
   
   for (k = 0; k < np; k++) {
-    for (l = 0; l < COMP; l++)
-      qq[k][l] = (q[i][l] - q[k][l]);
-    r2[k] = (qq[k][0] * qq[k][0]) + (qq[k][1] * qq[k][1]) + (qq[k][2] * qq[k][2]);
-    r3[k] = POTENCIA(r2[k], 1.5);
-    r5[k] = r3[k] * r2[k];
-  }
-  for (k = 0; k < np; k++) {
-    for (l = 0; l < COMP; l++) {
-      sum1[k][l] = (-3.0 * qq[k][j] * qq[k][l] * masses[k]) / r5[k];
-      if (l == j) {
-	sum1[k][l] += masses[k] / r3[k];
-      }
-      sum2[k][l] = (qq[k][l] * masses[k]) / r3[k];
+    if (k != i) {
+      for (l = 0; l < COMP; l++)
+	qq[k][l] = (q[i][l] - q[k][l]);
+      r2[k] = (qq[k][0] * qq[k][0]) + (qq[k][1] * qq[k][1]) + (qq[k][2] * qq[k][2]);
+      r3[k] = POTENCIA(r2[k], 1.5);
+      r5[k] = r3[k] * r2[k];
+      //printf("%.15e %.15e %.15e\n", r2[k], r3[k], r5[k]);
     }
   }
-  for (l = 0; l < COMP; l++) {
-    
-  }
-
-  
-  g1 = g2 = 0.0;
-  for (k = 0; k < np; k++)
-    if (i != k) {
-      for (m = 0; m < COMP; m++)
-	pos[m] = q[i][m] - q[k][m];
-      r2 = (pos[0] * pos[0]) + (pos[1] * pos[1]) + (pos[2] * pos[2]);
-      r3 = POTENCIA(r2, 1.5);
-      r5 = r3 * r2;
-      qq = (q[i][j] - q[k][j]);
-      terme1 = terme2 = 0.0;
+  for (k = 0; k < np; k++) {
+    if (k != i) {
       for (l = 0; l < COMP; l++) {
-	if (l != j) {
-	  ter = (q[i][l] - q[k][l]);
-	  terme1 += (-3.0 * ter * masses[k] * qq) / r5;
-	  terme2 += ter * masses[k] / r3;
+	sum1[k][l] = (-3.0 * qq[k][j] * qq[k][l] * masses[k]) / r5[k];
+	if (l == j) {
+	  sum1[k][l] += masses[k] / r3[k];
 	}
-	else {
-	  ter = (q[i][l] - q[k][l]);
-	  terme3 = ter;
-	}
+	sum2[k][l] = (qq[k][l] * masses[k]) / r3[k];
       }
-      g1 += (masses[k] * qq) / r3;
-      g2 += (terme1 * terme2) + ((qq * masses[k] * masses[k]) / POTENCIA(r2, 3));
     }
-  g1 *= GRAV_CNT * masses[i];
-  g2 *= 2.0 * GRAV_CNT2 * masses[i];  
-  *gV = g1;
+    //printf("%.15e %.15e\n", sum1[k][0], sum2[k][0]);
+  }
+
+  s1[0] = s1[1] = s1[2] = s2[0] = s2[1] = s2[2] = 0.0;
+  for (k = 0; k < np; k++)
+    if (k != i) {
+      for (l = 0; l < COMP; l++) {
+	s1[l] += sum1[k][l];
+	s2[l] += sum2[k][l];
+      }
+    }
+  g2 = 0.0;
+  for (l = 0; l < COMP; l++)
+    g2 += s1[l] * s2[l];
+  
+  g2 *= 2.0 * GRAV_CNT2 * masses[i];
+  *gV = gradVSolar(masses, q, i, j, np);
   *gV2 = g2;
-  //fputs("Potencial modificat no definit per al Sistema Solar\n", stderr);
-  //exit(1);
+
+  //printf("%.15e\n", g2);
+  fputs("Potencial modificat no definit per al Sistema Solar\n", stderr);
+  exit(1);
 }
 
 void phiKepler(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {
