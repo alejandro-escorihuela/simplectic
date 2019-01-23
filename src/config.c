@@ -11,8 +11,8 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   int i, param[3];
   char nom[20], arxiu[25];
 
-  if (num != 6) {
-    fprintf(stderr, "Executeu %s [potencial] [tipus de mètode] [fitxer de coeficients] [valor de h] [temps final]\n", vec[0]);
+  if (num != 7) {
+    fprintf(stderr, "Executeu %s [potencial] [tipus de mètode] [fitxer de coeficients] [valor de h] [temps final] [iteracions]\n", vec[0]);
     exit(1);
   }
   if (fp == NULL) {
@@ -31,7 +31,7 @@ void carregar_configuracio(int num, char * vec[], real * h, int * N, int * pop, 
   *h = atof(vec[4]);
   *N = ceil(((real) atof(vec[5])) / *h);
   *pop = param[0];
-  *pit = param[1];
+  *pit = atoi(vec[6]);
   strcpy(t_potencial, vec[1]);
   strcpy(t_metode, vec[2]);
   sprintf(f_coef, "%s_%s", vec[2], vec[3]);
@@ -63,7 +63,7 @@ void vec_coef_copia(double vec_orig[NUM_MAX_COEF], real vec_dest[NUM_MAX_COEF], 
   }
 }
 
-void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], real * b_m, int * tam_a, int * tam_b, int * tam_y, int * tam_z) {
+void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_COEF], real vec_y[NUM_MAX_COEF], real vec_z[NUM_MAX_COEF], real vec_g[NUM_MAX_COEF], real * b_m, int * tam_a, int * tam_b, int * tam_y, int * tam_z, int * tam_g) {
   FILE * fp;
   char linia[LINIA_MAX], * valor, * tipus, nom_fit[30];
   double vec_aux[NUM_MAX_COEF];
@@ -103,6 +103,10 @@ void lectura_coef(char * f_coef, real vec_a[NUM_MAX_COEF], real vec_b[NUM_MAX_CO
     else if (strcmp(tipus, "z") == 0) {
       *tam_z = tam_aux;
       vec_coef_copia(vec_aux, vec_z, *tam_z);
+    }
+    else if (strcmp(tipus, "g") == 0) {
+      *tam_g = tam_aux;
+      vec_coef_copia(vec_aux, vec_g, *tam_g);
     }
     else if (strcmp(tipus, "m") == 0)
       *b_m = vec_aux[0];

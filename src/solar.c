@@ -87,8 +87,7 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
 
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
   int k, l;
-  real pos[np][COMP], sum1[np][COMP], sum2[np][COMP], s1[COMP], s2[COMP], g2, r2[np], r3[np], r5[np], qq[np][COMP];
-
+  real sum1[np][COMP], sum2[np][COMP], s1[COMP], s2[COMP], g2, r2[np], r3[np], r5[np], qq[np][COMP];
   
   for (k = 0; k < np; k++) {
     if (k != i) {

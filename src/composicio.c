@@ -13,14 +13,14 @@
 
 int main (int num_arg, char * vec_arg[]) {
   int i, it, Npart, N, pop, pit, Neval = 0, Neval_Vmod = 0;
-  char noms[MAX_PAR][MAX_CAD], f_ini[20], f_coef[20], t_metode[20], t_poten[20];
-  real masses[MAX_PAR], q[MAX_PAR][COMP], p[MAX_PAR][COMP], v[MAX_PAR][COMP];
-  real a[NUM_MAX_COEF], b[NUM_MAX_COEF], y[NUM_MAX_COEF], z[NUM_MAX_COEF], bm;
-  real ah[NUM_MAX_COEF], bh[NUM_MAX_COEF], yh[NUM_MAX_COEF], zh[NUM_MAX_COEF], bmh;
-  int tam_a = 0, tam_b = 0, tam_y = 0, tam_z = 0;
+  char noms[MAX_PAR][MAX_CAD], f_ini[20], f_coef[20], t_metode[20], t_nucli[20], t_poten[20];
+  real masses[MAX_PAR], q[MAX_PAR][COMP], p[MAX_PAR][COMP], q_cop[MAX_PAR][COMP], p_cop[MAX_PAR][COMP];
+  real a[NUM_MAX_COEF], b[NUM_MAX_COEF], y[NUM_MAX_COEF], z[NUM_MAX_COEF], g[NUM_MAX_COEF], bm;
+  real ah[NUM_MAX_COEF], bh[NUM_MAX_COEF], yh[NUM_MAX_COEF], zh[NUM_MAX_COEF], gh[NUM_MAX_COEF], bmh;
+  int tam_a = 0, tam_b = 0, tam_y = 0, tam_z = 0, tam_g = 0;
   real H0, H, DH, Hemax = 0.0;
   real h;
-  int s, sm;
+  int s, sm, m;
   double t0, t = 0.0, fac_Vmod;
   FILE * fit_pl[MAX_PAR + 1];
 
@@ -84,55 +84,121 @@ int main (int num_arg, char * vec_arg[]) {
   
   H0 = q_conservada(masses, q, p, Npart);
   obrir_fitxers(fit_pl, noms, f_ini, t_poten, f_coef, Npart);
-  lectura_coef(f_coef, a, b, y, z, &bm, &tam_a, &tam_b, &tam_y, &tam_z);
+  lectura_coef(f_coef, a, b, y, z, g, &bm, &tam_a, &tam_b, &tam_y, &tam_z, &tam_g);
   for (i = 0; i < NUM_MAX_COEF; i++) {
     ah[i] = a[i] * h;
     bh[i] = b[i] * h;
     yh[i] = y[i] * h;
     zh[i] = z[i] * h;
+    gh[i] = g[i] * h;
   }
   bmh = bm * h * h * h;
   (void) yh;
   (void) zh;
-
+  (void) gh;
+ 
   /* preconfiguració per a cada mètode */
-  if (strcmp(t_metode, "ss") == 0)
-    s = tam_a;
-  else if (strcmp(t_metode, "sb") == 0)
-    s = tam_a;
-  else if (strcmp(t_metode, "sa") == 0)
-    s = tam_b;
-  else if (strcmp(t_metode, "sx") == 0)
-    s = tam_a;
-  else if (strcmp(t_metode, "ma") == 0)
-    s = tam_b;
-  else if (strcmp(t_metode, "mb") == 0)
-    s = tam_a;
-  else if (strcmp(t_metode, "nb") == 0) {
-    p2v(masses, p, v, Npart);
-    s = tam_a;
-  }
-  else if (strcmp(t_metode, "na") == 0) {
-    p2v(masses, p, v, Npart);
-    s = tam_b;
-  }
-  else if (strcmp(t_metode, "nia") == 0)
-    s = tam_b;
+  if (t_metode[0] != 'p')
+    strcpy(t_nucli, t_metode);
   else {
-    fputs("El mètode especificat no existeix\n", stderr);
-    exit(1);
+    memcpy(t_nucli, &t_metode[1], strlen(t_metode) - 1);
   }
-  
+    
+  if (t_metode[0] != 'p') {
+    if (strcmp(t_metode, "ss") == 0)
+      s = tam_a;
+    else if (strcmp(t_metode, "sb") == 0)
+      s = tam_a;
+    else if (strcmp(t_metode, "sa") == 0)
+      s = tam_b;
+    else if (strcmp(t_metode, "sx") == 0)
+      s = tam_a;
+    else if (strcmp(t_metode, "ma") == 0)
+      s = tam_b;
+    else if (strcmp(t_metode, "mb") == 0)
+      s = tam_a;
+    else if (strcmp(t_metode, "nb") == 0)
+      s = tam_a;
+    else if (strcmp(t_metode, "na") == 0)
+      s = tam_b;
+    else if (strcmp(t_metode, "nia") == 0)
+      s = tam_b;
+    else {
+      fputs("El mètode especificat no existeix\n", stderr);
+      exit(1);
+    }
+  }
+  else {
+    m = tam_z;
+    if (strcmp(t_metode, "pss") == 0) {
+      s = tam_a;
+      m = tam_g;
+    }
+    else if (strcmp(t_metode, "psb") == 0)
+      s = tam_a;
+    else if (strcmp(t_metode, "psa") == 0)
+      s = tam_b;
+    else if (strcmp(t_metode, "psx") == 0) {
+      s = tam_a;
+      m = tam_g;
+    }
+    else if (strcmp(t_metode, "pma") == 0)
+      s = tam_b;
+    else if (strcmp(t_metode, "pn") == 0)
+      s = tam_a;
+    else if (strcmp(t_metode, "pnia") == 0)
+      s = tam_b;
+    else {
+      fputs("El mètode de processat especificat no existeix\n", stderr);
+      exit(1);
+    }
+  }
+
+  /* preprocessat */
+  if (t_metode[0] == 'p') {
+    t0 = temps();
+    if (strcmp(t_metode, "pss") == 0) {
+      for (i = 0; i < m; i++)
+	phi_storAdj(masses, q, p, Npart, gh[i]);
+    }
+    else if (strcmp(t_metode, "psx") == 0) {
+      for (i = 0; i < m - 1; i += 2) {
+	phi_simpTV(masses, q, p, Npart, gh[i]);
+	phi_simpVT(masses, q, p, Npart, gh[i + 1]);
+      }
+      phi_simpTV(masses, q, p, Npart, gh[m - 1]);
+    }
+    else if (strcmp(t_metode, "psb") == 0) {
+       for (i = 0; i < m; i++) {
+	phi_T(masses, q, p, Npart, zh[i]);
+	phi_V(masses, q, p, Npart, yh[i]);    
+      }     
+    }
+    else if (strcmp(t_metode, "pnia") == 0) {
+      for (i = 0; i < m; i++) {
+	phi_H0(masses, q, p, Npart, zh[i]);
+	phi_eV1(masses, q, p, Npart, yh[i]);
+      }
+    }
+    else {
+      for (i = 0; i < m; i++) {
+	phi_V(masses, q, p, Npart, yh[i]);
+	phi_T(masses, q, p, Npart, zh[i]);    
+      }
+    }
+    Neval += (m * (Npart - 1));
+    t += temps() - t0;
+  }
   /* bucle principal */  
   for (it = 0; it < N; it++) {
     t0 = temps();
     /* tipus de mètode */
-    if (strcmp(t_metode, "ss") == 0) {
+    if (strcmp(t_nucli, "ss") == 0) {
       for (i = 0; i < s; i++)
 	phi_storAdj(masses, q, p, Npart, ah[i]);
       Neval += (s * Npart);
     }
-    else if (strcmp(t_metode, "sa") == 0) {
+    else if (strcmp(t_nucli, "sa") == 0) {
       for (i = 0; i < s; i++) {
 	phi_T(masses, q, p, Npart, ah[i]);
 	phi_V(masses, q, p, Npart, bh[i]);
@@ -140,7 +206,7 @@ int main (int num_arg, char * vec_arg[]) {
       phi_T(masses, q, p, Npart, ah[s]);
       Neval += (s * Npart);
     }
-    else if (strcmp(t_metode, "sb") == 0) {
+    else if (strcmp(t_nucli, "sb") == 0) {
       for (i = 0; i < s; i++) {
 	phi_V(masses, q, p, Npart, bh[i]);
 	phi_T(masses, q, p, Npart, ah[i]);
@@ -148,14 +214,14 @@ int main (int num_arg, char * vec_arg[]) {
       phi_V(masses, q, p, Npart, bh[s]);
       Neval += ((s + 1) * Npart);
     }
-    else if (strcmp(t_metode, "sx") == 0) {
+    else if (strcmp(t_nucli, "sx") == 0) {
       for (i = 0; i < s; i += 2) {
 	phi_simpVT(masses, q, p, Npart, ah[i]);
 	phi_simpTV(masses, q, p, Npart, ah[i + 1]);
       }
       Neval += (s * Npart);
     }
-    else if (strcmp(t_metode, "ma") == 0) {
+    else if (strcmp(t_nucli, "ma") == 0) {
       sm = (s - 1) / 2;
       i = 0;
       while (i < sm) {
@@ -187,7 +253,7 @@ int main (int num_arg, char * vec_arg[]) {
       }
       Neval += (s * Npart);      
     }
-    else if (strcmp(t_metode, "mb") == 0) {
+    else if (strcmp(t_nucli, "mb") == 0) {
       sm = s / 2;
       i = 0;
       while (i < sm) {
@@ -213,25 +279,23 @@ int main (int num_arg, char * vec_arg[]) {
       }
       Neval += ((s + 1) * Npart);
     }
-    else if (strcmp(t_metode, "na") == 0) {
+    else if (strcmp(t_nucli, "na") == 0) {
       for (i = 0; i < s; i++) {
-	phi_Tv(masses, q, v, Npart, ah[i]);
-	phi_Vv(masses, q, v, Npart, bh[i]);
+	phi_T(masses, q, p, Npart, ah[i]);
+	phi_V(masses, q, p, Npart, bh[i]);
       }
-      phi_Tv(masses, q, v, Npart, ah[s]);
-      v2p(masses, p, v, Npart);
+      phi_T(masses, q, p, Npart, ah[s]);
       Neval += (s * Npart);
     }
-    else if (strcmp(t_metode, "nb") == 0) {
+    else if (strcmp(t_nucli, "nb") == 0) {
       for (i = 0; i < s; i++) {
-	phi_Vv(masses, q, v, Npart, bh[i]);
-	phi_Tv(masses, q, v, Npart, ah[i]);
+      	phi_V(masses, q, p, Npart, bh[i]);
+      	phi_T(masses, q, p, Npart, ah[i]);
       }
-      phi_Vv(masses, q, v, Npart, bh[s]);
-      v2p(masses, p, v, Npart);
+      phi_V(masses, q, p, Npart, bh[s]);
       Neval += ((s + 1) * Npart);
     }
-    else if (strcmp(t_metode, "nia") == 0) {
+    else if (strcmp(t_nucli, "nia") == 0) {
       for (i = 0; i < s; i++) {
 	phi_H0(masses, q, p, Npart, ah[i]);
 	phi_eV1(masses, q, p, Npart, bh[i]);
@@ -241,12 +305,34 @@ int main (int num_arg, char * vec_arg[]) {
     }
 
     t += temps() - t0;
-    H = q_conservada(masses, q, p, Npart);
-    DH = ABSOLUT(H - H0);
-    if (DH > Hemax)
-      Hemax = DH;
-    if ((it % pit) == 0)
+    if ((it % pit) == 0) {
+      if (t_metode[0] == 'p') {
+	copiar(q, q_cop, Npart);
+	copiar(p, p_cop, Npart);
+	t0 = temps();
+	if (strcmp(t_metode, "pss") == 0) {}
+	else if (strcmp(t_metode, "psx") == 0) {}
+	else if (strcmp(t_metode, "psb") == 0) {}
+	else if (strcmp(t_metode, "pnia") == 0) {}
+	else {
+	  for (i = m - 1; i >= 0; i--) {
+	    phi_T(masses, q, p, planetes, -zh[i]);
+	    phi_V(masses, q, p, planetes, -yh[i]);
+	  }
+	}
+      Neval += (m * (planetes - 1));
+      t += temps() - t0;
+      }
+      H = q_conservada(masses, q, p, Npart);
+      DH = ABSOLUT(H - H0);
+      if (DH > Hemax)
+	Hemax = DH;
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, Npart);
+      if (t_metode[0] == 'p') {
+	copiar(q_cop, q, Npart);
+	copiar(p_cop, p, Npart);
+      }
+    }
   }
   tancar_fitxers(fit_pl, Npart);
   print_info(h, t, Neval + ceil(((double) Neval_Vmod) * fac_Vmod), Hemax / H0);
