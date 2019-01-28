@@ -29,8 +29,8 @@ for i in ${MET[@]} ; do
     for j in ${PAS[@]} ; do
 	k=$(echo $i | cut -d'_' -f 1)
 	l=$(echo $i | cut -d'_' -f 2-)
-	echo "Execució de composicio (tipus = $k, coeficients = $l, h = $j)"
-	./composicio $POTEN $k $l $j $T_MAX 1 >> .tmp_dat/$i.dat
+	echo "Execució de simplectic (tipus = $k, coeficients = $l, h = $j)"
+	./simplectic $POTEN $k $l $j $T_MAX 1 >> .tmp_dat/$i.dat
     done
 done
 cd .tmp_dat

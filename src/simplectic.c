@@ -93,65 +93,42 @@ int main (int num_arg, char * vec_arg[]) {
     gh[i] = g[i] * h;
   }
   bmh = bm * h * h * h;
-  (void) yh;
-  (void) zh;
-  (void) gh;
- 
+  
   /* preconfiguració per a cada mètode */
   if (t_metode[0] != 'p')
     strcpy(t_nucli, t_metode);
   else {
     memcpy(t_nucli, &t_metode[1], strlen(t_metode) - 1);
+    t_nucli[strlen(t_metode) - 1] = '\0';
   }
-    
-  if (t_metode[0] != 'p') {
-    if (strcmp(t_metode, "ss") == 0)
-      s = tam_a;
-    else if (strcmp(t_metode, "sb") == 0)
-      s = tam_a;
-    else if (strcmp(t_metode, "sa") == 0)
-      s = tam_b;
-    else if (strcmp(t_metode, "sx") == 0)
-      s = tam_a;
-    else if (strcmp(t_metode, "ma") == 0)
-      s = tam_b;
-    else if (strcmp(t_metode, "mb") == 0)
-      s = tam_a;
-    else if (strcmp(t_metode, "nb") == 0)
-      s = tam_a;
-    else if (strcmp(t_metode, "na") == 0)
-      s = tam_b;
-    else if (strcmp(t_metode, "nia") == 0)
-      s = tam_b;
-    else {
-      fputs("El mètode especificat no existeix\n", stderr);
-      exit(1);
+
+  m = tam_z;
+  if ((strcmp(t_metode, "pss") == 0) || (strcmp(t_metode, "psx") == 0)) {
+      m = tam_g;
     }
-  }
+  if (strcmp(t_nucli, "ss") == 0)
+    s = tam_a;
+  else if (strcmp(t_nucli, "sb") == 0)
+    s = tam_a;
+  else if (strcmp(t_nucli, "sa") == 0)
+    s = tam_b;
+  else if (strcmp(t_nucli, "sx") == 0)
+    s = tam_a;
+  else if (strcmp(t_nucli, "ma") == 0)
+    s = tam_b;
+  else if (strcmp(t_nucli, "mb") == 0)
+    s = tam_a;
+  else if (strcmp(t_nucli, "nb") == 0)
+    s = tam_a;
+  else if (strcmp(t_nucli, "na") == 0)
+    s = tam_b;
+  else if (strcmp(t_nucli, "n") == 0)
+    s = tam_a;
+  else if (strcmp(t_nucli, "nia") == 0)
+    s = tam_b;
   else {
-    m = tam_z;
-    if (strcmp(t_metode, "pss") == 0) {
-      s = tam_a;
-      m = tam_g;
-    }
-    else if (strcmp(t_metode, "psb") == 0)
-      s = tam_a;
-    else if (strcmp(t_metode, "psa") == 0)
-      s = tam_b;
-    else if (strcmp(t_metode, "psx") == 0) {
-      s = tam_a;
-      m = tam_g;
-    }
-    else if (strcmp(t_metode, "pma") == 0)
-      s = tam_b;
-    else if (strcmp(t_metode, "pn") == 0)
-      s = tam_a;
-    else if (strcmp(t_metode, "pnia") == 0)
-      s = tam_b;
-    else {
-      fputs("El mètode de processat especificat no existeix\n", stderr);
-      exit(1);
-    }
+    fputs("El mètode especificat no existeix\n", stderr);
+    exit(1);
   }
 
   /* preprocessat */
@@ -346,15 +323,15 @@ int main (int num_arg, char * vec_arg[]) {
 	    phi_V(masses, q, p, Npart, -yh[i]);
 	  }
 	}
-      Neval += (m * Npart);
-      t += temps() - t0;
+	Neval += (m * Npart);
+	t += temps() - t0;
       }
       H = q_conservada(masses, q, p, Npart);
       DH = ABSOLUT(H - H0);
       if (DH > Hemax)
 	Hemax = DH;
       escriure_fitxers(fit_pl, pop, ((real) it) * h, q, p, H0, H, Npart);
-      if (t_metode[0] == 'p') {
+      if (((it % pit) == 0) && (t_metode[0] == 'p')) {
 	copiar(q_cop, q, Npart);
 	copiar(p_cop, p, Npart);
       }
