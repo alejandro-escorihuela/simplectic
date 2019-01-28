@@ -1,6 +1,6 @@
 /* 07-11-2018 */
 /* alex */
-/* composicio.c */
+/* simplectic.c */
 #include <stdio.h>
 #include <stdlib.h>
 #include "config.h"
@@ -186,7 +186,7 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_T(masses, q, p, Npart, zh[i]);    
       }
     }
-    Neval += (m * (Npart - 1));
+    Neval += (m * Npart);
     t += temps() - t0;
   }
   /* bucle principal */  
@@ -295,6 +295,13 @@ int main (int num_arg, char * vec_arg[]) {
       phi_V(masses, q, p, Npart, bh[s]);
       Neval += ((s + 1) * Npart);
     }
+    else if (strcmp(t_nucli, "n") == 0) {
+      for (i = 0; i < s; i++) {
+      	phi_V(masses, q, p, Npart, bh[i]);
+      	phi_T(masses, q, p, Npart, ah[i]);
+      }
+      Neval += (s * Npart);
+    }    
     else if (strcmp(t_nucli, "nia") == 0) {
       for (i = 0; i < s; i++) {
 	phi_H0(masses, q, p, Npart, ah[i]);
@@ -310,17 +317,36 @@ int main (int num_arg, char * vec_arg[]) {
 	copiar(q, q_cop, Npart);
 	copiar(p, p_cop, Npart);
 	t0 = temps();
-	if (strcmp(t_metode, "pss") == 0) {}
-	else if (strcmp(t_metode, "psx") == 0) {}
-	else if (strcmp(t_metode, "psb") == 0) {}
-	else if (strcmp(t_metode, "pnia") == 0) {}
-	else {
+	if (strcmp(t_metode, "pss") == 0) {
+	  for (i = m - 1; i >= 0; i--)
+	    phi_storAdj(masses, q, p, Npart, -gh[i]);
+	}
+	else if (strcmp(t_metode, "psx") == 0) {
+	  for (i = m - 1; i > 0; i -= 2) {
+	    phi_simpVT(masses, q, p, Npart, -gh[i]);
+	    phi_simpTV(masses, q, p, Npart, -gh[i - 1]);
+	  }
+	  phi_simpVT(masses, q, p, Npart, -gh[0]);
+	}
+	else if (strcmp(t_metode, "psb") == 0) {
 	  for (i = m - 1; i >= 0; i--) {
-	    phi_T(masses, q, p, planetes, -zh[i]);
-	    phi_V(masses, q, p, planetes, -yh[i]);
+	    phi_V(masses, q, p, Npart, -yh[i]);
+	    phi_T(masses, q, p, Npart, -zh[i]);
+	  }	  
+	}
+	else if (strcmp(t_metode, "pnia") == 0) {
+	  for (i = m - 1; i >= 0; i--) {
+	    phi_eV1(masses, q, p, Npart, -yh[i]);
+	    phi_H0(masses, q, p, Npart, -zh[i]);
 	  }
 	}
-      Neval += (m * (planetes - 1));
+	else {
+	  for (i = m - 1; i >= 0; i--) {
+	    phi_T(masses, q, p, Npart, -zh[i]);
+	    phi_V(masses, q, p, Npart, -yh[i]);
+	  }
+	}
+      Neval += (m * Npart);
       t += temps() - t0;
       }
       H = q_conservada(masses, q, p, Npart);

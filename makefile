@@ -1,7 +1,7 @@
 # 13-04-2018
 # cosmogat
 
-EXE = composicio
+EXE = simplectic
 COM = gcc # Compilador
 LIB = -lm -lquadmath # Llibreries (-l*, -L*, -I*)
 MAC = -D_GNU_SOURCE # Macros (-D*)
@@ -13,7 +13,7 @@ DIR = /usr/local/bin # Directori per a instalar
 
 all: $(EXE)
 
-composicio: src/composicio.c metodes.o kepler.o solar.o molecular.o fput.o harmonic.o config.o
+simplectic: src/simplectic.c metodes.o kepler.o solar.o molecular.o fput.o harmonic.o config.o
 	@echo "\033[0;32m"Compilant i enllaçant $^ per a crear $@"\033[0m"
 	@echo -n "  \033[0;37m"
 	$(COM) $(OPC) $(LIB) $^ -o $@
