@@ -15,9 +15,10 @@ PAS[4]=25
 PAS[5]=10
 MET[0]="pss_13_12_6"
 MET[1]="psb_4_4_4"
-MET[2]="psx_4_4_4"
-MET[3]="pn_2_3_4"
-MET[4]="pnia_3_6"
+MET[2]="psa_4_4_4"
+MET[3]="psx_4_4_4"
+MET[4]="pn_2_3_4"
+MET[5]="pnia_3_6"
 
 cd ..
 mkdir .tmp_dat
