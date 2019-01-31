@@ -16,8 +16,8 @@ PAS[3]=10
 MET[0]="sa_1_2"
 MET[1]="ma_1_2"
 MET[2]="ma_2_4"
-MET[3]="mb_2_4"
-MET[4]="ma_3_4"
+# MET[3]="mb_2_4"
+# MET[4]="ma_3_4"
 
 cd ..
 mkdir .tmp_dat

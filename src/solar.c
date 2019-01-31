@@ -87,50 +87,28 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
 
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
   int k, l;
-  real sum1[np][COMP], sum2[np][COMP], s1[COMP], s2[COMP], g2, r2[np], r3[np], r5[np], qq[np][COMP];
-  
-  for (k = 0; k < np; k++) {
-    if (k != i) {
-      for (l = 0; l < COMP; l++)
-	qq[k][l] = (q[i][l] - q[k][l]);
-      r2[k] = (qq[k][0] * qq[k][0]) + (qq[k][1] * qq[k][1]) + (qq[k][2] * qq[k][2]);
-      r3[k] = POTENCIA(r2[k], 1.5);
-      r5[k] = r3[k] * r2[k];
-      //printf("%.15e %.15e %.15e\n", r2[k], r3[k], r5[k]);
-    }
-  }
-  for (k = 0; k < np; k++) {
-    if (k != i) {
-      for (l = 0; l < COMP; l++) {
-	sum1[k][l] = (-3.0 * qq[k][j] * qq[k][l] * masses[k]) / r5[k];
-	if (l == j) {
-	  sum1[k][l] += masses[k] / r3[k];
-	}
-	sum2[k][l] = (qq[k][l] * masses[k]) / r3[k];
-      }
-    }
-    //printf("%.15e %.15e\n", sum1[k][0], sum2[k][0]);
-  }
+  real g1, g2, laplacia = 0.0, r2[np], r3[np], r5[np], qq[np][COMP];
 
-  s1[0] = s1[1] = s1[2] = s2[0] = s2[1] = s2[2] = 0.0;
-  for (k = 0; k < np; k++)
-    if (k != i) {
-      for (l = 0; l < COMP; l++) {
-	s1[l] += sum1[k][l];
-	s2[l] += sum2[k][l];
-      }
-    }
-  g2 = 0.0;
+  for (k = 0; k < np; k++) {
+    for (l = 0; l < COMP; l++)
+      qq[k][l] = (q[i][l] - q[k][l]);
+    r2[k] = (qq[k][0] * qq[k][0]) + (qq[k][1] * qq[k][1]) + (qq[k][2] * qq[k][2]);
+    r3[k] = POTENCIA(r2[k], 1.5);
+    r5[k] = r3[k] * r2[k];
+  }
+  
   for (l = 0; l < COMP; l++)
-    g2 += s1[l] * s2[l];
+    for (k = 0; k < np; k++)
+      if (i != k)
+	laplacia += ((3.0 * qq[k][l] * qq[k][l] * masses[k]) / r5[k]) - (masses[k] / r3[k]);
+  laplacia *= -GRAV_CNT * masses[i];
   
-  g2 *= 2.0 * GRAV_CNT2 * masses[i];
-  *gV = gradVSolar(masses, q, i, j, np);
+  g1 = gradVSolar(masses, q, i, j, np);
+  g2 = (2.0 * g1 * laplacia) / masses[i];
+  
+  *gV = g1;
   *gV2 = g2;
-
-  //printf("%.15e\n", g2);
-  fputs("Potencial modificat no definit per al Sistema Solar\n", stderr);
-  exit(1);
+  //printf("%.15e %.15e\n", g1, g2);
 }
 
 void phiKepler(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {
