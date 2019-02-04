@@ -86,29 +86,10 @@ real deriv2qSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int
 }
 
 void gradVmodSolar(real masses[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np, real * gV, real * gV2) {
-  int k, l;
-  real g1, g2, laplacia = 0.0, r2[np], r3[np], r5[np], qq[np][COMP];
-
-  for (k = 0; k < np; k++) {
-    for (l = 0; l < COMP; l++)
-      qq[k][l] = (q[i][l] - q[k][l]);
-    r2[k] = (qq[k][0] * qq[k][0]) + (qq[k][1] * qq[k][1]) + (qq[k][2] * qq[k][2]);
-    r3[k] = POTENCIA(r2[k], 1.5);
-    r5[k] = r3[k] * r2[k];
-  }
-  
-  for (l = 0; l < COMP; l++)
-    for (k = 0; k < np; k++)
-      if (i != k)
-	laplacia += ((3.0 * qq[k][l] * qq[k][l] * masses[k]) / r5[k]) - (masses[k] / r3[k]);
-  laplacia *= -GRAV_CNT * masses[i];
-  
-  g1 = gradVSolar(masses, q, i, j, np);
-  g2 = (2.0 * g1 * laplacia) / masses[i];
-  
-  *gV = g1;
-  *gV2 = g2;
-  //printf("%.15e %.15e\n", g1, g2);
+  *gV = gradVSolar(masses, q, i, j, np);
+  *gV2 = 0.0;
+  fputs("Potèncial modificat nul per al Sistema Solar\n", stderr);
+  exit(1);
 }
 
 void phiKepler(real masses[MAX_PAR], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP], int i, real h, int np) {

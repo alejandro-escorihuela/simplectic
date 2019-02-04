@@ -1,28 +1,19 @@
 #!/bin/bash
-# 21-11-2018
+# 09-01-2019
 # alex
-# ordre_fput.sh
+# ordre_kepler04.sh
 
-POTEN="fput"
-T_MAX=500
+POTEN="kepler"
+T_MAX=200
 PAS=()
 MET=()
-PAS[0]=0.5
-PAS[1]=0.3
-PAS[2]=0.2
-PAS[3]=0.1
-PAS[4]=0.06
-PAS[5]=0.03
-PAS[6]=0.01
-MET[0]="sb_6_4"
-MET[1]="sa_6_4"
-MET[2]="sa_5_4"
-
-MET[3]="sa_9_6"
-MET[4]="sa_10_6"
-
-MET[5]="nb_6_4"
-MET[6]="na_7_6"
+PAS[0]=0.1
+PAS[1]=0.05
+PAS[2]=0.01
+PAS[3]=0.005
+PAS[4]=0.001
+MET[0]="psa_3_3_4"
+MET[1]="psa_4_4_4"
 
 cd ..
 mkdir .tmp_dat
@@ -40,7 +31,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/ordre_fput.pdf\"" >> plot.plt
+echo "set output \"../graf/ordre_kepler04.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt

@@ -1,24 +1,22 @@
 #!/bin/bash
 # 28-01-2019
 # alex
-# pro_solar.sh
+# ordre_fput04.sh
 
-POTEN="solar"
-T_MAX=200000
+POTEN="fput"
+T_MAX=500
 PAS=()
 MET=()
-PAS[0]=500
-PAS[1]=200
-PAS[2]=100
-PAS[3]=50
-PAS[4]=25
-PAS[5]=10
-MET[0]="pss_13_12_6"
-MET[1]="psb_4_4_4"
-MET[2]="psa_4_4_4"
-MET[3]="psx_4_4_4"
-MET[4]="pn_2_3_4"
-MET[5]="pnia_3_6"
+PAS[0]=0.5
+PAS[1]=0.3
+PAS[2]=0.2
+PAS[3]=0.1
+PAS[4]=0.06
+PAS[5]=0.03
+PAS[6]=0.01
+MET[0]="psa_3_3_4"
+MET[1]="psa_4_4_4"
+
 
 cd ..
 mkdir .tmp_dat
@@ -38,7 +36,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/pro_solar.pdf\"" >> plot.plt
+echo "set output \"../graf/ordre_fput04.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt

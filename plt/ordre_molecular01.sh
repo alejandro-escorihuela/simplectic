@@ -1,24 +1,25 @@
 #!/bin/bash
-# 09-01-2019
+# 26-04-2018
 # alex
-# mod_molecular.sh
+# ordre_molecular01.sh
 
 POTEN="molecular"
 T_MAX=0.02
 PAS=()
 MET=()
-PAS[0]=1.0e-5
-PAS[1]=5.0e-6
-PAS[2]=1.0e-6
-PAS[3]=7.5e-7
+PAS[0]=1.0e-4
+PAS[1]=7.5e-5
+PAS[2]=5.0e-5
+PAS[3]=2.5e-5
+PAS[4]=1.0e-5
+PAS[5]=7.5e-6
+PAS[6]=5.0e-6
+PAS[7]=2.5e-6
+PAS[8]=1.0e-6
+PAS[9]=7.5e-7
+MET[1]="sa_6_4"
+MET[2]="sa_5_4"
 
-# PAS[4]=5
-# PAS[5]=1
-MET[0]="sa_1_2"
-MET[1]="ma_1_2"
-MET[2]="ma_2_4"
-MET[3]="mb_2_4"
-MET[4]="ma_3_4"
 
 cd ..
 mkdir .tmp_dat
@@ -36,7 +37,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/mod_molecular.pdf\"" >> plot.plt
+echo "set output \"../graf/ordre_molecular01.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt

@@ -1,23 +1,24 @@
 #!/bin/bash
-# 07-01-2019
+# 26-04-2018
 # alex
-# mod_solar.sh
+# ordre_molecular03.sh
 
-POTEN="solar"
-T_MAX=200000
+POTEN="molecular"
+T_MAX=0.02
 PAS=()
 MET=()
-PAS[0]=100
-PAS[1]=50
-PAS[2]=25
-PAS[3]=10
-# PAS[4]=5
-# PAS[5]=1
-MET[0]="sa_1_2"
-MET[1]="ma_1_2"
-MET[2]="ma_2_4"
-# MET[3]="mb_2_4"
-# MET[4]="ma_3_4"
+PAS[0]=1.0e-4
+PAS[1]=7.5e-5
+PAS[2]=5.0e-5
+PAS[3]=2.5e-5
+PAS[4]=1.0e-5
+PAS[5]=7.5e-6
+PAS[6]=5.0e-6
+PAS[7]=2.5e-6
+PAS[8]=1.0e-6
+PAS[9]=7.5e-7
+MET[0]="nb_6_4"
+MET[1]="na_7_6"
 
 cd ..
 mkdir .tmp_dat
@@ -35,7 +36,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/mod_solar.pdf\"" >> plot.plt
+echo "set output \"../graf/ordre_molecular03.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"Efficiency\"" >> plot.plt
