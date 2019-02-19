@@ -14,7 +14,8 @@
 #include "tipus.h"
 #include "metodes.h"
 #define ORDRE_FPUT 3
-
+#define NUM_PART_FPUT 10
+#define ALPHA_FPUT 0.25
 
 int init_FPUT(real masses[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP], real p[MAX_PAR][COMP]);
 real gradVFPUT(real m[MAX_PAR], real q[MAX_PAR][COMP], int i, int j, int np);
