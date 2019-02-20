@@ -1,24 +1,27 @@
 #!/bin/bash
 # 28-01-2019
 # alex
-# ordre_fput04.sh
+# fput.sh
 
 POTEN="fput"
-TITOL="Eficiència FPUT {/Symbol a}=0.25"
+TITOL="Eficiència FPUT {/Symbol a}=0.25 N=100"
+NOM_FIT="fput_025_100"
 T_MAX=500
 PAS=()
 MET=()
 LLE=()
-PAS[0]=0.5
-PAS[1]=0.3
-PAS[2]=0.2
-PAS[3]=0.1
-PAS[4]=0.06
-PAS[5]=0.03
-PAS[6]=0.01
+PAS[0]=1.5
+PAS[1]=1.0
+PAS[2]=0.5
+PAS[3]=0.3
+PAS[4]=0.2
+PAS[5]=0.1
+PAS[6]=0.06
+PAS[7]=0.03
+PAS[8]=0.01
 MET[0]="nb_6_4"
 MET[1]="sa_8_4"
-MET[2]="psa_3_6_4"
+MET[2]="psab_3_6_4"
 MET[3]="nia_8"
 MET[4]="pnia_3_6"
 LLE[0]="_6^{[4]}"
@@ -45,7 +48,7 @@ echo "reset" >> plot.plt
 echo "set terminal pdf enhanced font 'Verdana, 10'" >> plot.plt
 echo "set key font ',8'" >> plot.plt
 echo "set xtics font 'Verdana,8'" >> plot.plt
-echo "set output \"../graf/ordre_fput04.pdf\"" >> plot.plt
+echo "set output \"../graf/$NOM_FIT.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
 echo "set title \"$TITOL\"" >> plot.plt

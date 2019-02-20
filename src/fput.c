@@ -12,7 +12,7 @@ int init_FPUT(real m[MAX_PAR], char noms[MAX_PAR][MAX_CAD], real q[MAX_PAR][COMP
   char buf[128];
 #endif
   for (i = 0; i < N; i++)
-    sprintf(noms[i], "p%.2d", i);
+    sprintf(noms[i], "%.3d", i);
   q_aux[0] = 0.0;
   for (i = 1; i < N; i++)
     q_aux[i] = q_aux[i - 1] + dist;

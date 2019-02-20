@@ -54,5 +54,5 @@ typedef __float128 real;
 #define NUM_MAX_COEF 100
 #define LINIA_MAX 2000
 #define COMP 3
-#define MAX_PAR 20
+#define MAX_PAR 100
 #endif

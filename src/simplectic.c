@@ -25,7 +25,7 @@ int main (int num_arg, char * vec_arg[]) {
   FILE * fit_pl[MAX_PAR + 1];
 
   carregar_configuracio(num_arg, vec_arg, &h, &N, &pop, &pit, f_ini, t_poten, t_metode, f_coef);
-  
+
   /* tipus de potencial */
   if (strcmp(t_poten, "kepler") == 0) {
     gradV = gradVKepler;
@@ -81,7 +81,7 @@ int main (int num_arg, char * vec_arg[]) {
     fputs("El potencial especificat no existeix\n", stderr);
     exit(1);
   }
-  
+
   H0 = q_conservada(masses, q, p, Npart);
   obrir_fitxers(fit_pl, noms, f_ini, t_poten, f_coef, Npart);
   lectura_coef(f_coef, a, b, y, z, g, &bm, &tam_a, &tam_b, &tam_y, &tam_z, &tam_g);
@@ -112,6 +112,8 @@ int main (int num_arg, char * vec_arg[]) {
     s = tam_a;
   else if (strcmp(t_nucli, "sa") == 0)
     s = tam_b;
+  else if (strcmp(t_nucli, "sab") == 0)
+    s = tam_b;  
   else if (strcmp(t_nucli, "sx") == 0)
     s = tam_a;
   else if (strcmp(t_nucli, "ma") == 0)
@@ -157,6 +159,12 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_eV1(masses, q, p, Npart, yh[i]);
       }
     }
+    else if (strcmp(t_metode, "psab") == 0) {
+      for (i = 0; i < m; i++) {
+	phi_T(masses, q, p, Npart, zh[i]);
+	phi_V(masses, q, p, Npart, yh[i]);
+      }
+    }
     else {
       for (i = 0; i < m; i++) {
 	phi_V(masses, q, p, Npart, yh[i]);
@@ -175,7 +183,7 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_storAdj(masses, q, p, Npart, ah[i]);
       Neval += (s * Npart);
     }
-    else if (strcmp(t_nucli, "sa") == 0) {
+    else if ((strcmp(t_nucli, "sa") == 0) || (strcmp(t_nucli, "sab") == 0)) {
       for (i = 0; i < s; i++) {
 	phi_T(masses, q, p, Npart, ah[i]);
 	phi_V(masses, q, p, Npart, bh[i]);
@@ -315,6 +323,12 @@ int main (int num_arg, char * vec_arg[]) {
 	  for (i = m - 1; i >= 0; i--) {
 	    phi_eV1(masses, q, p, Npart, -yh[i]);
 	    phi_H0(masses, q, p, Npart, -zh[i]);
+	  }
+	}
+	else if (strcmp(t_metode, "psab") == 0) {
+	  for (i = m - 1; i >= 0; i--) {
+	    phi_V(masses, q, p, Npart, -yh[i]);
+	    phi_T(masses, q, p, Npart, -zh[i]);
 	  }
 	}
 	else {
