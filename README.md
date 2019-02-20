@@ -1,4 +1,4 @@
-# solar
+# simplectic
 C programs to check numerical methods applied to different physical potentials.
 ![simulacio](./img.png)
 ## Getting Started
