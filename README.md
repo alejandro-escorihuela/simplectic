@@ -11,7 +11,7 @@ For compile the codes you only do:
 make
 ```
 # Configuration
-In the coef directory there are all methods that you can use for the different systems.
+In the coef directory there are all methods that you can use for the different systems.   
 In the cnf directory there are configuration files for Sun, planets and Pluto in the case of solar potential. These files has the name, mass, position (x, y, z) and speed (x, y, z). There is another file call param.cnf for some parameters of the execution.
 ## Running
 You can run the program with:
@@ -23,8 +23,8 @@ Where [potential] is the potential of physical system that you want to use, ther
 * kepler - Two body kepler problem
 * harmonic - Harmonical oscillator
 * molecular - Lennard-Jones potential
-* fput - Fermi-Pasta-Ulam-Tsingou
-[method_1] is the kind of method and [method_2] are the numbers that identifies the method. For example if you want to use the method with filename pss_4_4_4.cnf in coef directory you have [method_1] = pss and [method_2] = 4_4_4.
+* fput - Fermi-Pasta-Ulam-Tsingou     
+[method_1] is the kind of method and [method_2] are the numbers that identifies the method. For example if you want to use the method with filename pss_4_4_4.cnf in coef directory you have [method_1] = pss and [method_2] = 4_4_4.      
 [h] is the stepsize, [tf] is the final time of evolution and [it] is how many iterations that you want to print.
 ```
 ./simplectic solar sa 9_6 10 200000 1
