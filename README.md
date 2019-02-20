@@ -23,9 +23,9 @@ Where [potential] is the potential of physical system that you want to use, ther
 * kepler - Two body kepler problem
 * harmonic - Harmonical oscillator
 * molecular - Lennard-Jones potential
-* fput - Fermi-Pasta-Ulam-Tsingou     
-[method_1] is the kind of method and [method_2] are the numbers that identifies the method. For example if you want to use the method with filename pss_4_4_4.cnf in coef directory you have [method_1] = pss and [method_2] = 4_4_4.
+* fput - Fermi-Pasta-Ulam-Tsingou
 
+[method_1] is the kind of method and [method_2] are the numbers that identifies the method. For example if you want to use the method with filename pss_4_4_4.cnf in coef directory you have [method_1] = pss and [method_2] = 4_4_4.
 [h] is the stepsize, [tf] is the final time of evolution and [it] is how many iterations that you want to print.
 ```
 ./simplectic solar sa 9_6 10 200000 1
