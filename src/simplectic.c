@@ -204,7 +204,7 @@ int main (int num_arg, char * vec_arg[]) {
 	phi_simpVT(masses, q, p, Npart, ah[i]);
 	phi_simpTV(masses, q, p, Npart, ah[i + 1]);
       }
-      Neval += (s * Npart);
+      Neval += ((s / 2) * Npart);
     }
     else if (strcmp(t_nucli, "ma") == 0) {
       sm = (s - 1) / 2;
