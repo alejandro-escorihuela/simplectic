@@ -4,6 +4,7 @@
 # ordre_fput_comp.sh
 
 POTEN="fput"
+TITLE="{/Symbol a} = 0.25, N=100"
 T_MAX=500
 PAS=()
 MET=()
@@ -20,12 +21,14 @@ MET[2]="sx_6_4_k"
 MET[3]="sx_5_4"
 MET[4]="sx_5_4_e"
 MET[5]="sx_5_4_k"
+#MET[6]="nb_6_4"
 TITOLS[0]="S_6^{[4]}"
 TITOLS[1]="X_{(6,E)}^{[4]}"
 TITOLS[2]="X_{(6,k)}^{[4]}"
 TITOLS[3]="SS_5^{[4]}"
 TITOLS[4]="X_{(5,E)}^{[4]}"
 TITOLS[5]="X_{(5,k)}^{[4]}"
+#TITOLS[6]="NB_{6}^{[4]}"
 
 cd ..
 mkdir .tmp_dat
@@ -46,7 +49,7 @@ echo "set xtics font 'Verdana,8'" >> plot.plt
 echo "set output \"../graf/ordre_fput_comp.pdf\"" >> plot.plt
 echo "set key out vert" >> plot.plt
 echo "set key right" >> plot.plt
-echo "set title \"Eficiència en FPUT\"" >> plot.plt
+echo "set title \"Eficiència en FPUT ($TITLE)\"" >> plot.plt
 echo "set ylabel \"log(max(H-H_0)/H_0)\"" >> plot.plt
 echo "set xlabel \"log(N_{eval})\"" >> plot.plt
 echo -n "plot " >> plot.plt
